@@ -16,7 +16,7 @@ var web3 = require('web3');
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 
 var abi = [{"constant":true,"inputs":[],"name":"getElevations","outputs":[{"name":"","type":"uint8[33][33]"}],"type":"function"},{"constant":false,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"},{"name":"block","type":"int8[7]"}],"name":"addBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"},{"name":"newowner","type":"address"}],"name":"setOwner","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"rows","type":"uint8[]"}],"name":"initializeOwners","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getOwners","outputs":[{"name":"","type":"address[33][33]"}],"type":"function"},{"constant":true,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"}],"name":"getBlocksForTile","outputs":[{"name":"","type":"int8[]"}],"type":"function"},{"constant":true,"inputs":[],"name":"getPrices","outputs":[{"name":"","type":"uint256[33][33]"}],"type":"function"},{"constant":false,"inputs":[{"name":"row","type":"uint8"},{"name":"_elevations","type":"uint8[33]"}],"name":"setElevations","outputs":[],"type":"function"},{"inputs":[],"type":"constructor"}];
-var contract = web3.eth.contract(abi).at("0x915f6a8fac7e4de205b72aa30289354921cbeb90");
+var contract = web3.eth.contract(abi).at("0x55a8264a6ee08ef9878c1e395e4041df6ee28832");
 
 var app = express();
 
