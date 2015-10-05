@@ -14,6 +14,21 @@ var mesh;
 
 var MAP_WIDTH = 33;
 var MAP_HEIGHT = 33;
+
+function createArray(length) {
+    var arr = new Array(length || 0),
+        i = length;
+
+    if (arguments.length > 1) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        while(i--) arr[length-1 - i] = createArray.apply(this, args);
+    }
+
+    return arr;
+}
+
+var originalmap = createArray(33,33);
+
 var EXTRUSION_FACTOR = size/75;
 
 var LEVELS =  Math.cbrt(MAP_WIDTH - 1) + 1;
@@ -30,8 +45,8 @@ var SEA_LEVEL = 115;
 var SAND_LEVEL = 130;
 var GRASSLAND_LEVEL = 180;
 var HILLS_LEVEL = 200;
-var TUNDRA_PERCENTAGE = .08;
-var ICE_PERCENTAGE = .04;
+var TUNDRA_PERCENTAGE = 0.08;
+var ICE_PERCENTAGE = 0.04;
 
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
@@ -41,10 +56,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	animate();
 });
 
+
+
 function init() {
 
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
-	camera.position.z = 75;
+	camera.position.z = 50;
 
 	controls = new THREE.OrbitControls(camera);
 	controls.damping = 0.2;
@@ -93,29 +110,58 @@ function init() {
 	
 	var x = 0;
 	var y = 0;
-	var elevationarraystring = "[";
-	while(x < MAP_WIDTH)
-	{
-		y=0;
-		while(y < MAP_HEIGHT)
-		{
-			if(mymap[x][y].e > 255)
-			{
-				console.log('WARNING: map[' + x + "],[" + y + "].e =" + mymap[x][y].e);
-				mymap[x][y].e = 255;
-			}	
-			if(x === MAP_WIDTH-1 && y === MAP_HEIGHT-1) // very last one. Omit comma.
-				elevationarraystring = elevationarraystring + mymap[x][y].e;
-			else if(y === MAP_HEIGHT-1)
-				elevationarraystring = elevationarraystring + mymap[x][y].e + "],[";
-			else
-				elevationarraystring = elevationarraystring + mymap[x][y].e + ",";
-			y++;
-		}	
-		x++;
-	}	
-	elevationarraystring = elevationarraystring + "]";
-	console.log(elevationarraystring);
+	
+	var elevations;
+	$.ajax({ 
+		type: 'GET', 
+		url: 'http://localhost:1337/map', 
+        dataType: 'json',
+        timeout: 10000,
+        async: false, // same origin, so this is ok 
+        success: function (data, status) {
+        	elevations = data;
+        	y=0;
+        	while(y < elevations[0].length)
+        	{
+        		x=0;
+        		while(x < elevations.length)
+        		{
+        			mymap[x][y].e = elevations[x][y];
+        			originalmap[x][y] = {};
+        			originalmap[x][y].e = elevations[x][y];
+        			x++;
+        		}	
+        		y++;
+        	}	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        	console.log("elevations ajax error");
+        }
+	});
+	
+	//originalmap = mymap; // saves original elevations
+	
+//	var elevationarraystring = "[";
+//	y=0;
+//	while(y < MAP_WIDTH)
+//	{
+//		x=0;
+//		elevationarraystring = "[";
+//		while(x < MAP_HEIGHT)
+//		{
+//			if(x === MAP_WIDTH-1 && y === MAP_HEIGHT-1) // very last one. Omit comma.
+//				elevationarraystring = elevationarraystring + mymap[x][y].e;
+//			else if(y === MAP_HEIGHT-1)
+//				elevationarraystring = elevationarraystring + mymap[x][y].e + "],[";
+//			else
+//				elevationarraystring = elevationarraystring + mymap[x][y].e + ",";
+//			x++;
+//		}	
+//		elevationarraystring = elevationarraystring  + "]";
+//		console.log("etheria.initializeTiles.sendTransaction(" + y + ", " + elevationarraystring + ", {from:eth.coinbase,gas:3000000});");
+//		y++;
+//	}	
+	//console.log(elevationarraystring);
 	
 	x = 0;
 	y = 0;
@@ -134,6 +180,7 @@ function init() {
 		}	
 		x++;
 	}	
+	
 	var ceiling = max - min; 
 	var normalization_factor = 255/ceiling;
 	x=0;
@@ -150,6 +197,7 @@ function init() {
 		}	
 		x++;
 	}	
+	
 	// -50 && y even == out of bounds
 	// -50 && y odd == OK
 	drawBlock(0,0,0,0,0,0, 0xFFCC00); // 8 high column
@@ -328,7 +376,10 @@ function drawMapHex(coordx, coordy)
 	else if(mymap[coordx][coordy].e <= 256)
 	{
 		if(mymap[coordx][coordy].e > 255)
-			mymap[coordx][coordy].e = 255; // sometimes multiplicative factors put the very top over 255, if so, chop it off
+		{
+			//mymap[coordx][coordy].e = 255; // sometimes multiplicative factors put the very top over 255, if so, chop it off
+			console.log('WARNING elevationg greater than 255');
+		}
 		color = MOUNTAINS_COLOR;
 		texturefile = "images/mountains.jpg";
 		tiletype = "mountains";
@@ -419,7 +470,7 @@ function drawMapHex(coordx, coordy)
 
 	var mesh = new THREE.Mesh( hexGeom, material );
 	
-	mesh.userData.e = mymap[coordx][coordy].e;
+	mesh.userData.e = originalmap[coordx][coordy].e;
 	mesh.userData.o = mymap[coordx][coordy].o;
 	mesh.userData.x = coordx;
 	mesh.userData.y = coordy;

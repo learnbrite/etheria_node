@@ -84,6 +84,8 @@ function generateMidpoints(sw_x, sw_y, ne_x, ne_y, depth)
 			perturbation = perturbation * -1; // half the time, flip it negative so we go below the average
 //		console.log('*** perturbation=' + perturbation);
 		mymap[centerpointx][centerpointy].e = Math.floor(newelevation - newelevation * perturbation); 
+		if(mymap[centerpointx][centerpointy].e > 255)
+			mymap[centerpointx][centerpointy].e = 255;
 		mymap[centerpointx][centerpointy].o = guid();
 	}
 	//drawHex2(centerpointx,centerpointy);
