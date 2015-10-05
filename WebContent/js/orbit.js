@@ -114,7 +114,7 @@ function init() {
 	var elevations;
 	$.ajax({ 
 		type: 'GET', 
-		url: 'http://localhost:1337/map', 
+		url: 'http://localhost:1337/elevations', 
         dataType: 'json',
         timeout: 10000,
         async: false, // same origin, so this is ok 
@@ -136,6 +136,60 @@ function init() {
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
         	console.log("elevations ajax error");
+        }
+	});
+	
+	var prices;
+	$.ajax({ 
+		type: 'GET', 
+		url: 'http://localhost:1337/prices', 
+        dataType: 'json',
+        timeout: 10000,
+        async: false, // same origin, so this is ok 
+        success: function (data, status) {
+        	prices = data;
+        	y=0;
+        	while(y < prices[0].length)
+        	{
+        		x=0;
+        		while(x < prices.length)
+        		{
+        			mymap[x][y].p = prices[x][y];
+        			originalmap[x][y].p = prices[x][y];
+        			x++;
+        		}	
+        		y++;
+        	}	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        	console.log("prices ajax error");
+        }
+	});
+	
+	var owners;
+	$.ajax({ 
+		type: 'GET', 
+		url: 'http://localhost:1337/owners', 
+        dataType: 'json',
+        timeout: 10000,
+        async: false, // same origin, so this is ok 
+        success: function (data, status) {
+        	owners = data;
+        	y=0;
+        	while(y < owners[0].length)
+        	{
+        		x=0;
+        		while(x < owners.length)
+        		{
+        			mymap[x][y].o = owners[x][y];
+        			originalmap[x][y].o = owners[x][y];
+        			x++;
+        		}	
+        		y++;
+        	}	
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        	console.log("owners ajax error");
         }
 	});
 	
@@ -310,13 +364,19 @@ function render() {
 	// calculate objects intersecting the picking ray
 	var intersects = raycaster.intersectObjects( scene.children, true);
 
+	var forsale = "no";
 	if(intersects.length > 0)
 	{
+		if(intersects[ 0 ].object.userData.p > 0)
+			forsale = "yes";
 		$("#hexinfobodydiv").html(
 				"x: " + intersects[ 0 ].object.userData.x + "<br>" +
 				"y: " + intersects[ 0 ].object.userData.y + "<br>" +
+				"type: " + intersects[ 0 ].object.userData.tiletype + "<br>" + 
 				"elevation: " + intersects[ 0 ].object.userData.e + "<br>" +
-				"owner: " + intersects[ 0 ].object.userData.o
+				"owner: " + intersects[ 0 ].object.userData.o + "<br>" + 
+				"for sale? " + forsale + "<br>" + 
+				"price: " + intersects[ 0 ].object.userData.p
 		);
 	}	
 	renderer.render(scene, camera);
@@ -471,7 +531,9 @@ function drawMapHex(coordx, coordy)
 	var mesh = new THREE.Mesh( hexGeom, material );
 	
 	mesh.userData.e = originalmap[coordx][coordy].e;
-	mesh.userData.o = mymap[coordx][coordy].o;
+	mesh.userData.o = originalmap[coordx][coordy].o;
+	mesh.userData.p = originalmap[coordx][coordy].p;
+	mesh.userData.tiletype = tiletype;
 	mesh.userData.x = coordx;
 	mesh.userData.y = coordy;
 

@@ -40,12 +40,19 @@ app.use(express.static('WebContent'));
  }
  */
 
-app.get('/map', function (req, res) {
-	//var resstr = 'Hello World! express2\n' + web3.fromWei(web3.eth.getBalance('0xcf684dfb8304729355b58315e8019b1aa2ad1bac')) + '\n';
+app.get('/elevations', function (req, res) {
 	var elevations = etheria.getElevations();
-	var owners = etheria.getOwners();
-	var prices = etheria.getPrices();
 	res.json(elevations);
+});
+
+app.get('/prices', function (req, res) {
+	var prices = etheria.getPrices();
+	res.json(prices);
+});
+
+app.get('/owners', function (req, res) {
+	var owners = etheria.getOwners();
+	res.json(owners);
 });
 
 app.get('/', function (req, res) {
