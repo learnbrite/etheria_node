@@ -9,11 +9,13 @@ var blockvert = blockheight * 3/4;
 var blockwidth = Math.sqrt(3)/2 * blockheight;
 var blockextrude = blocksize;
 
+var NORMALIZE_ELEVATIONS = false;
+
 var camera, controls, scene, renderer;
 var mesh;
 
-var MAP_WIDTH = 33;
-var MAP_HEIGHT = 33;
+var MAP_WIDTH = 17;
+var MAP_HEIGHT = 17;
 
 function createArray(length) {
     var arr = new Array(length || 0),
@@ -27,7 +29,7 @@ function createArray(length) {
     return arr;
 }
 
-var originalmap = createArray(33,33);
+//var mymap = createArray(17,17);
 
 var EXTRUSION_FACTOR = size/75;
 
@@ -41,8 +43,8 @@ var TUNDRA_COLOR = 0xc9c9c9;
 var ICE_COLOR = 0x58ceff;
 var SAND_COLOR = 0xffe1b5;//d7cf77;
 
-var SEA_LEVEL = 115;
-var SAND_LEVEL = 130;
+var SEA_LEVEL = 130;
+var SAND_LEVEL = 140;
 var GRASSLAND_LEVEL = 180;
 var HILLS_LEVEL = 200;
 var TUNDRA_PERCENTAGE = 0.08;
@@ -61,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 function init() {
 
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
-	camera.position.z = 50;
+	camera.position.z = 40;
 
 	controls = new THREE.OrbitControls(camera);
 	controls.damping = 0.2;
@@ -92,7 +94,7 @@ function init() {
 	 We want the map in this format:
 	 {
 	 	"map":[
-	 		[tile0, ... tile32], [tile33...tile65]...
+	 		[tile0, ... tile32], [tile17...tile65]...
 	 	]
 	 }
 	 where each tile is 
@@ -111,111 +113,109 @@ function init() {
 	var x = 0;
 	var y = 0;
 	
-	var elevations;
-	$.ajax({ 
-		type: 'GET', 
-		url: 'http://localhost:1337/elevations', 
-        dataType: 'json',
-        timeout: 10000,
-        async: false, // same origin, so this is ok 
-        success: function (data, status) {
-        	elevations = data;
-        	y=0;
-        	while(y < elevations[0].length)
-        	{
-        		x=0;
-        		while(x < elevations.length)
-        		{
-        			mymap[x][y].e = elevations[x][y];
-        			originalmap[x][y] = {};
-        			originalmap[x][y].e = elevations[x][y];
-        			x++;
-        		}	
-        		y++;
-        	}	
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-        	console.log("elevations ajax error");
-        }
-	});
+//	var elevations;
+//	$.ajax({ 
+//		type: 'GET', 
+//		url: 'http://localhost:1337/elevations', 
+//        dataType: 'json',
+//        timeout: 10000,
+//        async: false, // same origin, so this is ok 
+//        success: function (data, status) {
+//        	elevations = data;
+//        	y=0;
+//        	while(y < elevations[0].length)
+//        	{
+//        		x=0;
+//        		while(x < elevations.length)
+//        		{
+//        			mymap[x][y].e = elevations[x][y];
+//        			mymap[x][y] = {};
+//        			mymap[x][y].e = elevations[x][y];
+//        			x++;
+//        		}	
+//        		y++;
+//        	}	
+//        },
+//        error: function (XMLHttpRequest, textStatus, errorThrown) {
+//        	console.log("elevations ajax error");
+//        }
+//	});
 	
-	var prices;
-	$.ajax({ 
-		type: 'GET', 
-		url: 'http://localhost:1337/prices', 
-        dataType: 'json',
-        timeout: 10000,
-        async: false, // same origin, so this is ok 
-        success: function (data, status) {
-        	prices = data;
-        	y=0;
-        	while(y < prices[0].length)
-        	{
-        		x=0;
-        		while(x < prices.length)
-        		{
-        			mymap[x][y].p = prices[x][y];
-        			originalmap[x][y].p = prices[x][y];
-        			x++;
-        		}	
-        		y++;
-        	}	
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-        	console.log("prices ajax error");
-        }
-	});
+//	var prices;
+//	$.ajax({ 
+//		type: 'GET', 
+//		url: 'http://localhost:1337/prices', 
+//        dataType: 'json',
+//        timeout: 10000,
+//        async: false, // same origin, so this is ok 
+//        success: function (data, status) {
+//        	prices = data;
+//        	y=0;
+//        	while(y < prices[0].length)
+//        	{
+//        		x=0;
+//        		while(x < prices.length)
+//        		{
+//        			mymap[x][y].p = prices[x][y];
+//        			mymap[x][y].p = prices[x][y];
+//        			x++;
+//        		}	
+//        		y++;
+//        	}	
+//        },
+//        error: function (XMLHttpRequest, textStatus, errorThrown) {
+//        	console.log("prices ajax error");
+//        }
+//	});
 	
-	var owners;
-	$.ajax({ 
-		type: 'GET', 
-		url: 'http://localhost:1337/owners', 
-        dataType: 'json',
-        timeout: 10000,
-        async: false, // same origin, so this is ok 
-        success: function (data, status) {
-        	owners = data;
-        	y=0;
-        	while(y < owners[0].length)
-        	{
-        		x=0;
-        		while(x < owners.length)
-        		{
-        			mymap[x][y].o = owners[x][y];
-        			originalmap[x][y].o = owners[x][y];
-        			x++;
-        		}	
-        		y++;
-        	}	
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-        	console.log("owners ajax error");
-        }
-	});
+//	var owners;
+//	$.ajax({ 
+//		type: 'GET', 
+//		url: 'http://localhost:1337/owners', 
+//        dataType: 'json',
+//        timeout: 10000,
+//        async: false, // same origin, so this is ok 
+//        success: function (data, status) {
+//        	owners = data;
+//        	y=0;
+//        	while(y < owners[0].length)
+//        	{
+//        		x=0;
+//        		while(x < owners.length)
+//        		{
+//        			mymap[x][y].o = owners[x][y];
+//        			mymap[x][y].o = owners[x][y];
+//        			x++;
+//        		}	
+//        		y++;
+//        	}	
+//        },
+//        error: function (XMLHttpRequest, textStatus, errorThrown) {
+//        	console.log("owners ajax error");
+//        }
+//	});
 	
-	//originalmap = mymap; // saves original elevations
-	
-//	var elevationarraystring = "[";
-//	y=0;
-//	while(y < MAP_WIDTH)
-//	{
-//		x=0;
-//		elevationarraystring = "[";
-//		while(x < MAP_HEIGHT)
-//		{
-//			if(x === MAP_WIDTH-1 && y === MAP_HEIGHT-1) // very last one. Omit comma.
-//				elevationarraystring = elevationarraystring + mymap[x][y].e;
-//			else if(y === MAP_HEIGHT-1)
-//				elevationarraystring = elevationarraystring + mymap[x][y].e + "],[";
-//			else
-//				elevationarraystring = elevationarraystring + mymap[x][y].e + ",";
-//			x++;
-//		}	
-//		elevationarraystring = elevationarraystring  + "]";
-//		console.log("etheria.initializeTiles.sendTransaction(" + y + ", " + elevationarraystring + ", {from:eth.coinbase,gas:3000000});");
-//		y++;
-//	}	
-	//console.log(elevationarraystring);
+	//mymap = mymap; // saves original elevations
+	var cum = "";
+	var elevationarraystring = "[";
+	y=0;
+	while(y < MAP_WIDTH)
+	{
+		x=0;
+		elevationarraystring = "[";
+		while(x < MAP_HEIGHT)
+		{
+			if(x === MAP_WIDTH-1) // very last one. Omit comma.
+				elevationarraystring = elevationarraystring + mymap[x][y].e;
+			else
+				elevationarraystring = elevationarraystring + mymap[x][y].e + ",";
+			x++;
+		}	
+		elevationarraystring = elevationarraystring  + "]";
+		cum = cum + elevationarraystring;
+		y++;
+	}	
+	console.log(cum);
 	
 	x = 0;
 	y = 0;
@@ -245,7 +245,8 @@ function init() {
 		y=0;
 		while(y < MAP_HEIGHT)
 		{
-			mymap[x][y].e = (mymap[x][y].e - min) * normalization_factor;
+			if(NORMALIZE_ELEVATIONS)
+				mymap[x][y].e = (mymap[x][y].e - min) * normalization_factor;
 			drawMapHex(x,y);
 			y++;
 		}	
@@ -364,19 +365,19 @@ function render() {
 	// calculate objects intersecting the picking ray
 	var intersects = raycaster.intersectObjects( scene.children, true);
 
-	var forsale = "no";
+//	var forsale = "no";
 	if(intersects.length > 0)
 	{
-		if(intersects[ 0 ].object.userData.p > 0)
-			forsale = "yes";
+//		if(intersects[ 0 ].object.userData.p > 0)
+//			forsale = "yes";
 		$("#hexinfobodydiv").html(
 				"x: " + intersects[ 0 ].object.userData.x + "<br>" +
 				"y: " + intersects[ 0 ].object.userData.y + "<br>" +
 				"type: " + intersects[ 0 ].object.userData.tiletype + "<br>" + 
 				"elevation: " + intersects[ 0 ].object.userData.e + "<br>" +
-				"owner: " + intersects[ 0 ].object.userData.o + "<br>" + 
-				"for sale? " + forsale + "<br>" + 
-				"price: " + intersects[ 0 ].object.userData.p
+				"owner: " + intersects[ 0 ].object.userData.o 
+//				"for sale? " + forsale + "<br>" + 
+//				"price: " + intersects[ 0 ].object.userData.p
 		);
 	}	
 	renderer.render(scene, camera);
@@ -474,14 +475,12 @@ function drawMapHex(coordx, coordy)
 	var ypoint = (coordy - (MAP_HEIGHT-1)/2) * tilevert;
 	
 	var extrudeamount = mymap[coordx][coordy].e;
+	
 	if(mymap[coordx][coordy].e < SEA_LEVEL)
-	{
 		extrudeamount = SEA_LEVEL * EXTRUSION_FACTOR;
-	}	
 	else
-	{
 		extrudeamount = mymap[coordx][coordy].e * EXTRUSION_FACTOR;
-	}	
+	
 	var extrudeSettings = {
 			amount			: extrudeamount,
 			steps			: 1,
@@ -530,9 +529,9 @@ function drawMapHex(coordx, coordy)
 
 	var mesh = new THREE.Mesh( hexGeom, material );
 	
-	mesh.userData.e = originalmap[coordx][coordy].e;
-	mesh.userData.o = originalmap[coordx][coordy].o;
-	mesh.userData.p = originalmap[coordx][coordy].p;
+	mesh.userData.e = mymap[coordx][coordy].e;
+	mesh.userData.o = mymap[coordx][coordy].o;
+	//mesh.userData.p = mymap[coordx][coordy].p;
 	mesh.userData.tiletype = tiletype;
 	mesh.userData.x = coordx;
 	mesh.userData.y = coordy;
