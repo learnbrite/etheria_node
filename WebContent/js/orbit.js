@@ -155,8 +155,8 @@ function init() {
 							map[col][row].blocks[b].x,
 							map[col][row].blocks[b].y,
 							map[col][row].blocks[b].z,
-							0x0000FF
-							//map[x][y].blocks[b].r * Math.pow(16,4) + map[x][y].blocks[b].g * Math.pow(16,2) + map[x][y].blocks[b].b
+							//0x0000FF
+							(map[col][row].blocks[b].r+128) * Math.pow(16,4) + (map[col][row].blocks[b].g+128) * Math.pow(16,2) + (map[col][row].blocks[b].b+128)
 							);
 				}
 			}	
