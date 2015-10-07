@@ -1,3 +1,28 @@
+/* 
+	 We want the map in this format:
+	 {
+	 	"map":[
+	 		[tile0, ... tile32], [tile17...tile65]...
+	 	]
+	 }
+	 where each tile is 
+	 {
+	 	"elevation": 134,
+	 	"owner": 0xabc123...,
+	 	"blocks": [
+	 		{ 
+	 			which: 0,
+	 			x: 0,
+	 			y: 1
+	 			z: 0,
+	 			r: 55,
+	 			g: 120,
+	 			b: 4
+	 		}...
+	 	]
+	 }
+	 */
+
 var container;
 var size = 1; // length of one tile segment
 var tileheight = size * 2;
@@ -61,45 +86,8 @@ function init() {
 	controls.addEventListener('change', render);
 
 	scene = new THREE.Scene();
-//	scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
-
 	// world
-
-	var j = 0;
-	var r = 0;
-	//var c = '#00FF00';
-
-	var existingPoints = [];
-	var newpoint = null;
-	var i = 0;
-	var ep = "";
 	
-	/* 
-	 We want the map in this format:
-	 {
-	 	"map":[
-	 		[tile0, ... tile32], [tile17...tile65]...
-	 	]
-	 }
-	 where each tile is 
-	 {
-	 	"elevation": 134,
-	 	"owner": 0xabc123...,
-	 	"blocks": [
-	 		{ 
-	 			which: 0,
-	 			x: 0,
-	 			y: 1
-	 			z: 0,
-	 			r: 55,
-	 			g: 120,
-	 			b: 4
-	 		}...
-	 	]
-	 }
-	 */
-	var x = 0;
-	var y = 0;
 	if(GENERATE_NEW_MAP)
 	{	
 		generateMap(MAP_WIDTH, MAP_HEIGHT);
@@ -128,6 +116,8 @@ function init() {
 	var normalization_factor;
 	if(NORMALIZE_ELEVATIONS)
 	{	
+		var x = 0;
+		var y = 0;
 		x = 0; y = 0;
 		while(x < MAP_WIDTH)
 		{
@@ -151,41 +141,28 @@ function init() {
 	{
 		for(var col = 0; col < MAP_WIDTH; col++)
 		{
+//			if(NORMALIZE_ELEVATIONS)
+//				map[x][y].elevation = (map[x][y].elevation - min) * map[x][y].normalization_factor;
 			drawMapHex(col,row);
 			
-			for(var b = 0; b < map[x][y].blocks.length; b++)
+			for(var b = 0; b < map[col][row].blocks.length; b++)
 			{
-				if(map[x][y].blocks[b].z >= 0) // z below 0 doesn't get drawn
+				if(map[col][row].blocks[b].z >= 0) // z below 0 doesn't get drawn
 				{	
-					console.log("drawing block " + JSON.stringify(map[x][y].blocks[b]));
-					drawBlock(x,y,map[x][y].blocks[b].which,
-							map[x][y].blocks[b].x,
-							map[x][y].blocks[b].y,
-							map[x][y].blocks[b].z,
+					console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(map[col][row].blocks[b]));
+					drawBlock(col,row,
+							map[col][row].blocks[b].which,
+							map[col][row].blocks[b].x,
+							map[col][row].blocks[b].y,
+							map[col][row].blocks[b].z,
 							0x0000FF
 							//map[x][y].blocks[b].r * Math.pow(16,4) + map[x][y].blocks[b].g * Math.pow(16,2) + map[x][y].blocks[b].b
 							);
-					drawBlock(8,8,2,0,0,0, 0xFF0000);
 				}
 			}	
 			
 		}
 	}
-	
-//	x=0; y=0;
-//	while(x < MAP_WIDTH)
-//	{
-//		y=0;
-//		while(y < MAP_HEIGHT)
-//		{
-//			if(NORMALIZE_ELEVATIONS)
-//				map[x][y].elevation = (map[x][y].elevation - min) * map[x][y].normalization_factor;
-//			drawMapHex(x,y);
-//			
-//			y++;
-//		}	
-//		x++;
-//	}	
 	
 	// -50 && y even == out of bounds
 	// -50 && y odd == OK
@@ -433,7 +410,7 @@ function drawMapHex(coordx, coordy)
 	return;
 }
 
-function drawBlock(which, coordx, coordy, x, y, z, color)
+function drawBlock(coordx, coordy, which, x, y, z, color)
 {
 	// This seems more complicated than it should be, but I don't think it is. 
 	// The issue is that a block of a certain configuration,
@@ -441,7 +418,7 @@ function drawBlock(which, coordx, coordy, x, y, z, color)
 	// e.g. a straight line to the NE, starting at 0,0 the other 3 blocks are 0,1, 1,2 and 1,3 (x,y+1, x+1,y+2 and x+1,y+3)
 	// but starting at 0,1 the other 3 blocks are 1,2, 1,3 and 1, 3 (x+1,y+1, x+1,y+2 and x+2,y+3)
 	// See? Kinda weird.
-	console.log("drawblock(" + which + ", "+ coordx + ", "+ coordy + ", "+ x + ", "+ y + ", "+ z + ", " + color);
+	console.log("drawblock(" + coordx + ", "+ coordy + ", " + which + "," + x + ", "+ y + ", "+ z + ", " + color);
 	var offset = 0;
 	if(y % 2 !== 0) // if the starting y is odd
 		offset = 1;
@@ -604,6 +581,7 @@ function drawBlock(which, coordx, coordy, x, y, z, color)
 
 function drawBlockHex(coordx, coordy, x, y, z, color)
 {
+	console.log("drawBlockHex " + coordx + "," + coordy);
 	var xpoint = (coordx - (MAP_WIDTH-1)/2) * tilewidth;
 	if(coordy%2 !== 0)
 		xpoint = xpoint + tilewidth/2;
@@ -653,8 +631,7 @@ function drawBlockHex(coordx, coordy, x, y, z, color)
 	{
 		tileextrusion = map[coordx][coordy].elevation * EXTRUSION_FACTOR;
 	}	
-	if(coordx === 9 && coordy ===9)
-		console.log("LOWER 9,9 extrudeamount=" + tileextrusion  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
+	console.log("LOWER " + coordx + "," + coordy + " extrudeamount=" + tileextrusion  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
 	mesh.position.set( 0, 0, tileextrusion + z * blockextrude);
 	scene.add( mesh );
 }
