@@ -76,6 +76,44 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	animate();
 });
 
+//Returns a random integer between min (included) and max (included)
+//Using Math.round() will give you a non-uniform distribution!
+function getRandomIntInclusive(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function blockHexCoordsValid(x, y)
+{
+	if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
+	{
+		if(y % 2 !== 0 ) // odd
+		{
+			if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+				return true;
+		}	
+		else	// even
+		{
+			if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+				return true;
+		}
+	}
+	else
+	{	
+		if(y % 2 === 0 ) // even
+		{
+			if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+				return true;
+		}	
+		else	// odd
+		{
+			if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+				return true;
+		}
+	}
+	return false;
+}
+
+
 function init() {
 
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
@@ -100,38 +138,57 @@ function init() {
 		drawBlock(8,8,0,0,-66,0, 0xFF0000); // 8 high column
 		drawBlock(8,8,0,-50,-33,0, 0xFF0000); // 8 high column
 		
-		// where y is even
-		drawBlock(8,8,0,-48,34,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-45,36,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-42,38,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-39,40,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-36,42,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-33,44,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-30,46,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-27,48,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-24,50,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-21,52,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-18,54,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-15,56,0, 0xFF0000); // 8 high column
+		var c = 0;
+		var r = 0;
+		var created = 0;
+		while(created < 300)
+		{
+			c = getRandomIntInclusive(-48,47);
+			r = getRandomIntInclusive(33,66);
+			if(getRandomIntInclusive(0,1) % 2 === 0)
+				r = r * -1;
+			while(!blockHexCoordsValid(c,r))
+			{
+				c = getRandomIntInclusive(-48,47);
+				r = getRandomIntInclusive(33,66);
+				if(getRandomIntInclusive(0,1) % 2 === 0)
+					r = r * -1;
+			}	
+			drawBlock(8,8,0,c,r,0, getRandomIntInclusive(0,16777214));
+			created++;
+		}	
 		
-		
-		// where y is odd
-		drawBlock(8,8,0,-47,35,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-44,37,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-41,39,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-38,41,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-35,43,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-32,45,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-29,47,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-26,49,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-23,51,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-20,53,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-17,55,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-14,57,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-11,59,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-8,61,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-5,63,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-2,65,0, 0xFF0000); // 8 high column
+		// where y is even, diags valid if (Math.abs(x)/3 + Math.abs(y)/2) <= 33)
+//		drawBlock(8,8,0,-48,34,0, 0xFF0000); // 8 high column = 82, 16 + 17 = 33 
+//		drawBlock(8,8,0,-45,36,0, 0xFF0000); // 8 high column = 81, 15 + 18 = 33
+//		drawBlock(8,8,0,-42,38,0, 0xFF0000); // 8 high column = 80, 14 + 19 = 33
+//		drawBlock(8,8,0,-39,40,0, 0xFF0000); // 8 high column = 79
+//		drawBlock(8,8,0,-36,42,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-33,44,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-30,46,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-27,48,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-24,50,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-21,52,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-18,54,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-15,56,0, 0xFF0000); // 8 high column
+//		
+//		// where y is odd (Math.abs(x+1)/3 + Math.abs(y-1)/2) <= 33)
+//		drawBlock(8,8,0,-47,35,0, 0xFF0000); // 8 high column = 82
+//		drawBlock(8,8,0,-44,37,0, 0xFF0000); // 8 high column = 81
+//		drawBlock(8,8,0,-41,39,0, 0xFF0000); // 8 high column = 80
+//		drawBlock(8,8,0,-38,41,0, 0xFF0000); // 8 high column = 79
+//		drawBlock(8,8,0,-35,43,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-32,45,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-29,47,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-26,49,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-23,51,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-20,53,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-17,55,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-14,57,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-11,59,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-8,61,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-5,63,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-2,65,0, 0xFF0000); // 8 high column
 		
 //		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
 //		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
