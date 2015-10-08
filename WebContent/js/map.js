@@ -4,33 +4,33 @@ var CORNER_VARIANCE = 0.25;
 function generateMap(width, height)
 {
 	// ex: CORNER_VARIANCE of +-25% ->  .25 * 2 = .5  --> minus .25 is +- .25. Randomize it by 0-1, then multiply it by 128, then subtract from 128 
-	mymap[0][0] = {};
-	mymap[0][0].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
-	mymap[0][0].owner = guid();
+	map[0][0] = {};
+	map[0][0].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
+	map[0][0].owner = guid();
 	
-	mymap[0][MAP_HEIGHT-1] = {};
-	mymap[0][MAP_HEIGHT-1].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
-	mymap[0][MAP_HEIGHT-1].owner = guid();
+	map[0][MAP_HEIGHT-1] = {};
+	map[0][MAP_HEIGHT-1].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
+	map[0][MAP_HEIGHT-1].owner = guid();
 	
-	mymap[MAP_WIDTH-1][0] = {};
-	mymap[MAP_WIDTH-1][0].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
-	mymap[MAP_WIDTH-1][0].owner = guid();
+	map[MAP_WIDTH-1][0] = {};
+	map[MAP_WIDTH-1][0].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
+	map[MAP_WIDTH-1][0].owner = guid();
 	
-	mymap[MAP_WIDTH-1][MAP_HEIGHT-1] = {};
-	mymap[MAP_WIDTH-1][MAP_HEIGHT-1].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
-	mymap[MAP_WIDTH-1][MAP_HEIGHT-1].owner = guid();
+	map[MAP_WIDTH-1][MAP_HEIGHT-1] = {};
+	map[MAP_WIDTH-1][MAP_HEIGHT-1].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
+	map[MAP_WIDTH-1][MAP_HEIGHT-1].owner = guid();
 	
 	generateMidpoints(0, 0, MAP_WIDTH-1, MAP_HEIGHT-1, 1);
-	//console.log(JSON.stringify(mymap));
+	//console.log(JSON.stringify(map));
 }
 
 function generateMidpoints(sw_x, sw_y, ne_x, ne_y, depth)
 {
 //	console.log("number of total levels=" + LEVELS + " currentdepth=" + depth);
-	var ne_elevation = mymap[ne_x][ne_y].elevation;
-	var se_elevation = mymap[ne_x][sw_y].elevation;
-	var sw_elevation = mymap[sw_x][sw_y].elevation;
-	var nw_elevation = mymap[sw_x][ne_y].elevation;
+	var ne_elevation = map[ne_x][ne_y].elevation;
+	var se_elevation = map[ne_x][sw_y].elevation;
+	var sw_elevation = map[sw_x][sw_y].elevation;
+	var nw_elevation = map[sw_x][ne_y].elevation;
 //	console.log('generateMidpoint received square ' + sw_x + ', ' + sw_y + ' ' + ne_x + ', ' + ne_y);
 //	console.log('with elevations ne=' + ne_elevation);
 //	console.log('with elevations se=' + se_elevation);
@@ -41,23 +41,23 @@ function generateMidpoints(sw_x, sw_y, ne_x, ne_y, depth)
 //	console.log('*** new elevation=' + newelevation);
 	var centerpointx = (ne_x - sw_x)/2 + sw_x;
 	var centerpointy = (ne_y - sw_y)/2 + sw_y;
-	mymap[centerpointx][centerpointy] = {};
+	map[centerpointx][centerpointy] = {};
 	
 	var northx = centerpointx;
 	var northy = ne_y;
-	mymap[northx][northy] = {};
+	map[northx][northy] = {};
 	
 	var eastx = ne_x;
 	var easty = centerpointy;
-	mymap[eastx][easty] = {};
+	map[eastx][easty] = {};
 	
 	var southx = centerpointx;
 	var southy = sw_y;
-	mymap[southx][southy] = {};
+	map[southx][southy] = {};
 	
 	var westx = sw_x;
 	var westy = centerpointy;
-	mymap[westx][westy] = {};
+	map[westx][westy] = {};
 	
 	var color = '#ffffff';
 	
@@ -68,7 +68,7 @@ function generateMidpoints(sw_x, sw_y, ne_x, ne_y, depth)
 	if(depth === 1)
 	{
 		newelevation = 190;
-		mymap[centerpointx][centerpointy].elevation = newelevation;
+		map[centerpointx][centerpointy].elevation = newelevation;
 	}	
 	else
 	{	
@@ -77,27 +77,27 @@ function generateMidpoints(sw_x, sw_y, ne_x, ne_y, depth)
 		if(Math.random() >= .5)
 			perturbation = perturbation * -1; // half the time, flip it negative so we go below the average
 //		console.log('*** perturbation=' + perturbation);
-		mymap[centerpointx][centerpointy].elevation = Math.floor(newelevation - newelevation * perturbation); 
-		if(mymap[centerpointx][centerpointy].elevation > 255)
-			mymap[centerpointx][centerpointy].elevation = 255;
-		mymap[centerpointx][centerpointy].owner = guid();
+		map[centerpointx][centerpointy].elevation = Math.floor(newelevation - newelevation * perturbation); 
+		if(map[centerpointx][centerpointy].elevation > 255)
+			map[centerpointx][centerpointy].elevation = 255;
+		map[centerpointx][centerpointy].owner = guid();
 	}
 	//drawHex2(centerpointx,centerpointy);
 	
-	mymap[northx][northy].elevation = Math.floor((nw_elevation + ne_elevation) / 2); 
-	mymap[northx][northy].owner = guid();
+	map[northx][northy].elevation = Math.floor((nw_elevation + ne_elevation) / 2); 
+	map[northx][northy].owner = guid();
 	//drawHex2(northx,northy);
 	
-	mymap[eastx][easty].elevation = Math.floor((ne_elevation + se_elevation) / 2); 
-	mymap[eastx][easty].owner = guid();
+	map[eastx][easty].elevation = Math.floor((ne_elevation + se_elevation) / 2); 
+	map[eastx][easty].owner = guid();
 	//drawHex2(eastx,easty);
 	
-	mymap[southx][southy].elevation = Math.floor((se_elevation + sw_elevation) / 2); 
-	mymap[southx][southy].owner = guid();
+	map[southx][southy].elevation = Math.floor((se_elevation + sw_elevation) / 2); 
+	map[southx][southy].owner = guid();
 	//drawHex2(southx,southy);
 	
-	mymap[westx][westy].elevation = Math.floor((sw_elevation + nw_elevation) / 2); 
-	mymap[westx][westy].owner = guid();
+	map[westx][westy].elevation = Math.floor((sw_elevation + nw_elevation) / 2); 
+	map[westx][westy].owner = guid();
 	//drawHex2(westx,westy);
 	
 	//alert('just drew 5 points');
