@@ -1,3 +1,50 @@
+function blockHexCoordsValid(x, y)
+{
+	if(-33 <= y && y <= 33)
+	{
+		if(y % 2 !== 0 ) // odd
+		{
+			if(-50 <= x && x <= 49)
+				return true;
+		}
+		else // even
+		{
+			if(-49 <= x && x <= 49)
+				return true;
+		}	
+	}	
+	else
+	{	
+		if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
+		{
+			if(y % 2 !== 0 ) // odd
+			{
+				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+					return true;
+			}	
+			else	// even
+			{
+				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+					return true;
+			}
+		}
+		else
+		{	
+			if(y % 2 === 0 ) // even
+			{
+				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+					return true;
+			}	
+			else	// odd
+			{
+				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
 function drawBlock(coordx, coordy, which, x, y, z, color)
 {
 	// This seems more complicated than it should be, but I don't think it is. 
@@ -15,11 +62,13 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	{
 		// -50 && y even == out of bounds
 		// -50 && y odd == OK
-//		if(offset === 1) // starting y was odd
-//		{
-//			if(Math.abs(x) <= 50) // ok
-//		}	
-		drawBlockHex(coordx, coordy, x, y, z, color,8);
+		if(blockHexCoordsValid(x,y))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, color,8);
+			return true;
+		}
+		else
+			return false;
 //		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .98),1);
 //		drawBlockHex(coordx, coordy, x, y, z+2, darkenColor(color, .96),1);
 //		drawBlockHex(coordx, coordy, x, y, z+3, darkenColor(color, .94),1);
@@ -30,63 +79,104 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}	
 	else if(which === 1) // diagonal beam ne/sw
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,1);
-		drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),1);
-		drawBlockHex(coordx, coordy, x+1, y+2, z, darkenColor(color, .96),1);
-		drawBlockHex(coordx, coordy, x+1+offset, y+3, z, darkenColor(color, .94),1);
-		drawBlockHex(coordx, coordy, x+2, y+4, z, darkenColor(color, .92),1);
-		drawBlockHex(coordx, coordy, x+2+offset, y+5, z, darkenColor(color, .90),1);
-		drawBlockHex(coordx, coordy, x+3, y+6, z, darkenColor(color, .88),1);
-		drawBlockHex(coordx, coordy, x+3+offset, y+7, z, darkenColor(color, .86),1);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+offset, y+1) && blockHexCoordsValid(x+1, y+2) && blockHexCoordsValid(x+1+offset, y+3) &&
+				blockHexCoordsValid(x+2, y+4) && blockHexCoordsValid(x+2+offset, y+5) && blockHexCoordsValid(x+3, y+6) && blockHexCoordsValid(x+3+offset, y+7))
+		{	
+			drawBlockHex(coordx, coordy, x, y, z, color,1);
+			drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),1);
+			drawBlockHex(coordx, coordy, x+1, y+2, z, darkenColor(color, .96),1);
+			drawBlockHex(coordx, coordy, x+1+offset, y+3, z, darkenColor(color, .94),1);
+			drawBlockHex(coordx, coordy, x+2, y+4, z, darkenColor(color, .92),1);
+			drawBlockHex(coordx, coordy, x+2+offset, y+5, z, darkenColor(color, .90),1);
+			drawBlockHex(coordx, coordy, x+3, y+6, z, darkenColor(color, .88),1);
+			drawBlockHex(coordx, coordy, x+3+offset, y+7, z, darkenColor(color, .86),1);
+			return true;
+		}
+		else
+			return false;
 	}
 	else if(which === 2) // horizontal beam
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,1);
-		drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),1);
-		drawBlockHex(coordx, coordy, x+2, y, z, darkenColor(color, .96),1);
-		drawBlockHex(coordx, coordy, x+3, y, z, darkenColor(color, .94),1);
-		drawBlockHex(coordx, coordy, x+4, y, z, darkenColor(color, .92),1);
-		drawBlockHex(coordx, coordy, x+5, y, z, darkenColor(color, .90),1);
-		drawBlockHex(coordx, coordy, x+6, y, z, darkenColor(color, .88),1);
-		drawBlockHex(coordx, coordy, x+7, y, z, darkenColor(color, .86),1);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+2, y) && blockHexCoordsValid(x+3, y) &&
+				blockHexCoordsValid(x+4, y) && blockHexCoordsValid(x+5, y) && blockHexCoordsValid(x+6, y) && blockHexCoordsValid(x+7, y))
+		{	
+			drawBlockHex(coordx, coordy, x, y, z, color,1);
+			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),1);
+			drawBlockHex(coordx, coordy, x+2, y, z, darkenColor(color, .96),1);
+			drawBlockHex(coordx, coordy, x+3, y, z, darkenColor(color, .94),1);
+			drawBlockHex(coordx, coordy, x+4, y, z, darkenColor(color, .92),1);
+			drawBlockHex(coordx, coordy, x+5, y, z, darkenColor(color, .90),1);
+			drawBlockHex(coordx, coordy, x+6, y, z, darkenColor(color, .88),1);
+			drawBlockHex(coordx, coordy, x+7, y, z, darkenColor(color, .86),1);
+			return true;
+		}
+		else
+			return false;
 	}
 	else if(which === 3) // diagonal beam nw/se
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,1);
-		drawBlockHex(coordx, coordy, x-1+offset, y+1, z, darkenColor(color, .98),1);
-		drawBlockHex(coordx, coordy, x-1, y+2, z, darkenColor(color, .96),1);
-		drawBlockHex(coordx, coordy, x-2+offset, y+3, z, darkenColor(color, .94),1);
-		drawBlockHex(coordx, coordy, x-2, y+4, z, darkenColor(color, .92),1);
-		drawBlockHex(coordx, coordy, x-3+offset, y+5, z, darkenColor(color, .90),1);
-		drawBlockHex(coordx, coordy, x-3, y+6, z, darkenColor(color, .88),1);
-		drawBlockHex(coordx, coordy, x-4+offset, y+7, z, darkenColor(color, .86),1);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1+offset, y+1) && blockHexCoordsValid(x-1, y+2) && blockHexCoordsValid(x-2+offset, y+3) &&
+				blockHexCoordsValid(x-2, y+4) && blockHexCoordsValid(x-3+offset, y+5) && blockHexCoordsValid(x-3, y+6) && blockHexCoordsValid(x-4+offset, y+7))
+		{	
+			drawBlockHex(coordx, coordy, x, y, z, color,1);
+			drawBlockHex(coordx, coordy, x-1+offset, y+1, z, darkenColor(color, .98),1);
+			drawBlockHex(coordx, coordy, x-1, y+2, z, darkenColor(color, .96),1);
+			drawBlockHex(coordx, coordy, x-2+offset, y+3, z, darkenColor(color, .94),1);
+			drawBlockHex(coordx, coordy, x-2, y+4, z, darkenColor(color, .92),1);
+			drawBlockHex(coordx, coordy, x-3+offset, y+5, z, darkenColor(color, .90),1);
+			drawBlockHex(coordx, coordy, x-3, y+6, z, darkenColor(color, .88),1);
+			drawBlockHex(coordx, coordy, x-4+offset, y+7, z, darkenColor(color, .86),1);
+			return true;
+		}
+		else
+			return false;
 	}
 	else if(which === 4) // diagonal snake sw/ne
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,1);
-		drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),1);
-		drawBlockHex(coordx, coordy, x+1+offset, y+1, z, darkenColor(color, .96),1);
-		drawBlockHex(coordx, coordy, x+2+offset, y+1, z, darkenColor(color, .94),1);
-		drawBlockHex(coordx, coordy, x+3, y+2, z, darkenColor(color, .92),1);
-		drawBlockHex(coordx, coordy, x+4, y+2, z, darkenColor(color, .90),1);
-		drawBlockHex(coordx, coordy, x+4+offset, y+3, z, darkenColor(color, .88),1);
-		drawBlockHex(coordx, coordy, x+5+offset, y+3, z, darkenColor(color, .86),1);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+1+offset, y+1) && blockHexCoordsValid(x+2+offset, y+1) &&
+				blockHexCoordsValid(x+3, y+2) && blockHexCoordsValid(x+4, y+2) && blockHexCoordsValid(x+4+offset, y+3) && blockHexCoordsValid(x+5+offset, y+3))
+		{	
+			drawBlockHex(coordx, coordy, x, y, z, color,1);
+			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),1);
+			drawBlockHex(coordx, coordy, x+1+offset, y+1, z, darkenColor(color, .96),1);
+			drawBlockHex(coordx, coordy, x+2+offset, y+1, z, darkenColor(color, .94),1);
+			drawBlockHex(coordx, coordy, x+3, y+2, z, darkenColor(color, .92),1);
+			drawBlockHex(coordx, coordy, x+4, y+2, z, darkenColor(color, .90),1);
+			drawBlockHex(coordx, coordy, x+4+offset, y+3, z, darkenColor(color, .88),1);
+			drawBlockHex(coordx, coordy, x+5+offset, y+3, z, darkenColor(color, .86),1);
+			return true;
+		}
+		else
+			return false;
 	}
 	else if(which === 5) // diagonal snake se/nw
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,1);
-		drawBlockHex(coordx, coordy, x-1, y, z, darkenColor(color, .98),1);
-		drawBlockHex(coordx, coordy, x-2+offset, y+1, z, darkenColor(color, .96),1);
-		drawBlockHex(coordx, coordy, x-3+offset, y+1, z, darkenColor(color, .94),1);
-		drawBlockHex(coordx, coordy, x-3, y+2, z, darkenColor(color, .92),1);
-		drawBlockHex(coordx, coordy, x-4, y+2, z, darkenColor(color, .90),1);
-		drawBlockHex(coordx, coordy, x-5+offset, y+3, z, darkenColor(color, .88),1);
-		drawBlockHex(coordx, coordy, x-6+offset, y+3, z, darkenColor(color, .86),1);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1, y) && blockHexCoordsValid(x-2+offset, y+1) && blockHexCoordsValid(x-3+offset, y+1) &&
+				blockHexCoordsValid(x-3, y+2) && blockHexCoordsValid(x-4, y+2) && blockHexCoordsValid(x-5+offset, y+3) && blockHexCoordsValid(x-6+offset, y+3))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, color,1);
+			drawBlockHex(coordx, coordy, x-1, y, z, darkenColor(color, .98),1);
+			drawBlockHex(coordx, coordy, x-2+offset, y+1, z, darkenColor(color, .96),1);
+			drawBlockHex(coordx, coordy, x-3+offset, y+1, z, darkenColor(color, .94),1);
+			drawBlockHex(coordx, coordy, x-3, y+2, z, darkenColor(color, .92),1);
+			drawBlockHex(coordx, coordy, x-4, y+2, z, darkenColor(color, .90),1);
+			drawBlockHex(coordx, coordy, x-5+offset, y+3, z, darkenColor(color, .88),1);
+			drawBlockHex(coordx, coordy, x-6+offset, y+3, z, darkenColor(color, .86),1);
+			return true;
+		}
+		else
+			return false;
 	}
 	else if(which === 6) // quadruple-decker double-tower horizontal
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,4);
-		drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),4);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, color,4);
+			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),4);
+			return true;
+		}
+		else
+			return false;
 //		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .96),1);
 //		drawBlockHex(coordx, coordy, x+1, y, z+1, darkenColor(color, .94),1);
 //		drawBlockHex(coordx, coordy, x, y, z+2, darkenColor(color, .92),1);
@@ -96,8 +186,14 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 	else if(which === 7) // quadruple-decker double-tower diagonal sw/ne
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,4);
-		drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),4);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+offset, y+1))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, color,4);
+			drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),4);
+			return true;
+		}
+		else
+			return false;
 //		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .96),1);
 //		drawBlockHex(coordx, coordy, x+offset, y+1, z+1, darkenColor(color, .94),1);
 //		drawBlockHex(coordx, coordy, x, y, z+2, darkenColor(color, .92),1);
@@ -107,8 +203,14 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 	else if(which === 8) // quadruple-decker double-tower diagonal se/nw
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,4);
-		drawBlockHex(coordx, coordy, x-1+offset, y+1, z, darkenColor(color, .98),4);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1+offset, y+1))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, color,4);
+			drawBlockHex(coordx, coordy, x-1+offset, y+1, z, darkenColor(color, .98),4);
+			return true;
+		}
+		else
+			return false;
 //		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .96),1);
 //		drawBlockHex(coordx, coordy, x-1+offset, y+1, z+1, darkenColor(color, .94),1);
 //		drawBlockHex(coordx, coordy, x, y, z+2, darkenColor(color, .92),1);
@@ -118,10 +220,16 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 	else if(which === 9) // double-decker diagonal beam ne/sw
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,2);
-		drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),2);
-		drawBlockHex(coordx, coordy, x+1, y+2, z, darkenColor(color, .96),2);
-		drawBlockHex(coordx, coordy, x+1+offset, y+3, z, darkenColor(color, .94),2);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+offset, y+1) && blockHexCoordsValid(x+1,y+2) && blockHexCoordsValid(x+1+offset, y+3))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, color,2);
+			drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),2);
+			drawBlockHex(coordx, coordy, x+1, y+2, z, darkenColor(color, .96),2);
+			drawBlockHex(coordx, coordy, x+1+offset, y+3, z, darkenColor(color, .94),2);
+			return true;
+		}
+		else
+			return false;
 //		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
 //		drawBlockHex(coordx, coordy, x+offset, y+1, z+1, darkenColor(color, .90),1);
 //		drawBlockHex(coordx, coordy, x+1, y+2, z+1, darkenColor(color, .88),1);
@@ -129,10 +237,16 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 	else if(which === 10) // double-decker horizontal beam
 	{
-		drawBlockHex(coordx, coordy, x, y, z, color,2);
-		drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),2);
-		drawBlockHex(coordx, coordy, x+2, y, z, darkenColor(color, .96),2);
-		drawBlockHex(coordx, coordy, x+3, y, z, darkenColor(color, .94),2);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+2,y) && blockHexCoordsValid(x+3, y))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, color,2);
+			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),2);
+			drawBlockHex(coordx, coordy, x+2, y, z, darkenColor(color, .96),2);
+			drawBlockHex(coordx, coordy, x+3, y, z, darkenColor(color, .94),2);
+			return true;
+		}
+		else
+			return false;
 //		drawBlockHex(coordx, coordy, x+0, y, z+1, darkenColor(color, .92),1);
 //		drawBlockHex(coordx, coordy, x+1, y, z+1, darkenColor(color, .90),1);
 //		drawBlockHex(coordx, coordy, x+2, y, z+1, darkenColor(color, .88),1);
@@ -140,10 +254,16 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 	else if(which === 11) // double-decker diagonal beam nw/se
 	{
-		drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),2);
-		drawBlockHex(coordx, coordy, x-1+offset, y+1, z, darkenColor(color, .98),2);
-		drawBlockHex(coordx, coordy, x-1, y+2, z, darkenColor(color, .96),2);
-		drawBlockHex(coordx, coordy, x-2+offset, y+3, z, darkenColor(color, .94),2);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1+offset, y+1) && blockHexCoordsValid(x-1,y+2) && blockHexCoordsValid(x-2+offset, y+3))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),2);
+			drawBlockHex(coordx, coordy, x-1+offset, y+1, z, darkenColor(color, .98),2);
+			drawBlockHex(coordx, coordy, x-1, y+2, z, darkenColor(color, .96),2);
+			drawBlockHex(coordx, coordy, x-2+offset, y+3, z, darkenColor(color, .94),2);
+			return true;
+		}
+		else
+			return false;
 //		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
 //		drawBlockHex(coordx, coordy, x-1+offset, y+1, z+1, darkenColor(color, .90),1);
 //		drawBlockHex(coordx, coordy, x-1, y+2, z+1, darkenColor(color, .88),1);
@@ -151,27 +271,41 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 	else if(which === 12) // diagonal snake sw/ne
 	{
-		drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),1);
-		drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),1);
-		drawBlockHex(coordx, coordy, x+1+offset, y+1, z, darkenColor(color, .96),1);
-		drawBlockHex(coordx, coordy, x+2+offset, y+1, z, darkenColor(color, .94),1);
-		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
-		drawBlockHex(coordx, coordy, x+1, y, z+1, darkenColor(color, .90),1);
-		drawBlockHex(coordx, coordy, x+1+offset, y+1, z+1, darkenColor(color, .88),1);
-		drawBlockHex(coordx, coordy, x+2+offset, y+1, z+1, darkenColor(color, .86),1);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+1+offset, y+1) && blockHexCoordsValid(x+2+offset, y+1))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),2);
+			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),2);
+			drawBlockHex(coordx, coordy, x+1+offset, y+1, z, darkenColor(color, .96),2);
+			drawBlockHex(coordx, coordy, x+2+offset, y+1, z, darkenColor(color, .94),2);
+//			drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
+//			drawBlockHex(coordx, coordy, x+1, y, z+1, darkenColor(color, .90),1);
+//			drawBlockHex(coordx, coordy, x+1+offset, y+1, z+1, darkenColor(color, .88),1);
+//			drawBlockHex(coordx, coordy, x+2+offset, y+1, z+1, darkenColor(color, .86),1);
+			return true;
+		}
+		else
+			return false;
 	}
 	else if(which === 13) // diagonal snake se/nw
 	{
-		drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),1);
-		drawBlockHex(coordx, coordy, x-1, y, z, darkenColor(color, .98),1);
-		drawBlockHex(coordx, coordy, x-2+offset, y+1, z, darkenColor(color, .96),1);
-		drawBlockHex(coordx, coordy, x-3+offset, y+1, z, darkenColor(color, .94),1);
-		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
-		drawBlockHex(coordx, coordy, x-1, y, z+1, darkenColor(color, .90),1);
-		drawBlockHex(coordx, coordy, x-2+offset, y+1, z+1, darkenColor(color, .88),1);
-		drawBlockHex(coordx, coordy, x-3+offset, y+1, z+1, darkenColor(color, .86),1);
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1, y) && blockHexCoordsValid(x-2+offset, y+1) && blockHexCoordsValid(x-3+offset, y+1))
+		{
+			drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),2);
+			drawBlockHex(coordx, coordy, x-1, y, z, darkenColor(color, .98),2);
+			drawBlockHex(coordx, coordy, x-2+offset, y+1, z, darkenColor(color, .96),2);
+			drawBlockHex(coordx, coordy, x-3+offset, y+1, z, darkenColor(color, .94),2);
+//			drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
+//			drawBlockHex(coordx, coordy, x-1, y, z+1, darkenColor(color, .90),1);
+//			drawBlockHex(coordx, coordy, x-2+offset, y+1, z+1, darkenColor(color, .88),1);
+//			drawBlockHex(coordx, coordy, x-3+offset, y+1, z+1, darkenColor(color, .86),1);
+			return true;
+		}
+		else
+			return false;
 	}
 }
+
+var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
 
 function drawBlockHex(coordx, coordy, x, y, z, color, extrusion_multiple)
 {
@@ -197,27 +331,28 @@ function drawBlockHex(coordx, coordy, x, y, z, color, extrusion_multiple)
 			bevelEnabled	: false,
 		};
 	
-	var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
+	
 	var	material = new THREE.MeshPhongMaterial( { color: color, map: texture1 } );
 	texture1.wrapS = texture1.wrapT = THREE.RepeatWrapping;
 	texture1.repeat.set( 1.3,1.3 );
 	var hexShape = new THREE.Shape();
 	var centerPoint = new Point(xpoint, ypoint);
+	var points = [];
+	points.push(hex_corner(centerPoint, blocksize, 0));
+	points.push(hex_corner(centerPoint, blocksize, 1));
+	points.push(hex_corner(centerPoint, blocksize, 2));
+	points.push(hex_corner(centerPoint, blocksize, 3));
+	points.push(hex_corner(centerPoint, blocksize, 4));
+	points.push(hex_corner(centerPoint, blocksize, 5));
 	
-	var point0 = hex_corner(centerPoint, blocksize, 0);
-	var point1 = hex_corner(centerPoint, blocksize, 1);
-	var point2 = hex_corner(centerPoint, blocksize, 2);
-	var point3 = hex_corner(centerPoint, blocksize, 3);
-	var point4 = hex_corner(centerPoint, blocksize, 4);
-	var point5 = hex_corner(centerPoint, blocksize, 5);
-	
-	hexShape.moveTo( point0.x , point0.y );
-	hexShape.lineTo( point1.x, point1.y );
-	hexShape.lineTo( point2.x, point2.y );
-	hexShape.lineTo( point3.x, point3.y );
-	hexShape.lineTo( point4.x, point4.y );
-	hexShape.lineTo( point5.x, point5.y );
-	hexShape.lineTo( point0.x, point0.y );
+	for(var p = 0; p < points.length; p++)
+	{
+		if(p === 0)
+			hexShape.moveTo( points[p].x , points[p].y );
+		else
+			hexShape.lineTo( points[p].x, points[p].y );
+	}
+	hexShape.moveTo( points[0].x , points[0].y );
 	
 	var hexGeom = new THREE.ExtrudeGeometry( hexShape, extrudeSettings );
 

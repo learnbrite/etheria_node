@@ -82,52 +82,6 @@ function getRandomIntInclusive(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function blockHexCoordsValid(x, y)
-{
-	if(-33 <= y && y <= 33)
-	{
-		if(y % 2 !== 0 ) // odd
-		{
-			if(-50 <= x && x <= 49)
-				return true;
-		}
-		else // even
-		{
-			if(-49 <= x && x <= 49)
-				return true;
-		}	
-	}	
-	else
-	{	
-		if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
-		{
-			if(y % 2 !== 0 ) // odd
-			{
-				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
-					return true;
-			}	
-			else	// even
-			{
-				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
-					return true;
-			}
-		}
-		else
-		{	
-			if(y % 2 === 0 ) // even
-			{
-				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
-					return true;
-			}	
-			else	// odd
-			{
-				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
-					return true;
-			}
-		}
-	}
-	return false;
-}
 
 
 function init() {
@@ -146,30 +100,32 @@ function init() {
 	{	
 		generateMap(MAP_WIDTH, MAP_HEIGHT);
 		
-		drawBlock(8,8,0,-50,33,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,0,66,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,49,33,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,49,-33,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,0,-66,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-50,-33,0, 0xFF0000); // 8 high column
+//		the 6 corners
+//		drawBlock(8,8,0,-50,33,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,0,66,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,49,33,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,49,-33,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,0,-66,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-50,-33,0, 0xFF0000); // 8 high column
 		
 		var c = 0;
 		var r = 0;
+		var t = 0;
 		var created = 0;
-		while(created < 300)
+		var drewblock = false;
+		while(created < 40)
 		{
-//			c = getRandomIntInclusive(-48,47);
-//			r = getRandomIntInclusive(-66,66);
+			t = getRandomIntInclusive(0,13);
 			c = getRandomIntInclusive(-90,90);
 			r = getRandomIntInclusive(-90,90);
-			while(!blockHexCoordsValid(c,r) || (Math.abs(c) < 48 && Math.abs(r) < 32))
+			drewblock = false;
+			while(drewblock == false)
 			{
-//				c = getRandomIntInclusive(-48,47);
-//				r = getRandomIntInclusive(-66,66);
+				t = getRandomIntInclusive(0,13);
 				c = getRandomIntInclusive(-90,90);
 				r = getRandomIntInclusive(-90,90);
+				drewblock = drawBlock(8,8,t,c,r,0, getRandomIntInclusive(0,16777214));
 			}	
-			drawBlock(8,8,0,c,r,0, getRandomIntInclusive(0,16777214));
 			created++;
 		}	
 		
@@ -417,6 +373,15 @@ function animate() {
 
 }
 
+var tundratexture = THREE.ImageUtils.loadTexture( "images/tundra.jpg" );
+var icetexture = THREE.ImageUtils.loadTexture( "images/ice.jpg" );
+var watertexture = THREE.ImageUtils.loadTexture( "images/water.jpg" );
+var grasslandtexture = THREE.ImageUtils.loadTexture( "images/grassland.jpg" );
+var sandtexture = THREE.ImageUtils.loadTexture( "images/sand.jpg" );
+var hillstexture = THREE.ImageUtils.loadTexture( "images/hills.jpg" );
+var mountainstexture = THREE.ImageUtils.loadTexture( "images/mountains.jpg" );
+var texture;
+
 function drawMapHex(coordx, coordy)
 {
 	var color = null;
@@ -428,37 +393,37 @@ function drawMapHex(coordx, coordy)
 					coordy > ((1-TUNDRA_PERCENTAGE) * (MAP_HEIGHT-1)))) //  north of tundra threshold)
 	{
 		color = TUNDRA_COLOR;
-		texturefile = "images/tundra.jpg";
+		texture = tundratexture;
 		tiletype = "tundra";
 		if(coordy < (ICE_PERCENTAGE * MAP_HEIGHT) || coordy > ((1-ICE_PERCENTAGE) * (MAP_HEIGHT - 1)))
 		{
 			color = ICE_COLOR;
-			texturefile = "images/ice.jpg";
+			texture = icetexture;
 			tiletype = "ice";
 		}
 	}
 	else if(map[coordx][coordy].elevation < SEA_LEVEL)
 	{
 		color = WATER_COLOR;
-		//texturefile = "images/coast.jpg";
+		texture = watertexture;
 		tiletype = "water";
 	}
 	else if(map[coordx][coordy].elevation < SAND_LEVEL)
 	{
 		color = SAND_COLOR;
-		texturefile = "images/sand.jpg";
+		texture = sandtexture;
 		tiletype = "sand";
 	}
 	else if(map[coordx][coordy].elevation < GRASSLAND_LEVEL)
 	{
 		color = GRASSLAND_COLOR;
-		texturefile = "images/grass3.jpg";
+		texture = grasslandtexture;
 		tiletype = "grassland";
 	}
 	else if(map[coordx][coordy].elevation < HILLS_LEVEL)
 	{
 		color = HILLS_COLOR;
-		texturefile = "images/hills.jpg";
+		texture = hillstexture;
 		tiletype = "hills";
 	}
 	else if(map[coordx][coordy].elevation <= 256)
@@ -469,9 +434,8 @@ function drawMapHex(coordx, coordy)
 			console.log('WARNING elevationg greater than 255');
 		}
 		color = MOUNTAINS_COLOR;
-		texturefile = "images/mountains.jpg";
+		texture = mountainstexture;
 		tiletype = "mountains";
-		//color = 0xff0000;
 	}
 	
 	if(color !== SAND_COLOR)
@@ -508,8 +472,6 @@ function drawMapHex(coordx, coordy)
 	else
 		extrudeamount = map[coordx][coordy].elevation * EXTRUSION_FACTOR;
 	
-	if(coordx === 9 && coordy ===9)
-		console.log("9,9 extrudeamount=" + extrudeamount  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
 	var extrudeSettings = {
 			amount			: extrudeamount,
 			steps			: 1,
@@ -521,19 +483,18 @@ function drawMapHex(coordx, coordy)
 //			bevelSegments   : 1,
 		};
 
-	var texture1; 
-	var material;
-	if(texturefile !== "")
-	{
-		texture1 = THREE.ImageUtils.loadTexture( texturefile );
-		material = new THREE.MeshPhongMaterial( { color: color, map: texture1 } );
-		texture1.wrapS = texture1.wrapT = THREE.RepeatWrapping;
-		texture1.repeat.set( .1, .1 );
-	}
-	else
-	{
-		material = new THREE.MeshBasicMaterial( { color: color } );
-	}	
+//	var texture1; 
+//	var material;
+//	if(texturefile !== "")
+//	{
+		var material = new THREE.MeshPhongMaterial( { color: color, map: texture } );
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.repeat.set( .1, .1 );
+//	}
+//	else
+//	{
+//		material = new THREE.MeshBasicMaterial( { color: color } );
+//	}	
 	
 	var hexShape = new THREE.Shape();
 	var centerPoint = new Point(xpoint, ypoint);
