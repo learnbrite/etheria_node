@@ -101,33 +101,38 @@ function init() {
 		generateMap(MAP_WIDTH, MAP_HEIGHT);
 		
 //		the 6 corners
-//		drawBlock(8,8,0,-50,33,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,0,66,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,49,33,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,49,-33,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,0,-66,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-50,-33,0, 0xFF0000); // 8 high column
+		drawBlock(8,8,0,-50,33,0, 0xFF0000); // 8 high column
+		drawBlock(8,8,0,0,66,0, 0xFF0000); // 8 high column
+		drawBlock(8,8,0,49,33,0, 0xFF0000); // 8 high column
+		drawBlock(8,8,0,49,-33,0, 0xFF0000); // 8 high column
+		drawBlock(8,8,0,0,-66,0, 0xFF0000); // 8 high column
+		drawBlock(8,8,0,-50,-33,0, 0xFF0000); // 8 high column
 		
-		var c = 0;
-		var r = 0;
-		var t = 0;
-		var created = 0;
-		var drewblock = false;
-		while(created < 40)
-		{
-			t = getRandomIntInclusive(0,13);
-			c = getRandomIntInclusive(-90,90);
-			r = getRandomIntInclusive(-90,90);
-			drewblock = false;
-			while(drewblock == false)
-			{
-				t = getRandomIntInclusive(0,13);
-				c = getRandomIntInclusive(-90,90);
-				r = getRandomIntInclusive(-90,90);
-				drewblock = drawBlock(8,8,t,c,r,0, getRandomIntInclusive(0,16777214));
-			}	
-			created++;
-		}	
+		drawBlock(8,8,6,20,20,0, 0xFF0000);
+//		drawBlock(8,8,6,-20,20,0, 0xFF0000);
+//		drawBlock(8,8,6,-20,-20,0, 0xFF0000);
+//		drawBlock(8,8,6,20,-20,0, 0xFF0000);
+		
+//		var c = 0;
+//		var r = 0;
+//		var t = 0;
+//		var created = 0;
+//		var drewblock = false;
+//		while(created < 40)
+//		{
+//			t = getRandomIntInclusive(0,13);
+//			c = getRandomIntInclusive(-90,90);
+//			r = getRandomIntInclusive(-90,90);
+//			drewblock = false;
+//			while(drewblock == false)
+//			{
+//				t = getRandomIntInclusive(0,13);
+//				c = getRandomIntInclusive(-90,90);
+//				r = getRandomIntInclusive(-90,90);
+//				drewblock = drawBlock(8,8,t,c,r,0, getRandomIntInclusive(0,16777214));
+//			}	
+//			created++;
+//		}	
 		
 		// 2nd quadrant		
 		// where y is even, diags valid if (Math.abs(x)/3 + Math.abs(y)/2) <= 33)
@@ -207,7 +212,7 @@ function init() {
 //		drawBlock(8,8,11,32,0,0, 0x00FF00); 
 //		drawBlock(8,8,12,-32,20,0, 0xFF0000); 
 //		drawBlock(8,8,13,-25,20,0, 0x00FF00); 
-		console.log(JSON.stringify(map));
+//		console.log(JSON.stringify(map));
 	}
 	else
 	{	

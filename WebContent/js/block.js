@@ -58,13 +58,19 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	if(y % 2 !== 0) // if the starting y is odd
 		offset = 1;
 	
+	var xyz = [];
+	var centers = [];
+	
 	if(which === 0) // 8 high column
 	{
 		// -50 && y even == out of bounds
 		// -50 && y odd == OK
 		if(blockHexCoordsValid(x,y))
 		{
-			drawBlockHex(coordx, coordy, x, y, z, color,8);
+//			xyz = [];
+//			xyz.push(x); xyz.push(y); xyz.push(z);
+//			centers.push(xyz);
+			drawBlockHex(coordx, coordy, x,y,z, color,8);
 			return true;
 		}
 		else
@@ -171,8 +177,14 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	{
 		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y))
 		{
-			drawBlockHex(coordx, coordy, x, y, z, color,4);
-			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),4);
+//			xyz = [];
+//			xyz.push(x); xyz.push(y); xyz.push(z);
+//			centers.push(xyz);
+//			xyz = [];
+//			xyz.push(x+1); xyz.push(y); xyz.push(z);
+//			centers.push(xyz);
+			drawBlockHex(coordx, coordy, x,y,z, color, 4);
+			drawBlockHex(coordx, coordy, x+1,y,z, color, 4);
 			return true;
 		}
 		else
@@ -370,3 +382,144 @@ function drawBlockHex(coordx, coordy, x, y, z, color, extrusion_multiple)
 	mesh.position.set( 0, 0, tileextrusion + z * blockextrude);
 	scene.add( mesh );
 }
+
+// a failed attempt at drawing polygons instead of multiple hexes. Very difficult. Little benefit.
+//function drawBlockHex(coordx, coordy, centers, color, extrusion_multiple)
+//{
+//	if(extrusion_multiple === null || extrusion_multiple === 0)
+//		extrusion_multiple = 1;
+//	
+//	var extrudeSettings = {
+//			amount			: blockextrude * extrusion_multiple,
+//			steps			: 1,
+//			material		: 1,
+//			extrudeMaterial : 0,
+//			bevelEnabled	: false,
+//		};
+//	
+//	var	material = new THREE.MeshPhongMaterial( { color: color, map: texture1 } );
+//	texture1.wrapS = texture1.wrapT = THREE.RepeatWrapping;
+//	texture1.repeat.set( 1.3,1.3 );
+//	
+//	var hexShape = new THREE.Shape();
+//	
+//	// xpoint and ypoint are the center of the TILE	
+//	var xpoint = (coordx - (MAP_WIDTH-1)/2) * tilewidth;
+//	if(coordy%2 !== 0)
+//		xpoint = xpoint + tilewidth/2;
+//	var ypoint = (coordy - (MAP_HEIGHT-1)/2) * tilevert;
+//	
+//	for(var centersindex = 0; centersindex < centers.length; centersindex++)
+//	{
+//		console.log("centers[" + centersindex + "][0]=" + centers[centersindex][0] + " centers[" + centersindex + "][1]=" + centers[centersindex][1])
+//	}	
+//	
+//	var centerPoint;
+//	var points = [];
+//	var inner = [];
+//	var finexpoint;
+//	var fineypoint;
+//	for(var i = 0; i < centers.length; i++)
+//	{
+//		finexpoint = xpoint + centers[i][0] * blockwidth; // now move the "cursor" to the right spot within the tile
+//		if(centers[i][1]%2 !== 0)
+//			finexpoint = finexpoint + blockwidth/2;
+//		fineypoint = ypoint + centers[i][1] * blockvert;
+//		console.log("finex=" + finexpoint + " finey=" + fineypoint);
+//		centerPoint = new Point(finexpoint, fineypoint);
+//		points[i] = [];
+//		points[i].push(hex_corner(centerPoint, blocksize, 0));
+//		points[i].push(hex_corner(centerPoint, blocksize, 1));
+//		points[i].push(hex_corner(centerPoint, blocksize, 2));
+//		points[i].push(hex_corner(centerPoint, blocksize, 3));
+//		points[i].push(hex_corner(centerPoint, blocksize, 4));
+//		points[i].push(hex_corner(centerPoint, blocksize, 5));
+//	}	
+//
+//	console.log("points.length=" + points.length);
+//	for(var apple = 0; apple < points.length; apple++)
+//	{
+//		console.log("points[" + apple + "].length=" + points[apple].length);
+//		for(var orange = 0; orange < points[apple].length; orange++)
+//		{
+//			console.log(points[apple][orange]);
+//		}	
+//	}	
+//	
+//	var newarray = [];
+//	if(points.length == 1)
+//	{
+//		console.log('only one hex to draw');
+//		newarray = points[0];
+//	}	
+//	else
+//	{	
+//		var index = 0;
+//		console.log("more than one hex. Looping through the points arrays");
+//		for(var q = points.length-1; q >=1; q--)
+//		{
+//			console.log("looking at the 6-point array in points[" + q + "]");
+//			for(var r = 0; r < points[q].length; r++)
+//			{
+//				console.log("checking if points[" + q + "][" + r + "] x=" + points[q][r].x + " y=" + points[q][r].y + " exists in the 6-point array in points[" + (q-1)  + "]");
+//				for(var quick = 0; quick < points[q-1].length; quick++)
+//				{
+//					console.log(points[q-1][quick].x + " and " + points[q-1][quick].y);
+//					index = -1;
+//					if(Math.round(points[q][r].x*100000000) == Math.round(points[q-1][quick].x*100000000) && Math.round(points[q][r].y*100000000) == Math.round(points[q-1][quick].y*100000000))
+//					{
+//						index = quick;
+//						quick = points[q-1].length; // break
+//					}
+//				}	
+//				//index = $.inArray(points[q][r], points[q-1]);
+//				if(index != -1)
+//				{
+//					console.log("It does!");
+//					for(var a = 0; a < index; a++)
+//						newarray.push(points[q-1][a]);
+//					for(var b = 0; b < points[q].length; b++)
+//						newarray.push(points[q][b]);
+//					for(var c = (index+2); c < points[q-1].length; c++)
+//						newarray.push(points[q-1][c]);
+//				}	
+//				else
+//				{
+//					console.log("It does NOT!")
+//				}	
+//			}	
+//		}
+//	}
+//	
+//	console.log(newarray.length);
+//	
+//	for(var banana = 0; banana < newarray.length; banana++)
+//	{
+//		console.log(newarray[banana].x + " and " + newarray[banana].y);
+//	}	
+//	
+//	for(var p = 0; p < newarray.length; p++)
+//	{
+//		if(p === 0)
+//			hexShape.moveTo( newarray[p].x , newarray[p].y );
+//		else
+//			hexShape.lineTo( newarray[p].x, newarray[p].y );
+//	}
+//	hexShape.moveTo( newarray[0].x , newarray[0].y );
+//	
+//	var hexGeom = new THREE.ExtrudeGeometry( hexShape, extrudeSettings );
+//
+//	var mesh = new THREE.Mesh( hexGeom, material );
+//	var tileextrusion;
+//	if(map[coordx][coordy].elevation < SEA_LEVEL)
+//	{
+//		tileextrusion = SEA_LEVEL * EXTRUSION_FACTOR;
+//	}	
+//	else
+//	{
+//		tileextrusion = map[coordx][coordy].elevation * EXTRUSION_FACTOR;
+//	}	
+//	console.log("LOWER " + coordx + "," + coordy + " extrudeamount=" + tileextrusion  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
+//	mesh.position.set( 0, 0, tileextrusion + centers[0][2] * blockextrude);
+//	scene.add( mesh );
+//}
