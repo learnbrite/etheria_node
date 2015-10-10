@@ -44,47 +44,105 @@ app.use(express.static('WebContent'));
  	]
  }
  */
-var map_ja = [];
+var mapsize = 17; //etheria.getMapsize(); 
+var elevations;
+var owners;
+
+var blocks;
+blocks = new Array(mapsize);
+for (i = 0; i < mapsize; i++) {
+	  blocks[i] = new Array(mapsize);
+}
+
 var lastcheck = 0;
 
 app.get('/lastcheck', function (req, res){
 	res.end(lastcheck + "");
 });
 
-function getMap() {
-	etheria.getOwners.call(function(result) {
-		owners = result;
-	});
-	etheria
-	var elevations = etheria.getElevations();
+retrieveMap();
+
+function retrieveMap() {
+	console.log('getting elevations');
+	etheria.getElevations.call(function(error, result) { elevations = result; });
+	console.log('done getting elevations, getting owners');
+	etheria.getOwners.call(function(error, result) { owners = result; });
+	console.log('done getting owners');
+		
+	var row = 0;
+	var col = 0;
+	for(row = 0; row < mapsize; row++)
+	{
+		col = 0;
+		for(col = 0; col < mapsize; col++)
+		{
+			//console.log('getting blocks for ' + col + "," + row);
+			var gB = function() { 
+				var c = col;
+				var r = row;
+				etheria.getBlocksForTile.call(c, r, function(error, result) { 
+					//console.log('callback c=' + c + ' and r=' + r);
+					blocks[c][r] = result; 
+				});
+			};
+			gB();
+			//console.log('done getting blocks');
+		}
+	}
+//	async.series([
+//	              function(){
+//	            	  console.log('getting elevations');
+//	            	  
+//	            	  console.log('done getting elevations');
+//	            	  //callback(null, elevations);
+//	              },
+//	              function(){
+//	            	  console.log('getting owners');
+//	            	 
+//	            	  console.log('done getting owners');
+//	            	  //callback(null, owners);
+//	              },
+//	              ]
+//	,
+//	              function(err, results){
+//						console.log(results);
+//						console.log('inside callback, assembling map object');
+//						assembleMapObject(results[0], results[1]);
+//						console.log('inside callback, done assembling map object');
+//				}
+//	);
+}
+
+function getMap()
+{
+	if(typeof elevations === "undefined" || elevations === null || typeof owners === "undefined" || owners === null) // not yet available
+		return null; // signals to the frontend that the map is not yet available
 	var row_ja = [];
 	var jo = {};
-	var blocks = [];
 	var blocks_ja = [];
 	var block_jo = {};
-	map_ja = [];
-	for(var row = 0; row < elevations.length; row++)
+	var map_ja = [];
+	for(var row = 0; row < mapsize; row++)
 	{
 		row_ja = [];
-		for(var col = 0; col < elevations.length; col++)
+		for(var col = 0; col < mapsize; col++)
 		{
 			jo = {};
 			jo.x = row;
 			jo.y = col;
 			jo.elevation = elevations[col][row] * 1;
 			jo.owner = owners[col][row];
-			blocks = etheria.getBlocksForTile(col,row);
 			blocks_ja = [];
-			for(var i = 0; i < blocks.length; i+=7)
+			for(var i = 0; i < blocks[col][row].length; i+=7)
 			{
 				block_jo = {};
-				block_jo.which = blocks[i]*1;
-				block_jo.x = blocks[i+1]*1;
-				block_jo.y = blocks[i+2]*1;
-				block_jo.z = blocks[i+3]*1;
-				block_jo.r = blocks[i+4]*1;
-				block_jo.g = blocks[i+5]*1;
-				block_jo.b = blocks[i+6]*1;
+				block_jo.which = blocks[col][row][i]*1;
+				block_jo.x = blocks[col][row][i+1]*1;
+				block_jo.y = blocks[col][row][i+2]*1;
+				block_jo.z = blocks[col][row][i+3]*1;
+				block_jo.r = blocks[col][row][i+4]*1;
+				block_jo.g = blocks[col][row][i+5]*1;
+				block_jo.b = blocks[col][row][i+6]*1;
 				blocks_ja.push(block_jo);
 			}	
 			jo.blocks = blocks_ja;
@@ -92,30 +150,24 @@ function getMap() {
 		}
 		map_ja.push(row_ja);
 	}	
+	return map_ja;
 }
+
+
 
 app.get('/map', function (req, res) {
 	console.log("entering /map");
-	res.json(map_ja);
+	var map_ja = getMap();
+	res.json(map_ja);  // at this point, we're done answering the request. Now check to see if we need to retrieve the map again.
+	console.log(JSON.stringify(map_ja));
 	console.log(process.hrtime()[0]+" - " + lastcheck + " = " + (process.hrtime()[0] - lastcheck));
 	if((process.hrtime()[0] - lastcheck) > 60) // if it's been more than 1 min, retrieve map from blockchain
 	{	
 		console.log("been a while. Regenning map");
 		lastcheck = process.hrtime()[0];
-		async.series([
-		              function(callback){
-		            	console.log('executing first in series. Getting map.');
-		            	getMap();
-		            	console.log('after getMap');
-		                callback(null);
-		                console.log('after callback null');
-		              }],
-		              // optional callback
-		              function(err, results){
-		                console.log('this is the err, results callback');
-		              }
-		            );
-		console.log('after async.series');
+		console.log('executing first in series. Getting map.');
+		retrieveMap();
+		console.log('after getMap');
 	}
 });
 
