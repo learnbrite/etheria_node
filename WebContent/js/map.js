@@ -8,19 +8,19 @@ function generateMap(width, height)
 	map[0][0].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
 	map[0][0].owner = guid();
 	
-	map[0][MAP_HEIGHT-1] = {};
-	map[0][MAP_HEIGHT-1].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
-	map[0][MAP_HEIGHT-1].owner = guid();
+	map[0][mapsize-1] = {};
+	map[0][mapsize-1].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
+	map[0][mapsize-1].owner = guid();
 	
-	map[MAP_WIDTH-1][0] = {};
-	map[MAP_WIDTH-1][0].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
-	map[MAP_WIDTH-1][0].owner = guid();
+	map[mapsize-1][0] = {};
+	map[mapsize-1][0].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
+	map[mapsize-1][0].owner = guid();
 	
-	map[MAP_WIDTH-1][MAP_HEIGHT-1] = {};
-	map[MAP_WIDTH-1][MAP_HEIGHT-1].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
-	map[MAP_WIDTH-1][MAP_HEIGHT-1].owner = guid();
+	map[mapsize-1][mapsize-1] = {};
+	map[mapsize-1][mapsize-1].elevation = 116; //Math.floor(128 - 128 * ((Math.random() * CORNER_VARIANCE * 2) - CORNER_VARIANCE));
+	map[mapsize-1][mapsize-1].owner = guid();
 	
-	generateMidpoints(0, 0, MAP_WIDTH-1, MAP_HEIGHT-1, 1);
+	generateMidpoints(0, 0, mapsize-1, mapsize-1, 1);
 	//console.log(JSON.stringify(map));
 }
 

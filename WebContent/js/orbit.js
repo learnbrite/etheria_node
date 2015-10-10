@@ -35,23 +35,22 @@ var blockwidth = Math.sqrt(3)/2 * blockheight;
 var blockextrude = blocksize;
 
 var NORMALIZE_ELEVATIONS = false;
-var GENERATE_NEW_MAP = false;
+var GENERATE_NEW_MAP = true;
 var EXTRUSION_FACTOR = size/75;
 
 var camera, controls, scene, renderer;
 var mesh;
 
-var MAP_WIDTH = 17;
-var MAP_HEIGHT = 17;
+var mapsize = 17;
 
 var map;
 
-map = new Array(MAP_WIDTH);
-for (i = 0; i < MAP_WIDTH; i++) {
-	  map[i] = new Array(MAP_HEIGHT);
+map = new Array(mapsize);
+for (i = 0; i < mapsize; i++) {
+	  map[i] = new Array(mapsize);
 }	
 
-var LEVELS =  Math.cbrt(MAP_WIDTH - 1) + 1;
+var LEVELS =  Math.cbrt(mapsize - 1) + 1;
 
 var GRASSLAND_COLOR = 0x1b9100;
 var MOUNTAINS_COLOR = 0x7b736a;
@@ -82,8 +81,6 @@ function getRandomIntInclusive(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
-
 function init() {
 
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
@@ -98,38 +95,66 @@ function init() {
 	
 	if(GENERATE_NEW_MAP)
 	{	
-		generateMap(MAP_WIDTH, MAP_HEIGHT);
+		generateMap(mapsize, mapsize);
 		
 //		the 6 corners
-		drawBlock(8,8,0,-50,33,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,0,66,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,49,33,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,49,-33,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,0,-66,0, 0xFF0000); // 8 high column
-		drawBlock(8,8,0,-50,-33,0, 0xFF0000); // 8 high column
-		
-		drawBlock(8,8,6,20,20,0, 0xFF0000);
+//		drawBlock(8,8,0,-50,33,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,0,66,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,49,33,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,49,-33,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,0,-66,0, 0xFF0000); // 8 high column
+//		drawBlock(8,8,0,-50,-33,0, 0xFF0000); // 8 high column
+//		
+//		drawBlock(8,8,6,20,20,0, 0xFF0000);
 //		drawBlock(8,8,6,-20,20,0, 0xFF0000);
 //		drawBlock(8,8,6,-20,-20,0, 0xFF0000);
 //		drawBlock(8,8,6,20,-20,0, 0xFF0000);
 		
+		drawBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
+		drawBlock(8,8,0,0,1,0, getRandomIntInclusive(0,16777214));
+		drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
+//		
+		drawBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
+		
 //		var c = 0;
 //		var r = 0;
 //		var t = 0;
+//		var z = 0;
 //		var created = 0;
 //		var drewblock = false;
-//		while(created < 40)
+//		
+//		while(created < 2)
 //		{
-//			t = getRandomIntInclusive(0,13);
-//			c = getRandomIntInclusive(-90,90);
-//			r = getRandomIntInclusive(-90,90);
+//			t = getRandomIntInclusive(0,1);
+//			c = getRandomIntInclusive(-50,50);
+//			r = getRandomIntInclusive(-66,66);
+//			z = getRandomIntInclusive(0,10);
 //			drewblock = false;
 //			while(drewblock == false)
 //			{
-//				t = getRandomIntInclusive(0,13);
+//				t = getRandomIntInclusive(0,1);
+//				c = getRandomIntInclusive(-50,50);
+//				r = getRandomIntInclusive(-66,66);
+//				z = getRandomIntInclusive(0,10);
+//				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
+//			}	
+//			created++;
+//		}	
+//		
+//		while(created < 1)
+//		{
+//			t = 0;//getRandomIntInclusive(0,13);
+//			c = getRandomIntInclusive(-90,90);
+//			r = getRandomIntInclusive(-90,90);
+//			z = getRandomIntInclusive(0,90);
+//			drewblock = false;
+//			while(drewblock == false)
+//			{
+//				t = 0;//getRandomIntInclusive(0,13);
 //				c = getRandomIntInclusive(-90,90);
 //				r = getRandomIntInclusive(-90,90);
-//				drewblock = drawBlock(8,8,t,c,r,0, getRandomIntInclusive(0,16777214));
+//				z = getRandomIntInclusive(0,90);
+//				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
 //			}	
 //			created++;
 //		}	
@@ -240,10 +265,10 @@ function init() {
 		var x = 0;
 		var y = 0;
 		x = 0; y = 0;
-		while(x < MAP_WIDTH)
+		while(x < mapsize)
 		{
 			y=0;
-			while(y < MAP_HEIGHT)
+			while(y < mapsize)
 			{
 				if(map[x][y].elevation > max)
 					max = map[x][y].elevation;
@@ -258,9 +283,9 @@ function init() {
 		map[x][y].normalization_factor = normalization_factor;
 	}
 	
-	for(var row = 0; row < MAP_HEIGHT; row++)
+	for(var row = 0; row < mapsize; row++)
 	{
-		for(var col = 0; col < MAP_WIDTH; col++)
+		for(var col = 0; col < mapsize; col++)
 		{
 //			if(NORMALIZE_ELEVATIONS)
 //				map[x][y].elevation = (map[x][y].elevation - min) * map[x][y].normalization_factor;
@@ -394,13 +419,13 @@ function drawMapHex(coordx, coordy)
 	var log_color_choice = false;
 	var tiletype = "";
 	if(map[coordx][coordy].elevation >= SEA_LEVEL && 						// higher than ocean level AND
-			(coordy < (TUNDRA_PERCENTAGE * MAP_HEIGHT) || 			// (south of tundra threshold OR
-					coordy > ((1-TUNDRA_PERCENTAGE) * (MAP_HEIGHT-1)))) //  north of tundra threshold)
+			(coordy < (TUNDRA_PERCENTAGE * mapsize) || 			// (south of tundra threshold OR
+					coordy > ((1-TUNDRA_PERCENTAGE) * (mapsize-1)))) //  north of tundra threshold)
 	{
 		color = TUNDRA_COLOR;
 		texture = tundratexture;
 		tiletype = "tundra";
-		if(coordy < (ICE_PERCENTAGE * MAP_HEIGHT) || coordy > ((1-ICE_PERCENTAGE) * (MAP_HEIGHT - 1)))
+		if(coordy < (ICE_PERCENTAGE * mapsize) || coordy > ((1-ICE_PERCENTAGE) * (mapsize - 1)))
 		{
 			color = ICE_COLOR;
 			texture = icetexture;
@@ -464,11 +489,11 @@ function drawMapHex(coordx, coordy)
 				color = color_rgb.r * Math.pow(16,4) + color_rgb.g * Math.pow(16,2) + color_rgb.b;
 			}
 	}
-	// (coordx - (MAP_WIDTH-1)/2) and (coordy - (MAP_HEIGHT-1)/2) adjust the coords to center in the camera's view
-	var xpoint = (coordx - (MAP_WIDTH-1)/2) * tilewidth;
+	// (coordx - (mapsize-1)/2) and (coordy - (mapsize-1)/2) adjust the coords to center in the camera's view
+	var xpoint = (coordx - (mapsize-1)/2) * tilewidth;
 	if(coordy%2 !== 0)
 		xpoint = xpoint + tilewidth/2;
-	var ypoint = (coordy - (MAP_HEIGHT-1)/2) * tilevert;
+	var ypoint = (coordy - (mapsize-1)/2) * tilevert;
 	
 	var extrudeamount;
 	

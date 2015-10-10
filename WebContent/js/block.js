@@ -45,6 +45,161 @@ function blockHexCoordsValid(x, y)
 	return false;
 }
 
+var occupado; // occupado[coordx][coordy] contains the set of occupied x,y,z spaces in this tile
+
+occupado = new Array(mapsize);
+for (i = 0; i < mapsize; i++) {
+	occupado[i] = new Array(mapsize);
+	for(j = 0; j < mapsize; j++)
+		occupado[i][j] = [];  // each x,y is also an array of [x,y,z] values, so occupado[0][1] might contain [[2,3,4],[5,6,7]...]
+}
+
+
+// initialize occupado with the floor (all the z=-1 for the tile) 
+for (i = 0; i < mapsize; i++) {
+	for(j = 0; j < mapsize; j++) {
+		for(var row = -33; row <= 33; row++)
+		{
+			if(row % 2 !== 0 ) // odd
+				col = -50;
+			else
+				col = -49;
+			
+			for(col; col <= 49; col++)
+			{
+				occupado[i][j].push([col,row,-1]);
+			}
+		}	
+	}
+}
+
+var stickyblocks = false;
+
+function touchesAnother(coordx, coordy, which, x, y , z)
+{
+	//console.log('touches another?');
+	var offset = 0;
+	if(y % 2 !== 0) // if the starting y is odd
+		offset = 1;
+	var surroundings = [];
+	if(which === 0) // 8 high column
+	{
+		//console.log('generating surroundings array');
+		surroundings.push([x,y,z-1]); // block beneath
+		surroundings.push([x,y,z+8]); // block above
+		
+		if(stickyblocks === true)
+		{	
+			for(var rings = z+0; rings < z+8; rings++)
+			{
+				surroundings.push([x+offset,y+1,rings]); 	// NE
+				surroundings.push([x+1,y,rings]); 			// E 
+				surroundings.push([x+offset,y-1,rings]);	// SE
+				surroundings.push([x-offset,y-1,rings]);	// SW
+				surroundings.push([x-1,y,rings]);			// W
+				surroundings.push([x-offset,y+1,rings]); 	// NW
+			}
+		}
+	}
+	else if(which === 1)
+	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x+offset,y+1,z-1]); 
+		surroundings.push([x+1,y+2,z-1]);
+		surroundings.push([x+1+offset,y+3,z-1]);
+		surroundings.push([x+2,y+4,z-1]);
+		surroundings.push([x+2+offset,y+5,z-1]);
+		surroundings.push([x+3,y+6,z-1]);
+		surroundings.push([x+3+offset,y+7,z-1]);
+		
+		surroundings.push([x,y,z+1]); 			// blocks above
+		surroundings.push([x+offset,y+1,z+1]); 
+		surroundings.push([x+1,y+2,z+1]);
+		surroundings.push([x+1+offset,y+3,z+1]);
+		surroundings.push([x+2,y+4,z+1]);
+		surroundings.push([x+2+offset,y+5,z+1]);
+		surroundings.push([x+3,y+6,z+1]);
+		surroundings.push([x+3+offset,y+7,z+1]);
+	}	
+	
+	var occupadolength = occupado[coordx][coordy].length;
+	for(var s = 0; s < surroundings.length; s++)
+	{
+		if(which === 1)
+			console.log('checking to see if surrounding block [' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "]");
+		
+		//console.log("surroundings" + surroundings[s]);
+		for(var o = 0; o < occupadolength; o++)
+		{
+			
+			//for(var o = 0; o < occupadolength; o++)
+			//{
+			//	console.log("occupado " + occupado[coordx][coordy][o]);
+			//}
+			//if($.inArray(surroundings[s], occupado[coordx][coordy]) !== -1)
+			if(surroundings[s][0] === occupado[coordx][coordy][o][0] && surroundings[s][1] === occupado[coordx][coordy][o][1] && surroundings[s][2] === occupado[coordx][coordy][o][2])
+			{
+				if(surroundings[s] == occupado[coordx][coordy][o])
+					console.log('inARRAY! double equals');
+				else
+				{
+					if(occupado[coordx][coordy][o][0] === 0 && occupado[coordx][coordy][o][1] === 0 && occupado[coordx][coordy][o][2] === -1)
+					{	
+						//console.log('not inArray surroundings[' + s + ']=[' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "][" + o + '] =' + occupado[coordx][coordy][o]);
+						console.log("no match occupado 0,0,-1 double equals s ", surroundings[s]);
+						console.log("no match occupado 0,0,-1 double equals o ", occupado[coordx][coordy][o]);
+					}
+				}
+				
+				if($.inArray(surroundings[s], occupado[coordx][coordy]) != -1)
+					console.log('inARRAY!');
+				else
+				{
+					if(occupado[coordx][coordy][o][0] === 0 && occupado[coordx][coordy][o][1] === 0 && occupado[coordx][coordy][o][2] === -1)
+					{
+						//console.log('not inArray surroundings[' + s + ']=[' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "][" + o + '] =' + occupado[coordx][coordy][o]);
+						console.log("no match occupado 0,0,-1 inarray s ", surroundings[s]);
+						console.log("no match occupado 0,0,-1 inarray o ", occupado[coordx][coordy][o]);
+					}
+				}
+				
+				if(which === 0)
+				{
+					//console.log("which === 0, adding 8 blocks to occupado (length=" + occupado[coordx][coordy].length + ")");
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x,y,z+2]);
+					occupado[coordx][coordy].push([x,y,z+3]);
+					occupado[coordx][coordy].push([x,y,z+4]);
+					occupado[coordx][coordy].push([x,y,z+5]);
+					occupado[coordx][coordy].push([x,y,z+6]);
+					occupado[coordx][coordy].push([x,y,z+7]);
+					//console.log("which === 0, DONE adding 8 blocks to occupado (length=" + occupado[coordx][coordy].length + ")");
+				}
+				else if(which === 1)
+				{
+					console.log("which === 1, adding 8 blocks to occupado (length=" + occupado[coordx][coordy].length + ")");
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x+offset,y+1,z]);
+					occupado[coordx][coordy].push([x+1,y+2,z]);
+					occupado[coordx][coordy].push([x+1+offset,y+3,z]);
+					occupado[coordx][coordy].push([x+2,y+4,z]);
+					occupado[coordx][coordy].push([x+2+offset,y+5,z]);
+					occupado[coordx][coordy].push([x+3,y+6,z]);
+					occupado[coordx][coordy].push([x+3+offset,y+7,z]);
+					console.log("which === 1, adding 8 blocks to occupado (length=" + occupado[coordx][coordy].length + ")");
+				}	
+				if(which === 1)
+					console.log('touches another? TRUE');
+				return true;
+			}
+		}	
+	}	
+	if(which === 1)
+		console.log('touches another? FALSE');
+	return false;
+}
+
 function drawBlock(coordx, coordy, which, x, y, z, color)
 {
 	// This seems more complicated than it should be, but I don't think it is. 
@@ -53,7 +208,7 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	// e.g. a straight line to the NE, starting at 0,0 the other 3 blocks are 0,1, 1,2 and 1,3 (x,y+1, x+1,y+2 and x+1,y+3)
 	// but starting at 0,1 the other 3 blocks are 1,2, 1,3 and 1, 3 (x+1,y+1, x+1,y+2 and x+2,y+3)
 	// See? Kinda weird.
-	console.log("drawblock(" + coordx + ", "+ coordy + ", " + which + "," + x + ", "+ y + ", "+ z + ", " + color);
+	//console.log("drawblock(" + coordx + ", "+ coordy + ", " + which + "," + x + ", "+ y + ", "+ z + ", " + color);
 	var offset = 0;
 	if(y % 2 !== 0) // if the starting y is odd
 		offset = 1;
@@ -65,7 +220,7 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	{
 		// -50 && y even == out of bounds
 		// -50 && y odd == OK
-		if(blockHexCoordsValid(x,y))
+		if(blockHexCoordsValid(x,y) && touchesAnother(coordx, coordy, which, x, y, z))
 		{
 //			xyz = [];
 //			xyz.push(x); xyz.push(y); xyz.push(z);
@@ -86,7 +241,8 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	else if(which === 1) // diagonal beam ne/sw
 	{
 		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+offset, y+1) && blockHexCoordsValid(x+1, y+2) && blockHexCoordsValid(x+1+offset, y+3) &&
-				blockHexCoordsValid(x+2, y+4) && blockHexCoordsValid(x+2+offset, y+5) && blockHexCoordsValid(x+3, y+6) && blockHexCoordsValid(x+3+offset, y+7))
+				blockHexCoordsValid(x+2, y+4) && blockHexCoordsValid(x+2+offset, y+5) && blockHexCoordsValid(x+3, y+6) && blockHexCoordsValid(x+3+offset, y+7)
+				&& touchesAnother(coordx, coordy, which, x, y, z))
 		{	
 			drawBlockHex(coordx, coordy, x, y, z, color,1);
 			drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),1);
@@ -324,11 +480,11 @@ function drawBlockHex(coordx, coordy, x, y, z, color, extrusion_multiple)
 	if(extrusion_multiple === null || extrusion_multiple === 0)
 		extrusion_multiple = 1;
 	
-	console.log("drawBlockHex " + coordx + "," + coordy);
-	var xpoint = (coordx - (MAP_WIDTH-1)/2) * tilewidth;
+	//console.log("drawBlockHex " + coordx + "," + coordy);
+	var xpoint = (coordx - (mapsize-1)/2) * tilewidth;
 	if(coordy%2 !== 0)
 		xpoint = xpoint + tilewidth/2;
-	var ypoint = (coordy - (MAP_HEIGHT-1)/2) * tilevert;
+	var ypoint = (coordy - (mapsize-1)/2) * tilevert;
 	
 	xpoint = xpoint + x * blockwidth;
 	if(y%2 !== 0)
@@ -378,7 +534,7 @@ function drawBlockHex(coordx, coordy, x, y, z, color, extrusion_multiple)
 	{
 		tileextrusion = map[coordx][coordy].elevation * EXTRUSION_FACTOR;
 	}	
-	console.log("LOWER " + coordx + "," + coordy + " extrudeamount=" + tileextrusion  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
+	//console.log("LOWER " + coordx + "," + coordy + " extrudeamount=" + tileextrusion  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
 	mesh.position.set( 0, 0, tileextrusion + z * blockextrude);
 	scene.add( mesh );
 }
@@ -404,10 +560,10 @@ function drawBlockHex(coordx, coordy, x, y, z, color, extrusion_multiple)
 //	var hexShape = new THREE.Shape();
 //	
 //	// xpoint and ypoint are the center of the TILE	
-//	var xpoint = (coordx - (MAP_WIDTH-1)/2) * tilewidth;
+//	var xpoint = (coordx - (mapsize-1)/2) * tilewidth;
 //	if(coordy%2 !== 0)
 //		xpoint = xpoint + tilewidth/2;
-//	var ypoint = (coordy - (MAP_HEIGHT-1)/2) * tilevert;
+//	var ypoint = (coordy - (mapsize-1)/2) * tilevert;
 //	
 //	for(var centersindex = 0; centersindex < centers.length; centersindex++)
 //	{

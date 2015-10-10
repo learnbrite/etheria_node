@@ -341,6 +341,8 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 }
 
+var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
+
 function drawBlockHex(coordx, coordy, x, y, z, color)
 {
 	var xpoint = coordx * tilewidth;
@@ -361,7 +363,7 @@ function drawBlockHex(coordx, coordy, x, y, z, color)
 			bevelEnabled	: false,
 		};
 	
-	var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
+	
 	var	material = new THREE.MeshPhongMaterial( { color: color, map: texture1 } );
 	texture1.wrapS = texture1.wrapT = THREE.RepeatWrapping;
 	texture1.repeat.set( 10, 10 );
