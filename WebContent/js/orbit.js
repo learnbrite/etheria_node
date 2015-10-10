@@ -35,7 +35,7 @@ var blockwidth = Math.sqrt(3)/2 * blockheight;
 var blockextrude = blocksize;
 
 var NORMALIZE_ELEVATIONS = false;
-var GENERATE_NEW_MAP = true;
+var GENERATE_NEW_MAP = false;
 var EXTRUSION_FACTOR = size/75;
 
 var camera, controls, scene, renderer;
@@ -363,7 +363,7 @@ function render() {
 				"type: " + intersects[ 0 ].object.userData.tiletype + "<br>" + 
 				"elevation: " + intersects[ 0 ].object.userData.elevation + "<br>" +
 				"owner: " + intersects[ 0 ].object.userData.owner + "<br>" +
-				"tiles: " + JSON.stringify(intersects[ 0 ].object.userData.blocks)
+				"blocks: " + JSON.stringify(intersects[ 0 ].object.userData.blocks)
 //				"for sale? " + forsale + "<br>" + 
 //				"price: " + intersects[ 0 ].object.userData.p
 		);
