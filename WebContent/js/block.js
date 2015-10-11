@@ -233,41 +233,21 @@ function blockHexCoordsValid(x, y)
 	return false;
 }
 
-
-
-function touchesAnother(coordx, coordy, which, x, y , z)
+function wouldFallOutside(coordx, coordy, which, x, y , z)
 {
-	//console.log('touches another?');
+	//console.log('Checking wouldOverlap for which=' + which + " " + x + "," + y + "," + z)
+	// make an array of [x,y,z] objects this block would occupy and then check occupado to see if any of them are already occupied.
 	if(y % 2 !== 0) // if the starting y is odd
 		offset = 1;
 	else
 		offset = 0;
 	
-	var surroundings = [];
-	
-	for(var b = 0; b < blocks[which].surroundedby.length; b++)
+	var wouldfalloutside = [];
+	for(var b = 0; b < blocks[which].occupies.length; b++)
 	{
-		surroundings.push([blocks[which].surroundedby[b][0]+x, blocks[which].surroundedby[b][1]+y, blocks[which].surroundedby[b][2]+z]);
+		if(!blockHexCoordsValid(blocks[which].occupies[b][0]+x, blocks[which].occupies[b][1]+y))
+			return true;
 	}
-	console.log(surroundings.length);
-
-	
-	var occupadolength = occupado[coordx][coordy].length;
-	for(var s = 0; s < surroundings.length; s++)
-	{
-		//console.log('checking to see if surrounding block [' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "]");
-		for(var o = 0; o < occupadolength; o++)
-		{
-		//	if( surroundings.every( function(n, i) { n === occupado[coordx][coordy][o]; } )) 	// are the two arrays equal?	
-			if(surroundings[s][0] === occupado[coordx][coordy][o][0] && surroundings[s][1] === occupado[coordx][coordy][o][1] && surroundings[s][2] === occupado[coordx][coordy][o][2]) // are the arrays equal?
-			{
-				
-				//console.log('touches another? TRUE');
-				return true;
-			}
-		}	
-	}	
-	//console.log('touches another? FALSE');
 	return false;
 }
 
@@ -281,159 +261,9 @@ function wouldOverlap(coordx, coordy, which, x, y , z)
 		offset = 0;
 	
 	var wouldoccupy = [];
-	if(which === 0)
+	for(var b = 0; b < blocks[which].occupies.length; b++)
 	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x,y,z+2]);
-		wouldoccupy.push([x,y,z+3]);
-		wouldoccupy.push([x,y,z+4]);
-		wouldoccupy.push([x,y,z+5]);
-		wouldoccupy.push([x,y,z+6]);
-		wouldoccupy.push([x,y,z+7]);
-	}
-	else if(which === 1)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x+offset,y+1,z]);
-		wouldoccupy.push([x+1,y+2,z]);
-		wouldoccupy.push([x+1+offset,y+3,z]);
-		wouldoccupy.push([x+2,y+4,z]);
-		wouldoccupy.push([x+2+offset,y+5,z]);
-		wouldoccupy.push([x+3,y+6,z]);
-		wouldoccupy.push([x+3+offset,y+7,z]);
-	}	
-	else if(which === 2)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x+1,y,z]);
-		wouldoccupy.push([x+2,y,z]);
-		wouldoccupy.push([x+3,y,z]);
-		wouldoccupy.push([x+4,y,z]);
-		wouldoccupy.push([x+5,y,z]);
-		wouldoccupy.push([x+6,y,z]);
-		wouldoccupy.push([x+7,y,z]);
-	}	
-	else if(which === 3)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x-1+offset,y+1,z]);
-		wouldoccupy.push([x-1,y+2,z]);
-		wouldoccupy.push([x-2+offset,y+3,z]);
-		wouldoccupy.push([x-2+offset,y+4,z]);
-		wouldoccupy.push([x-3+offset,y+5,z]);
-		wouldoccupy.push([x-3,y+6,z]);
-		wouldoccupy.push([x-4+offset,y+7,z]);
-	}	
-	else if(which === 4)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x+1,y,z]);
-		wouldoccupy.push([x+1+offset,y+1,z]);
-		wouldoccupy.push([x+2+offset,y+1,z]);
-		wouldoccupy.push([x+3,y+2,z]);
-		wouldoccupy.push([x+4,y+2,z]);
-		wouldoccupy.push([x+4+offset,y+3,z]);
-		wouldoccupy.push([x+5+offset,y+3,z]);
-	}
-	else if(which === 5)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x-1,y,z]);
-		wouldoccupy.push([x-1+offset,y+1,z]);
-		wouldoccupy.push([x-2+offset,y+1,z]);
-		wouldoccupy.push([x-3,y+2,z]);
-		wouldoccupy.push([x-4,y+2,z]);
-		wouldoccupy.push([x-4+offset,y+3,z]);
-		wouldoccupy.push([x-5+offset,y+3,z]);
-	}
-	else if(which === 6)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x+1,y,z]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x+1,y,z+1]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x+1,y,z+1]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x+1,y,z+1]);
-	}
-	else if(which === 7)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x+0+offset,y+1,z]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x+0+offset,y+1,z+1]);
-		wouldoccupy.push([x,y,z+2]);
-		wouldoccupy.push([x+0+offset,y+1,z+2]);
-		wouldoccupy.push([x,y,z+3]);
-		wouldoccupy.push([x+0+offset,y+1,z+3]);
-	}
-	else if(which === 8)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x-1+offset,y+1,z]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x-1+offset,y+1,z+1]);
-		wouldoccupy.push([x,y,z+2]);
-		wouldoccupy.push([x-1+offset,y+1,z+2]);
-		wouldoccupy.push([x,y,z+3]);
-		wouldoccupy.push([x-1+offset,y+1,z+3]);
-	}
-	else if(which === 9)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x+offset,y+1,z]);
-		wouldoccupy.push([x+1,y+2,z]);
-		wouldoccupy.push([x+1+offset,y+3,z]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x+offset,y+1,z+1]);
-		wouldoccupy.push([x+1,y+2,z+1]);
-		wouldoccupy.push([x+1+offset,y+3,z+1]);
-	}
-	else if(which === 10)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x+1,y,z]);
-		wouldoccupy.push([x+2,y,z]);
-		wouldoccupy.push([x+3,y,z]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x+1,y,z+1]);
-		wouldoccupy.push([x+2,y,z+1]);
-		wouldoccupy.push([x+3,y,z+1]);
-	}
-	else if(which === 11)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x-1+offset,y+1,z]);
-		wouldoccupy.push([x-1,y+2,z]);
-		wouldoccupy.push([x-2+offset,y+3,z]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x-1+offset,y+1,z+1]);
-		wouldoccupy.push([x-1,y+2,z+1]);
-		wouldoccupy.push([x-2+offset,y+3,z+1]);
-	}
-	else if(which === 12)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x+1,y,z]);
-		wouldoccupy.push([x+1+offset,y+1,z]);
-		wouldoccupy.push([x+2+offset,y+1,z]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x+1,y,z+1]);
-		wouldoccupy.push([x+1+offset,y+1,z+1]);
-		wouldoccupy.push([x+2+offset,y+1,z+1]);
-	}
-	else if(which === 13)
-	{
-		wouldoccupy.push([x,y,z]);
-		wouldoccupy.push([x-1,y,z]);
-		wouldoccupy.push([x-1+offset,y+1,z]);
-		wouldoccupy.push([x-2+offset,y+1,z]);
-		wouldoccupy.push([x,y,z+1]);
-		wouldoccupy.push([x-1,y,z+1]);
-		wouldoccupy.push([x-1+offset,y+1,z+1]);
-		wouldoccupy.push([x-2+offset,y+1,z+1]);
+		wouldoccupy.push([blocks[which].occupies[b][0]+x, blocks[which].occupies[b][1]+y, blocks[which].occupies[b][2]+z]);
 	}
 	
 	for(var w = 0; w < wouldoccupy.length; w++)
@@ -453,6 +283,41 @@ function wouldOverlap(coordx, coordy, which, x, y , z)
 	}
 	return false;
 }
+
+function touchesAnother(coordx, coordy, which, x, y , z)
+{
+	//console.log('touches another?');
+	if(y % 2 !== 0) // if the starting y is odd
+		offset = 1;
+	else
+		offset = 0;
+	
+	var surroundings = [];
+	for(var b = 0; b < blocks[which].surroundedby.length; b++)
+	{
+		surroundings.push([blocks[which].surroundedby[b][0]+x, blocks[which].surroundedby[b][1]+y, blocks[which].surroundedby[b][2]+z]);
+	}
+	//console.log(surroundings.length);
+	
+	var occupadolength = occupado[coordx][coordy].length;
+	for(var s = 0; s < surroundings.length; s++)
+	{
+		//console.log('checking to see if surrounding block [' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "]");
+		for(var o = 0; o < occupadolength; o++)
+		{
+		//	if( surroundings.every( function(n, i) { n === occupado[coordx][coordy][o]; } )) 	// are the two arrays equal?	
+			if(surroundings[s][0] === occupado[coordx][coordy][o][0] && surroundings[s][1] === occupado[coordx][coordy][o][1] && surroundings[s][2] === occupado[coordx][coordy][o][2]) // are the arrays equal?
+			{
+				//console.log('touches another? TRUE');
+				return true;
+			}
+		}	
+	}	
+	//console.log('touches another? FALSE');
+	return false;
+}
+
+
 
 function drawBlock(coordx, coordy, which, x, y, z, color)
 {
@@ -478,15 +343,20 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 		//console.log('drawblock xyz=' + x + "," + y + "," + z + " wouldoverlap="  + wouldOverlap(coordx,coordy,which,x,y,z) + ' touchesanother=' + touchesAnother(coordx, coordy, which, x, y, z));
 		if(blockHexCoordsValid(x,y)  && !wouldOverlap(coordx,coordy,which,x,y,z) && touchesAnother(coordx, coordy, which, x, y, z))
 		{
-			drawBlockHex(coordx, coordy, x,y,z, color,8);
-			occupado[coordx][coordy].push([x,y,z]);
-			occupado[coordx][coordy].push([x,y,z+1]);
-			occupado[coordx][coordy].push([x,y,z+2]);
-			occupado[coordx][coordy].push([x,y,z+3]);
-			occupado[coordx][coordy].push([x,y,z+4]);
-			occupado[coordx][coordy].push([x,y,z+5]);
-			occupado[coordx][coordy].push([x,y,z+6]);
-			occupado[coordx][coordy].push([x,y,z+7]);
+			//drawBlockHex(coordx, coordy, x,y,z, color,8);
+			for(var b = 0; b < blocks[which].occupies.length; b++)
+			{
+				drawBlockHex(coordx, coordy, blocks[which].occupies[b][0]+x, blocks[which].occupies[b][1]+y, blocks[which].occupies[b][2]+z, color,1);
+				occupado[coordx][coordy].push([blocks[which].occupies[b][0]+x, blocks[which].occupies[b][1]+y, blocks[which].occupies[b][2]+z]);
+			}
+//			occupado[coordx][coordy].push([x,y,z]);
+//			occupado[coordx][coordy].push([x,y,z+1]);
+//			occupado[coordx][coordy].push([x,y,z+2]);
+//			occupado[coordx][coordy].push([x,y,z+3]);
+//			occupado[coordx][coordy].push([x,y,z+4]);
+//			occupado[coordx][coordy].push([x,y,z+5]);
+//			occupado[coordx][coordy].push([x,y,z+6]);
+//			occupado[coordx][coordy].push([x,y,z+7]);
 			return true;
 		}
 		else
@@ -506,6 +376,7 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 			drawBlockHex(coordx, coordy, x+2+offset, y+5, z, darkenColor(color, .90),1);
 			drawBlockHex(coordx, coordy, x+3, y+6, z, darkenColor(color, .88),1);
 			drawBlockHex(coordx, coordy, x+3+offset, y+7, z, darkenColor(color, .86),1);
+			
 			occupado[coordx][coordy].push([x,y,z]);
 			occupado[coordx][coordy].push([x+offset,y+1,z]);
 			occupado[coordx][coordy].push([x+1,y+2,z]);
