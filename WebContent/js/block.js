@@ -164,22 +164,22 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 	else if(which === 3)
 	{
 		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x-0+offset,y+1,z-1]); 
+		surroundings.push([x-1+offset,y+1,z-1]); 
 		surroundings.push([x-1,y+2,z-1]);
-		surroundings.push([x-1+offset,y+3,z-1]);
+		surroundings.push([x-2+offset,y+3,z-1]);
 		surroundings.push([x-2,y+4,z-1]);
-		surroundings.push([x-2+offset,y+5,z-1]);
+		surroundings.push([x-3+offset,y+5,z-1]);
 		surroundings.push([x-3,y+6,z-1]);
-		surroundings.push([x-3+offset,y+7,z-1]);
+		surroundings.push([x-4+offset,y+7,z-1]);
 		
 		surroundings.push([x,y,z+1]); 			// blocks above
-		surroundings.push([x-0+offset,y+1,z+1]); 
+		surroundings.push([x-1+offset,y+1,z+1]); 
 		surroundings.push([x-1,y+2,z+1]);
-		surroundings.push([x-1+offset,y+3,z+1]);
+		surroundings.push([x-2+offset,y+3,z+1]);
 		surroundings.push([x-2,y+4,z+1]);
-		surroundings.push([x-2+offset,y+5,z+1]);
+		surroundings.push([x-3+offset,y+5,z+1]);
 		surroundings.push([x-3,y+6,z+1]);
-		surroundings.push([x-3+offset,y+7,z+1]);
+		surroundings.push([x-4+offset,y+7,z+1]);
 	}	
 	else if(which === 4)
 	{
@@ -259,19 +259,55 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 	}
 	else if(which === 10)
 	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x+1,y,z-1]); 
+		surroundings.push([x+2,y,z-1]);
+		surroundings.push([x+3,y,z-1]);
 		
+		surroundings.push([x,y,z+2]); 			// blocks above
+		surroundings.push([x+1,y,z+2]); 
+		surroundings.push([x+2,y,z+2]);
+		surroundings.push([x+3,y,z+2]);
 	}
 	else if(which === 11)
 	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x-1+offset,y+1,z-1]); 
+		surroundings.push([x-1,y+2,z-1]);
+		surroundings.push([x-2+offset,y+3,z-1]);
 		
+		surroundings.push([x,y,z+2]); 			// blocks above
+		surroundings.push([x-1+offset,y+1,z+2]); 
+		surroundings.push([x-1,y+2,z+2]);
+		surroundings.push([x-2+offset,y+3,z+2]);
 	}
 	else if(which === 12)
 	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x+1,y,z-1]); 
+		surroundings.push([x+1+offset,y+1,z-1]);
+		surroundings.push([x+2+offset,y+1,z-1]);
 		
+		surroundings.push([x,y,z+2]); 			// blocks above
+		surroundings.push([x+1,y,z+2]); 
+		surroundings.push([x+1+offset,y+1,z+2]);
+		surroundings.push([x+2+offset,y+1,z+2]);
 	}
 	else if(which === 13)
 	{
+//		drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),2);
+//		drawBlockHex(coordx, coordy, x-1, y, z, darkenColor(color, .98),2);
+//		drawBlockHex(coordx, coordy, x-2+offset, y+1, z, darkenColor(color, .96),2);
+//		drawBlockHex(coordx, coordy, x-3+offset, y+1, z, darkenColor(color, .94),2);
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x-1,y,z-1]); 
+		surroundings.push([x-1+offset,y+1,z-1]);
+		surroundings.push([x-2+offset,y+1,z-1]);
 		
+		surroundings.push([x,y,z+2]); 			// blocks above
+		surroundings.push([x-1,y,z+2]); 
+		surroundings.push([x-1+offset,y+1,z+2]);
+		surroundings.push([x-2+offset,y+1,z+2]);
 	}
 	
 	var occupadolength = occupado[coordx][coordy].length;
@@ -321,13 +357,13 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 				else if(which === 3)
 				{
 					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x-0+offset,y+1,z]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
 					occupado[coordx][coordy].push([x-1,y+2,z]);
-					occupado[coordx][coordy].push([x-1+offset,y+3,z]);
-					occupado[coordx][coordy].push([x-2,y+4,z]);
-					occupado[coordx][coordy].push([x-2+offset,y+5,z]);
+					occupado[coordx][coordy].push([x-2+offset,y+3,z]);
+					occupado[coordx][coordy].push([x-2+offset,y+4,z]);
+					occupado[coordx][coordy].push([x-3+offset,y+5,z]);
 					occupado[coordx][coordy].push([x-3,y+6,z]);
-					occupado[coordx][coordy].push([x-3+offset,y+7,z]);
+					occupado[coordx][coordy].push([x-4+offset,y+7,z]);
 				}	
 				else if(which === 4)
 				{
@@ -397,19 +433,47 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 				}
 				else if(which === 10)
 				{
-					
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x+1,y,z]);
+					occupado[coordx][coordy].push([x+2,y,z]);
+					occupado[coordx][coordy].push([x+3,y,z]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x+1,y,z+1]);
+					occupado[coordx][coordy].push([x+2,y,z+1]);
+					occupado[coordx][coordy].push([x+3,y,z+1]);
 				}
 				else if(which === 11)
 				{
-					
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
+					occupado[coordx][coordy].push([x-1,y+2,z]);
+					occupado[coordx][coordy].push([x-2+offset,y+3,z]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z+1]);
+					occupado[coordx][coordy].push([x-1,y+2,z+1]);
+					occupado[coordx][coordy].push([x-2+offset,y+3,z+1]);
 				}
 				else if(which === 12)
 				{
-					
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x+1,y,z]);
+					occupado[coordx][coordy].push([x+1+offset,y+1,z]);
+					occupado[coordx][coordy].push([x+2+offset,y+1,z]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x+1,y,z+1]);
+					occupado[coordx][coordy].push([x+1+offset,y+1,z+1]);
+					occupado[coordx][coordy].push([x+2+offset,y+1,z+1]);
 				}
 				else if(which === 13)
 				{
-					
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x-1,y,z]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
+					occupado[coordx][coordy].push([x-2+offset,y+1,z]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x-1,y,z+1]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z+1]);
+					occupado[coordx][coordy].push([x-2+offset,y+1,z+1]);
 				}
 				//console.log('touches another? TRUE');
 				return true;
