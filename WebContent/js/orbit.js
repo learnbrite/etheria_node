@@ -81,10 +81,24 @@ function getRandomIntInclusive(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+//var cameraAngle = 0;
+//var orbitRange = -100;
+//var orbitSpeed = 2 * Math.PI/180;
+//var desiredAngle = 90 * Math.PI/180;
+
 function init() {
 
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
-	camera.position.z = 80;
+	//camera.position.z = 80;
+	//camera.rotation.x = 50;
+//	camera.rotation.y = 0;  // Y first
+//	camera.rotation.x = 2;  // X second
+//	camera.rotation.z = 0;
+	
+//	...
+	camera.position.set(0,-200,150);
+	//camera.lookAt(myObject.position);
+	
 
 	controls = new THREE.OrbitControls(camera);
 	controls.damping = 0.2;
@@ -105,7 +119,7 @@ function init() {
 		var created = 0;
 		var drewblock = false;
 		
-		while(created < 500)
+		while(created < 100)
 		{
 			t = getRandomIntInclusive(0,13);
 			c = getRandomIntInclusive(-50,50);
@@ -419,6 +433,12 @@ function animate() {
 
 	requestAnimationFrame(animate);
 	controls.update();
+//	if (cameraAngle == desiredAngle) { orbitSpeed = 0; }
+//	else {
+//	  cameraAngle += orbitSpeed;
+//	  camera.position.x = Math.cos(cameraAngle) * orbitRange;
+//	  camera.position.y = Math.sin(cameraAngle) * orbitRange;
+//	}
 
 }
 
