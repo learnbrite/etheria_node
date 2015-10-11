@@ -98,26 +98,42 @@ function init() {
 		generateMap(mapsize, mapsize);
 		
 //		the 6 corners
-//		drawBlock(8,8,0,-50,33,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,0,66,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,49,33,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,49,-33,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,0,-66,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-50,-33,0, 0xFF0000); // 8 high column
+		var c = 0;
+		var r = 0;
+		var t = 0;
+		var z = 0;
+		var created = 0;
+		var drewblock = false;
+		
+		while(created < 500)
+		{
+			t = getRandomIntInclusive(0,13);
+			c = getRandomIntInclusive(-50,50);
+			r = getRandomIntInclusive(-66,66);
+			z = getRandomIntInclusive(0,20);
+			drewblock = false;
+			while(drewblock == false)
+			{
+				t = getRandomIntInclusive(0,13);
+				c = getRandomIntInclusive(-50,50);
+				r = getRandomIntInclusive(-66,66);
+				z =  getRandomIntInclusive(0,20);
+				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
+			}	
+			created++;
+		}	
+		
+		//drawBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
+		
+		//drawBlock(8,8,0,5,5,0, getRandomIntInclusive(0,16777214));
+		
+		//drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
+//		drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
+//		drawBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
 //		
-//		drawBlock(8,8,6,20,20,0, 0xFF0000);
-//		drawBlock(8,8,6,-20,20,0, 0xFF0000);
-//		drawBlock(8,8,6,-20,-20,0, 0xFF0000);
-//		drawBlock(8,8,6,20,-20,0, 0xFF0000);
-		
-		drawBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
-		drawBlock(8,8,0,0,1,0, getRandomIntInclusive(0,16777214));
-		drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
-		drawBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
-		
-		drawBlock(8,8,2,6,5,0, getRandomIntInclusive(0,16777214));
-		
-		drawBlock(8,8,3,-5,-5,0, getRandomIntInclusive(0,16777214));
+//		drawBlock(8,8,2,6,5,0, getRandomIntInclusive(0,16777214));
+//		
+//		drawBlock(8,8,3,-5,-5,0, getRandomIntInclusive(0,16777214));
 		
 //		var c = 0;
 //		var r = 0;

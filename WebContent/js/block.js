@@ -58,16 +58,51 @@ for (i = 0; i < mapsize; i++) {
 // initialize occupado with the floor (all the z=-1 for the tile) 
 for (i = 0; i < mapsize; i++) {
 	for(j = 0; j < mapsize; j++) {
-		for(var row = -33; row <= 33; row++)
+		for(var row = -66; row <= 66; row++)
 		{
 			if(row % 2 !== 0 ) // odd
 				col = -50;
 			else
 				col = -49;
 			
-			for(col; col <= 49; col++)
+			if(row >= -33 && row <= 33)
 			{
-				occupado[i][j].push([col,row,-1]);
+				for(col; col <= 49; col++)
+				{
+					occupado[i][j].push([col,row,-1]);
+				}
+			}	
+			else
+			{	
+				for(col; col <= 49; col++)
+				{
+					if((row >= 0 && col >= 0) || (row < 0 && col > 0)) // first or 4th quadrants
+					{
+						if(row % 2 !== 0 ) // odd
+						{
+							if (((Math.abs(col)/3) + (Math.abs(row)/2)) <= 33)
+								occupado[i][j].push([col,row,-1]);
+						}	
+						else	// even
+						{
+							if ((((Math.abs(col)+1)/3) + ((Math.abs(row)-1)/2)) <= 33)
+								occupado[i][j].push([col,row,-1]);
+						}
+					}
+					else
+					{	
+						if(row % 2 === 0 ) // even
+						{
+							if (((Math.abs(col)/3) + (Math.abs(row)/2)) <= 33)
+								occupado[i][j].push([col,row,-1]);
+						}	
+						else	// odd
+						{
+							if ((((Math.abs(col)+1)/3) + ((Math.abs(row)-1)/2)) <= 33)
+								occupado[i][j].push([col,row,-1]);
+						}
+					}
+				}
 			}
 		}	
 	}
@@ -84,7 +119,7 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 	var surroundings = [];
 	if(which === 0) // 8 high column
 	{
-		//console.log('generating surroundings array');
+		//console.log('generating surroundings array. adding surroundings ' + " " + x + "," + y + "," + (z-1) + " and " + " " + x + "," + y + "," + (z+8));
 		surroundings.push([x,y,z-1]); // block beneath
 		surroundings.push([x,y,z+8]); // block above
 		
@@ -314,173 +349,199 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 	for(var s = 0; s < surroundings.length; s++)
 	{
 		//console.log('checking to see if surrounding block [' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "]");
-		
-		//console.log("surroundings" + surroundings[s]);
 		for(var o = 0; o < occupadolength; o++)
 		{
-			
-			if(surroundings[s][0] === occupado[coordx][coordy][o][0] && surroundings[s][1] === occupado[coordx][coordy][o][1] && surroundings[s][2] === occupado[coordx][coordy][o][2])
+		//	if( surroundings.every( function(n, i) { n === occupado[coordx][coordy][o]; } )) 	// are the two arrays equal?	
+			if(surroundings[s][0] === occupado[coordx][coordy][o][0] && surroundings[s][1] === occupado[coordx][coordy][o][1] && surroundings[s][2] === occupado[coordx][coordy][o][2]) // are the arrays equal?
 			{
-				if(which === 0)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x,y,z+2]);
-					occupado[coordx][coordy].push([x,y,z+3]);
-					occupado[coordx][coordy].push([x,y,z+4]);
-					occupado[coordx][coordy].push([x,y,z+5]);
-					occupado[coordx][coordy].push([x,y,z+6]);
-					occupado[coordx][coordy].push([x,y,z+7]);
-				}
-				else if(which === 1)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x+offset,y+1,z]);
-					occupado[coordx][coordy].push([x+1,y+2,z]);
-					occupado[coordx][coordy].push([x+1+offset,y+3,z]);
-					occupado[coordx][coordy].push([x+2,y+4,z]);
-					occupado[coordx][coordy].push([x+2+offset,y+5,z]);
-					occupado[coordx][coordy].push([x+3,y+6,z]);
-					occupado[coordx][coordy].push([x+3+offset,y+7,z]);
-				}	
-				else if(which === 2)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x+1,y,z]);
-					occupado[coordx][coordy].push([x+2,y,z]);
-					occupado[coordx][coordy].push([x+3,y,z]);
-					occupado[coordx][coordy].push([x+4,y,z]);
-					occupado[coordx][coordy].push([x+5,y,z]);
-					occupado[coordx][coordy].push([x+6,y,z]);
-					occupado[coordx][coordy].push([x+7,y,z]);
-				}	
-				else if(which === 3)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
-					occupado[coordx][coordy].push([x-1,y+2,z]);
-					occupado[coordx][coordy].push([x-2+offset,y+3,z]);
-					occupado[coordx][coordy].push([x-2+offset,y+4,z]);
-					occupado[coordx][coordy].push([x-3+offset,y+5,z]);
-					occupado[coordx][coordy].push([x-3,y+6,z]);
-					occupado[coordx][coordy].push([x-4+offset,y+7,z]);
-				}	
-				else if(which === 4)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x+1,y,z]);
-					occupado[coordx][coordy].push([x+1+offset,y+1,z]);
-					occupado[coordx][coordy].push([x+2+offset,y+1,z]);
-					occupado[coordx][coordy].push([x+3,y+2,z]);
-					occupado[coordx][coordy].push([x+4,y+2,z]);
-					occupado[coordx][coordy].push([x+4+offset,y+3,z]);
-					occupado[coordx][coordy].push([x+5+offset,y+3,z]);
-				}
-				else if(which === 5)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x-1,y,z]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
-					occupado[coordx][coordy].push([x-2+offset,y+1,z]);
-					occupado[coordx][coordy].push([x-3,y+2,z]);
-					occupado[coordx][coordy].push([x-4,y+2,z]);
-					occupado[coordx][coordy].push([x-4+offset,y+3,z]);
-					occupado[coordx][coordy].push([x-5+offset,y+3,z]);
-				}
-				else if(which === 6)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x+1,y,z]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x+1,y,z+1]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x+1,y,z+1]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x+1,y,z+1]);
-				}
-				else if(which === 7)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x+0+offset,y+1,z]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x+0+offset,y+1,z+1]);
-					occupado[coordx][coordy].push([x,y,z+2]);
-					occupado[coordx][coordy].push([x+0+offset,y+1,z+2]);
-					occupado[coordx][coordy].push([x,y,z+3]);
-					occupado[coordx][coordy].push([x+0+offset,y+1,z+3]);
-				}
-				else if(which === 8)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z+1]);
-					occupado[coordx][coordy].push([x,y,z+2]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z+2]);
-					occupado[coordx][coordy].push([x,y,z+3]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z+3]);
-				}
-				else if(which === 9)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x+offset,y+1,z]);
-					occupado[coordx][coordy].push([x+1,y+2,z]);
-					occupado[coordx][coordy].push([x+1+offset,y+3,z]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x+offset,y+1,z+1]);
-					occupado[coordx][coordy].push([x+1,y+2,z+1]);
-					occupado[coordx][coordy].push([x+1+offset,y+3,z+1]);
-				}
-				else if(which === 10)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x+1,y,z]);
-					occupado[coordx][coordy].push([x+2,y,z]);
-					occupado[coordx][coordy].push([x+3,y,z]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x+1,y,z+1]);
-					occupado[coordx][coordy].push([x+2,y,z+1]);
-					occupado[coordx][coordy].push([x+3,y,z+1]);
-				}
-				else if(which === 11)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
-					occupado[coordx][coordy].push([x-1,y+2,z]);
-					occupado[coordx][coordy].push([x-2+offset,y+3,z]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z+1]);
-					occupado[coordx][coordy].push([x-1,y+2,z+1]);
-					occupado[coordx][coordy].push([x-2+offset,y+3,z+1]);
-				}
-				else if(which === 12)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x+1,y,z]);
-					occupado[coordx][coordy].push([x+1+offset,y+1,z]);
-					occupado[coordx][coordy].push([x+2+offset,y+1,z]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x+1,y,z+1]);
-					occupado[coordx][coordy].push([x+1+offset,y+1,z+1]);
-					occupado[coordx][coordy].push([x+2+offset,y+1,z+1]);
-				}
-				else if(which === 13)
-				{
-					occupado[coordx][coordy].push([x,y,z]);
-					occupado[coordx][coordy].push([x-1,y,z]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
-					occupado[coordx][coordy].push([x-2+offset,y+1,z]);
-					occupado[coordx][coordy].push([x,y,z+1]);
-					occupado[coordx][coordy].push([x-1,y,z+1]);
-					occupado[coordx][coordy].push([x-1+offset,y+1,z+1]);
-					occupado[coordx][coordy].push([x-2+offset,y+1,z+1]);
-				}
+				
 				//console.log('touches another? TRUE');
 				return true;
 			}
 		}	
 	}	
 	//console.log('touches another? FALSE');
+	return false;
+}
+
+function wouldOverlap(coordx, coordy, which, x, y , z)
+{
+	//console.log('Checking wouldOverlap for which=' + which + " " + x + "," + y + "," + z)
+	// make an array of [x,y,z] objects this block would occupy and then check occupado to see if any of them are already occupied.
+	var offset = 0;
+	if(y % 2 !== 0) // if the starting y is odd
+		offset = 1;
+	var wouldoccupy = [];
+	if(which === 0)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x,y,z+2]);
+		wouldoccupy.push([x,y,z+3]);
+		wouldoccupy.push([x,y,z+4]);
+		wouldoccupy.push([x,y,z+5]);
+		wouldoccupy.push([x,y,z+6]);
+		wouldoccupy.push([x,y,z+7]);
+	}
+	else if(which === 1)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x+offset,y+1,z]);
+		wouldoccupy.push([x+1,y+2,z]);
+		wouldoccupy.push([x+1+offset,y+3,z]);
+		wouldoccupy.push([x+2,y+4,z]);
+		wouldoccupy.push([x+2+offset,y+5,z]);
+		wouldoccupy.push([x+3,y+6,z]);
+		wouldoccupy.push([x+3+offset,y+7,z]);
+	}	
+	else if(which === 2)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x+1,y,z]);
+		wouldoccupy.push([x+2,y,z]);
+		wouldoccupy.push([x+3,y,z]);
+		wouldoccupy.push([x+4,y,z]);
+		wouldoccupy.push([x+5,y,z]);
+		wouldoccupy.push([x+6,y,z]);
+		wouldoccupy.push([x+7,y,z]);
+	}	
+	else if(which === 3)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x-1+offset,y+1,z]);
+		wouldoccupy.push([x-1,y+2,z]);
+		wouldoccupy.push([x-2+offset,y+3,z]);
+		wouldoccupy.push([x-2+offset,y+4,z]);
+		wouldoccupy.push([x-3+offset,y+5,z]);
+		wouldoccupy.push([x-3,y+6,z]);
+		wouldoccupy.push([x-4+offset,y+7,z]);
+	}	
+	else if(which === 4)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x+1,y,z]);
+		wouldoccupy.push([x+1+offset,y+1,z]);
+		wouldoccupy.push([x+2+offset,y+1,z]);
+		wouldoccupy.push([x+3,y+2,z]);
+		wouldoccupy.push([x+4,y+2,z]);
+		wouldoccupy.push([x+4+offset,y+3,z]);
+		wouldoccupy.push([x+5+offset,y+3,z]);
+	}
+	else if(which === 5)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x-1,y,z]);
+		wouldoccupy.push([x-1+offset,y+1,z]);
+		wouldoccupy.push([x-2+offset,y+1,z]);
+		wouldoccupy.push([x-3,y+2,z]);
+		wouldoccupy.push([x-4,y+2,z]);
+		wouldoccupy.push([x-4+offset,y+3,z]);
+		wouldoccupy.push([x-5+offset,y+3,z]);
+	}
+	else if(which === 6)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x+1,y,z]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x+1,y,z+1]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x+1,y,z+1]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x+1,y,z+1]);
+	}
+	else if(which === 7)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x+0+offset,y+1,z]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x+0+offset,y+1,z+1]);
+		wouldoccupy.push([x,y,z+2]);
+		wouldoccupy.push([x+0+offset,y+1,z+2]);
+		wouldoccupy.push([x,y,z+3]);
+		wouldoccupy.push([x+0+offset,y+1,z+3]);
+	}
+	else if(which === 8)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x-1+offset,y+1,z]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x-1+offset,y+1,z+1]);
+		wouldoccupy.push([x,y,z+2]);
+		wouldoccupy.push([x-1+offset,y+1,z+2]);
+		wouldoccupy.push([x,y,z+3]);
+		wouldoccupy.push([x-1+offset,y+1,z+3]);
+	}
+	else if(which === 9)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x+offset,y+1,z]);
+		wouldoccupy.push([x+1,y+2,z]);
+		wouldoccupy.push([x+1+offset,y+3,z]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x+offset,y+1,z+1]);
+		wouldoccupy.push([x+1,y+2,z+1]);
+		wouldoccupy.push([x+1+offset,y+3,z+1]);
+	}
+	else if(which === 10)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x+1,y,z]);
+		wouldoccupy.push([x+2,y,z]);
+		wouldoccupy.push([x+3,y,z]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x+1,y,z+1]);
+		wouldoccupy.push([x+2,y,z+1]);
+		wouldoccupy.push([x+3,y,z+1]);
+	}
+	else if(which === 11)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x-1+offset,y+1,z]);
+		wouldoccupy.push([x-1,y+2,z]);
+		wouldoccupy.push([x-2+offset,y+3,z]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x-1+offset,y+1,z+1]);
+		wouldoccupy.push([x-1,y+2,z+1]);
+		wouldoccupy.push([x-2+offset,y+3,z+1]);
+	}
+	else if(which === 12)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x+1,y,z]);
+		wouldoccupy.push([x+1+offset,y+1,z]);
+		wouldoccupy.push([x+2+offset,y+1,z]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x+1,y,z+1]);
+		wouldoccupy.push([x+1+offset,y+1,z+1]);
+		wouldoccupy.push([x+2+offset,y+1,z+1]);
+	}
+	else if(which === 13)
+	{
+		wouldoccupy.push([x,y,z]);
+		wouldoccupy.push([x-1,y,z]);
+		wouldoccupy.push([x-1+offset,y+1,z]);
+		wouldoccupy.push([x-2+offset,y+1,z]);
+		wouldoccupy.push([x,y,z+1]);
+		wouldoccupy.push([x-1,y,z+1]);
+		wouldoccupy.push([x-1+offset,y+1,z+1]);
+		wouldoccupy.push([x-2+offset,y+1,z+1]);
+	}
+	
+	for(var w = 0; w < wouldoccupy.length; w++)
+	{
+		//console.log('w=' + w + " " + wouldoccupy[w][0] + "," + wouldoccupy[w][1] + "," + wouldoccupy[w][2]);
+		for(var o = 0; o < occupado[coordx][coordy].length; o++)
+		{
+			//console.log('o=' + o);
+			if(wouldoccupy[w][0] === occupado[coordx][coordy][o][0] && wouldoccupy[w][1] === occupado[coordx][coordy][o][1] && wouldoccupy[w][2] === occupado[coordx][coordy][o][2]) // are the arrays equal?
+			{
+				console.log('[' + wouldoccupy[w][0] + "," + wouldoccupy[w][1] + "," + wouldoccupy[w][2] + "] is contained in occupado[" + coordx + "][" + coordy + "]");
+				console.log(occupado[coordx][coordy][o]);
+				console.log('would occupy');
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
@@ -504,29 +565,28 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	{
 		// -50 && y even == out of bounds
 		// -50 && y odd == OK
-		if(blockHexCoordsValid(x,y) && touchesAnother(coordx, coordy, which, x, y, z))
+		//console.log('drawblock xyz=' + x + "," + y + "," + z + " wouldoverlap="  + wouldOverlap(coordx,coordy,which,x,y,z) + ' touchesanother=' + touchesAnother(coordx, coordy, which, x, y, z));
+		if(blockHexCoordsValid(x,y)  && !wouldOverlap(coordx,coordy,which,x,y,z) && touchesAnother(coordx, coordy, which, x, y, z))
 		{
-//			xyz = [];
-//			xyz.push(x); xyz.push(y); xyz.push(z);
-//			centers.push(xyz);
 			drawBlockHex(coordx, coordy, x,y,z, color,8);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x,y,z+1]);
+			occupado[coordx][coordy].push([x,y,z+2]);
+			occupado[coordx][coordy].push([x,y,z+3]);
+			occupado[coordx][coordy].push([x,y,z+4]);
+			occupado[coordx][coordy].push([x,y,z+5]);
+			occupado[coordx][coordy].push([x,y,z+6]);
+			occupado[coordx][coordy].push([x,y,z+7]);
 			return true;
 		}
 		else
 			return false;
-//		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .98),1);
-//		drawBlockHex(coordx, coordy, x, y, z+2, darkenColor(color, .96),1);
-//		drawBlockHex(coordx, coordy, x, y, z+3, darkenColor(color, .94),1);
-//		drawBlockHex(coordx, coordy, x, y, z+4, darkenColor(color, .92),1);
-//		drawBlockHex(coordx, coordy, x, y, z+5, darkenColor(color, .90),1);
-//		drawBlockHex(coordx, coordy, x, y, z+6, darkenColor(color, .88),1);
-//		drawBlockHex(coordx, coordy, x, y, z+7, darkenColor(color, .86),1);
 	}	
 	else if(which === 1) // diagonal beam ne/sw
 	{
 		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+offset, y+1) && blockHexCoordsValid(x+1, y+2) && blockHexCoordsValid(x+1+offset, y+3) &&
 				blockHexCoordsValid(x+2, y+4) && blockHexCoordsValid(x+2+offset, y+5) && blockHexCoordsValid(x+3, y+6) && blockHexCoordsValid(x+3+offset, y+7)
-				&& touchesAnother(coordx, coordy, which, x, y, z))
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))
 		{	
 			drawBlockHex(coordx, coordy, x, y, z, color,1);
 			drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),1);
@@ -536,6 +596,14 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 			drawBlockHex(coordx, coordy, x+2+offset, y+5, z, darkenColor(color, .90),1);
 			drawBlockHex(coordx, coordy, x+3, y+6, z, darkenColor(color, .88),1);
 			drawBlockHex(coordx, coordy, x+3+offset, y+7, z, darkenColor(color, .86),1);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x+offset,y+1,z]);
+			occupado[coordx][coordy].push([x+1,y+2,z]);
+			occupado[coordx][coordy].push([x+1+offset,y+3,z]);
+			occupado[coordx][coordy].push([x+2,y+4,z]);
+			occupado[coordx][coordy].push([x+2+offset,y+5,z]);
+			occupado[coordx][coordy].push([x+3,y+6,z]);
+			occupado[coordx][coordy].push([x+3+offset,y+7,z]);
 			return true;
 		}
 		else
@@ -544,7 +612,8 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	else if(which === 2) // horizontal beam
 	{
 		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+2, y) && blockHexCoordsValid(x+3, y) &&
-				blockHexCoordsValid(x+4, y) && blockHexCoordsValid(x+5, y) && blockHexCoordsValid(x+6, y) && blockHexCoordsValid(x+7, y))
+				blockHexCoordsValid(x+4, y) && blockHexCoordsValid(x+5, y) && blockHexCoordsValid(x+6, y) && blockHexCoordsValid(x+7, y)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))
 		{	
 			drawBlockHex(coordx, coordy, x, y, z, color,1);
 			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),1);
@@ -554,6 +623,14 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 			drawBlockHex(coordx, coordy, x+5, y, z, darkenColor(color, .90),1);
 			drawBlockHex(coordx, coordy, x+6, y, z, darkenColor(color, .88),1);
 			drawBlockHex(coordx, coordy, x+7, y, z, darkenColor(color, .86),1);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x+1,y,z]);
+			occupado[coordx][coordy].push([x+2,y,z]);
+			occupado[coordx][coordy].push([x+3,y,z]);
+			occupado[coordx][coordy].push([x+4,y,z]);
+			occupado[coordx][coordy].push([x+5,y,z]);
+			occupado[coordx][coordy].push([x+6,y,z]);
+			occupado[coordx][coordy].push([x+7,y,z]);
 			return true;
 		}
 		else
@@ -562,7 +639,8 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	else if(which === 3) // diagonal beam nw/se
 	{
 		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1+offset, y+1) && blockHexCoordsValid(x-1, y+2) && blockHexCoordsValid(x-2+offset, y+3) &&
-				blockHexCoordsValid(x-2, y+4) && blockHexCoordsValid(x-3+offset, y+5) && blockHexCoordsValid(x-3, y+6) && blockHexCoordsValid(x-4+offset, y+7))
+				blockHexCoordsValid(x-2, y+4) && blockHexCoordsValid(x-3+offset, y+5) && blockHexCoordsValid(x-3, y+6) && blockHexCoordsValid(x-4+offset, y+7)
+					&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{	
 			drawBlockHex(coordx, coordy, x, y, z, color,1);
 			drawBlockHex(coordx, coordy, x-1+offset, y+1, z, darkenColor(color, .98),1);
@@ -572,6 +650,14 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 			drawBlockHex(coordx, coordy, x-3+offset, y+5, z, darkenColor(color, .90),1);
 			drawBlockHex(coordx, coordy, x-3, y+6, z, darkenColor(color, .88),1);
 			drawBlockHex(coordx, coordy, x-4+offset, y+7, z, darkenColor(color, .86),1);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z]);
+			occupado[coordx][coordy].push([x-1,y+2,z]);
+			occupado[coordx][coordy].push([x-2+offset,y+3,z]);
+			occupado[coordx][coordy].push([x-2,y+4,z]);
+			occupado[coordx][coordy].push([x-3+offset,y+5,z]);
+			occupado[coordx][coordy].push([x-3,y+6,z]);
+			occupado[coordx][coordy].push([x-4+offset,y+7,z]);
 			return true;
 		}
 		else
@@ -580,7 +666,8 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	else if(which === 4) // diagonal snake sw/ne
 	{
 		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+1+offset, y+1) && blockHexCoordsValid(x+2+offset, y+1) &&
-				blockHexCoordsValid(x+3, y+2) && blockHexCoordsValid(x+4, y+2) && blockHexCoordsValid(x+4+offset, y+3) && blockHexCoordsValid(x+5+offset, y+3))
+				blockHexCoordsValid(x+3, y+2) && blockHexCoordsValid(x+4, y+2) && blockHexCoordsValid(x+4+offset, y+3) && blockHexCoordsValid(x+5+offset, y+3)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{	
 			drawBlockHex(coordx, coordy, x, y, z, color,1);
 			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),1);
@@ -590,6 +677,14 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 			drawBlockHex(coordx, coordy, x+4, y+2, z, darkenColor(color, .90),1);
 			drawBlockHex(coordx, coordy, x+4+offset, y+3, z, darkenColor(color, .88),1);
 			drawBlockHex(coordx, coordy, x+5+offset, y+3, z, darkenColor(color, .86),1);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x+1,y,z]);
+			occupado[coordx][coordy].push([x+1+offset,y+1,z]);
+			occupado[coordx][coordy].push([x+2+offset,y+1,z]);
+			occupado[coordx][coordy].push([x+3,y+2,z]);
+			occupado[coordx][coordy].push([x+4,y+2,z]);
+			occupado[coordx][coordy].push([x+4+offset,y+3,z]);
+			occupado[coordx][coordy].push([x+5+offset,y+3,z]);
 			return true;
 		}
 		else
@@ -598,7 +693,8 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	else if(which === 5) // diagonal snake se/nw
 	{
 		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1, y) && blockHexCoordsValid(x-2+offset, y+1) && blockHexCoordsValid(x-3+offset, y+1) &&
-				blockHexCoordsValid(x-3, y+2) && blockHexCoordsValid(x-4, y+2) && blockHexCoordsValid(x-5+offset, y+3) && blockHexCoordsValid(x-6+offset, y+3))
+				blockHexCoordsValid(x-3, y+2) && blockHexCoordsValid(x-4, y+2) && blockHexCoordsValid(x-5+offset, y+3) && blockHexCoordsValid(x-6+offset, y+3)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{
 			drawBlockHex(coordx, coordy, x, y, z, color,1);
 			drawBlockHex(coordx, coordy, x-1, y, z, darkenColor(color, .98),1);
@@ -608,6 +704,14 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 			drawBlockHex(coordx, coordy, x-4, y+2, z, darkenColor(color, .90),1);
 			drawBlockHex(coordx, coordy, x-5+offset, y+3, z, darkenColor(color, .88),1);
 			drawBlockHex(coordx, coordy, x-6+offset, y+3, z, darkenColor(color, .86),1);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x-1,y,z]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z]);
+			occupado[coordx][coordy].push([x-2+offset,y+1,z]);
+			occupado[coordx][coordy].push([x-3,y+2,z]);
+			occupado[coordx][coordy].push([x-4,y+2,z]);
+			occupado[coordx][coordy].push([x-4+offset,y+3,z]);
+			occupado[coordx][coordy].push([x-5+offset,y+3,z]);
 			return true;
 		}
 		else
@@ -615,124 +719,147 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 	else if(which === 6) // quadruple-decker double-tower horizontal
 	{
-		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y))
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{
-//			xyz = [];
-//			xyz.push(x); xyz.push(y); xyz.push(z);
-//			centers.push(xyz);
-//			xyz = [];
-//			xyz.push(x+1); xyz.push(y); xyz.push(z);
-//			centers.push(xyz);
 			drawBlockHex(coordx, coordy, x,y,z, color, 4);
 			drawBlockHex(coordx, coordy, x+1,y,z, color, 4);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x+1,y,z]);
+			occupado[coordx][coordy].push([x,y,z+1]);
+			occupado[coordx][coordy].push([x+1,y,z+1]);
+			occupado[coordx][coordy].push([x,y,z+2]);
+			occupado[coordx][coordy].push([x+1,y,z+2]);
+			occupado[coordx][coordy].push([x,y,z+3]);
+			occupado[coordx][coordy].push([x+1,y,z+3]);
 			return true;
 		}
 		else
 			return false;
-//		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .96),1);
-//		drawBlockHex(coordx, coordy, x+1, y, z+1, darkenColor(color, .94),1);
-//		drawBlockHex(coordx, coordy, x, y, z+2, darkenColor(color, .92),1);
-//		drawBlockHex(coordx, coordy, x+1, y, z+2, darkenColor(color, .90),1);
-//		drawBlockHex(coordx, coordy, x, y, z+3, darkenColor(color, .88),1);
-//		drawBlockHex(coordx, coordy, x+1, y, z+3, darkenColor(color, .86),1);
 	}
 	else if(which === 7) // quadruple-decker double-tower diagonal sw/ne
 	{
-		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+offset, y+1))
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+offset, y+1)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{
 			drawBlockHex(coordx, coordy, x, y, z, color,4);
 			drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),4);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x+0+offset,y+1,z]);
+			occupado[coordx][coordy].push([x,y,z+1]);
+			occupado[coordx][coordy].push([x+0+offset,y+1,z+1]);
+			occupado[coordx][coordy].push([x,y,z+2]);
+			occupado[coordx][coordy].push([x+0+offset,y+1,z+2]);
+			occupado[coordx][coordy].push([x,y,z+3]);
+			occupado[coordx][coordy].push([x+0+offset,y+1,z+3]);
 			return true;
 		}
 		else
 			return false;
-//		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .96),1);
-//		drawBlockHex(coordx, coordy, x+offset, y+1, z+1, darkenColor(color, .94),1);
-//		drawBlockHex(coordx, coordy, x, y, z+2, darkenColor(color, .92),1);
-//		drawBlockHex(coordx, coordy, x+offset, y+1, z+2, darkenColor(color, .90),1);
-//		drawBlockHex(coordx, coordy, x, y, z+3, darkenColor(color, .88),1);
-//		drawBlockHex(coordx, coordy, x+offset, y+1, z+3, darkenColor(color, .86),1);
 	}
 	else if(which === 8) // quadruple-decker double-tower diagonal se/nw
 	{
-		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1+offset, y+1))
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1+offset, y+1)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{
 			drawBlockHex(coordx, coordy, x, y, z, color,4);
 			drawBlockHex(coordx, coordy, x-1+offset, y+1, z, darkenColor(color, .98),4);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z]);
+			occupado[coordx][coordy].push([x,y,z+1]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z+1]);
+			occupado[coordx][coordy].push([x,y,z+2]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z+2]);
+			occupado[coordx][coordy].push([x,y,z+3]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z+3]);
 			return true;
 		}
 		else
 			return false;
-//		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .96),1);
-//		drawBlockHex(coordx, coordy, x-1+offset, y+1, z+1, darkenColor(color, .94),1);
-//		drawBlockHex(coordx, coordy, x, y, z+2, darkenColor(color, .92),1);
-//		drawBlockHex(coordx, coordy, x-1+offset, y+1, z+2, darkenColor(color, .90),1);
-//		drawBlockHex(coordx, coordy, x, y, z+3, darkenColor(color, .88),1);
-//		drawBlockHex(coordx, coordy, x-1+offset, y+1, z+3, darkenColor(color, .86),1);
 	}
 	else if(which === 9) // double-decker diagonal beam ne/sw
 	{
-		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+offset, y+1) && blockHexCoordsValid(x+1,y+2) && blockHexCoordsValid(x+1+offset, y+3))
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+offset, y+1) && blockHexCoordsValid(x+1,y+2) && blockHexCoordsValid(x+1+offset, y+3)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{
 			drawBlockHex(coordx, coordy, x, y, z, color,2);
 			drawBlockHex(coordx, coordy, x+offset, y+1, z, darkenColor(color, .98),2);
 			drawBlockHex(coordx, coordy, x+1, y+2, z, darkenColor(color, .96),2);
 			drawBlockHex(coordx, coordy, x+1+offset, y+3, z, darkenColor(color, .94),2);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x+offset,y+1,z]);
+			occupado[coordx][coordy].push([x+1,y+2,z]);
+			occupado[coordx][coordy].push([x+1+offset,y+3,z]);
+			occupado[coordx][coordy].push([x,y,z+1]);
+			occupado[coordx][coordy].push([x+offset,y+1,z+1]);
+			occupado[coordx][coordy].push([x+1,y+2,z+1]);
+			occupado[coordx][coordy].push([x+1+offset,y+3,z+1]);
 			return true;
 		}
 		else
 			return false;
-//		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
-//		drawBlockHex(coordx, coordy, x+offset, y+1, z+1, darkenColor(color, .90),1);
-//		drawBlockHex(coordx, coordy, x+1, y+2, z+1, darkenColor(color, .88),1);
-//		drawBlockHex(coordx, coordy, x+1+offset, y+3, z+1, darkenColor(color, .86),1);
 	}
 	else if(which === 10) // double-decker horizontal beam
 	{
-		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+2,y) && blockHexCoordsValid(x+3, y))
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+2,y) && blockHexCoordsValid(x+3, y)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{
 			drawBlockHex(coordx, coordy, x, y, z, color,2);
 			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),2);
 			drawBlockHex(coordx, coordy, x+2, y, z, darkenColor(color, .96),2);
 			drawBlockHex(coordx, coordy, x+3, y, z, darkenColor(color, .94),2);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x+1,y,z]);
+			occupado[coordx][coordy].push([x+2,y,z]);
+			occupado[coordx][coordy].push([x+3,y,z]);
+			occupado[coordx][coordy].push([x,y,z+1]);
+			occupado[coordx][coordy].push([x+1,y,z+1]);
+			occupado[coordx][coordy].push([x+2,y,z+1]);
+			occupado[coordx][coordy].push([x+3,y,z+1]);
 			return true;
 		}
 		else
 			return false;
-//		drawBlockHex(coordx, coordy, x+0, y, z+1, darkenColor(color, .92),1);
-//		drawBlockHex(coordx, coordy, x+1, y, z+1, darkenColor(color, .90),1);
-//		drawBlockHex(coordx, coordy, x+2, y, z+1, darkenColor(color, .88),1);
-//		drawBlockHex(coordx, coordy, x+3, y, z+1, darkenColor(color, .86),1);
 	}
 	else if(which === 11) // double-decker diagonal beam nw/se
 	{
-		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1+offset, y+1) && blockHexCoordsValid(x-1,y+2) && blockHexCoordsValid(x-2+offset, y+3))
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1+offset, y+1) && blockHexCoordsValid(x-1,y+2) && blockHexCoordsValid(x-2+offset, y+3)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{
 			drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),2);
 			drawBlockHex(coordx, coordy, x-1+offset, y+1, z, darkenColor(color, .98),2);
 			drawBlockHex(coordx, coordy, x-1, y+2, z, darkenColor(color, .96),2);
 			drawBlockHex(coordx, coordy, x-2+offset, y+3, z, darkenColor(color, .94),2);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z]);
+			occupado[coordx][coordy].push([x-1,y+2,z]);
+			occupado[coordx][coordy].push([x-2+offset,y+3,z]);
+			occupado[coordx][coordy].push([x,y,z+1]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z+1]);
+			occupado[coordx][coordy].push([x-1,y+2,z+1]);
+			occupado[coordx][coordy].push([x-2+offset,y+3,z+1]);
 			return true;
 		}
 		else
 			return false;
-//		drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
-//		drawBlockHex(coordx, coordy, x-1+offset, y+1, z+1, darkenColor(color, .90),1);
-//		drawBlockHex(coordx, coordy, x-1, y+2, z+1, darkenColor(color, .88),1);
-//		drawBlockHex(coordx, coordy, x-2+offset, y+3, z+1, darkenColor(color, .86),1);
 	}
 	else if(which === 12) // diagonal snake sw/ne
 	{
-		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+1+offset, y+1) && blockHexCoordsValid(x+2+offset, y+1))
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x+1, y) && blockHexCoordsValid(x+1+offset, y+1) && blockHexCoordsValid(x+2+offset, y+1)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{
 			drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),2);
 			drawBlockHex(coordx, coordy, x+1, y, z, darkenColor(color, .98),2);
 			drawBlockHex(coordx, coordy, x+1+offset, y+1, z, darkenColor(color, .96),2);
 			drawBlockHex(coordx, coordy, x+2+offset, y+1, z, darkenColor(color, .94),2);
-//			drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
-//			drawBlockHex(coordx, coordy, x+1, y, z+1, darkenColor(color, .90),1);
-//			drawBlockHex(coordx, coordy, x+1+offset, y+1, z+1, darkenColor(color, .88),1);
-//			drawBlockHex(coordx, coordy, x+2+offset, y+1, z+1, darkenColor(color, .86),1);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x+1,y,z]);
+			occupado[coordx][coordy].push([x+1+offset,y+1,z]);
+			occupado[coordx][coordy].push([x+2+offset,y+1,z]);
+			occupado[coordx][coordy].push([x,y,z+1]);
+			occupado[coordx][coordy].push([x+1,y,z+1]);
+			occupado[coordx][coordy].push([x+1+offset,y+1,z+1]);
+			occupado[coordx][coordy].push([x+2+offset,y+1,z+1]);
 			return true;
 		}
 		else
@@ -740,21 +867,27 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 	else if(which === 13) // diagonal snake se/nw
 	{
-		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1, y) && blockHexCoordsValid(x-2+offset, y+1) && blockHexCoordsValid(x-3+offset, y+1))
+		if(blockHexCoordsValid(x,y) && blockHexCoordsValid(x-1, y) && blockHexCoordsValid(x-2+offset, y+1) && blockHexCoordsValid(x-3+offset, y+1)
+				&& touchesAnother(coordx, coordy, which, x, y, z) && !wouldOverlap(coordx,coordy,which,x,y,z))		
 		{
 			drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),2);
 			drawBlockHex(coordx, coordy, x-1, y, z, darkenColor(color, .98),2);
 			drawBlockHex(coordx, coordy, x-2+offset, y+1, z, darkenColor(color, .96),2);
 			drawBlockHex(coordx, coordy, x-3+offset, y+1, z, darkenColor(color, .94),2);
-//			drawBlockHex(coordx, coordy, x, y, z+1, darkenColor(color, .92),1);
-//			drawBlockHex(coordx, coordy, x-1, y, z+1, darkenColor(color, .90),1);
-//			drawBlockHex(coordx, coordy, x-2+offset, y+1, z+1, darkenColor(color, .88),1);
-//			drawBlockHex(coordx, coordy, x-3+offset, y+1, z+1, darkenColor(color, .86),1);
+			occupado[coordx][coordy].push([x,y,z]);
+			occupado[coordx][coordy].push([x-1,y,z]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z]);
+			occupado[coordx][coordy].push([x-2+offset,y+1,z]);
+			occupado[coordx][coordy].push([x,y,z+1]);
+			occupado[coordx][coordy].push([x-1,y,z+1]);
+			occupado[coordx][coordy].push([x-1+offset,y+1,z+1]);
+			occupado[coordx][coordy].push([x-2+offset,y+1,z+1]);
 			return true;
 		}
 		else
 			return false;
 	}
+	
 }
 
 var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
