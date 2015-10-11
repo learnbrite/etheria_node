@@ -113,8 +113,11 @@ function init() {
 		drawBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
 		drawBlock(8,8,0,0,1,0, getRandomIntInclusive(0,16777214));
 		drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
-//		
 		drawBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
+		
+		drawBlock(8,8,2,6,5,0, getRandomIntInclusive(0,16777214));
+		
+		drawBlock(8,8,3,-5,-5,0, getRandomIntInclusive(0,16777214));
 		
 //		var c = 0;
 //		var r = 0;

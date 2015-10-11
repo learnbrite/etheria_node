@@ -88,18 +88,18 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 		surroundings.push([x,y,z-1]); // block beneath
 		surroundings.push([x,y,z+8]); // block above
 		
-		if(stickyblocks === true)
-		{	
-			for(var rings = z+0; rings < z+8; rings++)
-			{
-				surroundings.push([x+offset,y+1,rings]); 	// NE
-				surroundings.push([x+1,y,rings]); 			// E 
-				surroundings.push([x+offset,y-1,rings]);	// SE
-				surroundings.push([x-offset,y-1,rings]);	// SW
-				surroundings.push([x-1,y,rings]);			// W
-				surroundings.push([x-offset,y+1,rings]); 	// NW
-			}
-		}
+//		if(stickyblocks === true)
+//		{	
+//			for(var rings = z+0; rings < z+8; rings++)
+//			{
+//				surroundings.push([x+offset,y+1,rings]); 	// NE
+//				surroundings.push([x+1,y,rings]); 			// E 
+//				surroundings.push([x+offset,y-1,rings]);	// SE
+//				surroundings.push([x-offset,y-1,rings]);	// SW
+//				surroundings.push([x-1,y,rings]);			// W
+//				surroundings.push([x-offset,y+1,rings]); 	// NW
+//			}
+//		}
 	}
 	else if(which === 1)
 	{
@@ -121,51 +121,172 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 		surroundings.push([x+3,y+6,z+1]);
 		surroundings.push([x+3+offset,y+7,z+1]);
 	}	
+	else if(which === 2)
+	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x+offset,y+1,z-1]); 
+		surroundings.push([x+1,y+2,z-1]);
+		surroundings.push([x+1+offset,y+3,z-1]);
+		surroundings.push([x+2,y+4,z-1]);
+		surroundings.push([x+2+offset,y+5,z-1]);
+		surroundings.push([x+3,y+6,z-1]);
+		surroundings.push([x+3+offset,y+7,z-1]);
+		
+		surroundings.push([x,y,z+1]); 			// blocks above
+		surroundings.push([x+offset,y+1,z+1]); 
+		surroundings.push([x+1,y+2,z+1]);
+		surroundings.push([x+1+offset,y+3,z+1]);
+		surroundings.push([x+2,y+4,z+1]);
+		surroundings.push([x+2+offset,y+5,z+1]);
+		surroundings.push([x+3,y+6,z+1]);
+		surroundings.push([x+3+offset,y+7,z+1]);
+	}	
+	else if(which === 2)
+	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x+1,y,z-1]); 
+		surroundings.push([x+2,y,z-1]);
+		surroundings.push([x+3,y,z-1]);
+		surroundings.push([x+4,y,z-1]);
+		surroundings.push([x+5,y,z-1]);
+		surroundings.push([x+6,y,z-1]);
+		surroundings.push([x+7,y,z-1]);
+		
+		surroundings.push([x,y,z+1]); 			// blocks above
+		surroundings.push([x+1,y,z+1]); 
+		surroundings.push([x+2,y,z+1]);
+		surroundings.push([x+3,y,z+1]);
+		surroundings.push([x+4,y,z+1]);
+		surroundings.push([x+5,y,z+1]);
+		surroundings.push([x+6,y,z+1]);
+		surroundings.push([x+7,y,z+1]);
+	}	
+	else if(which === 3)
+	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x-0+offset,y+1,z-1]); 
+		surroundings.push([x-1,y+2,z-1]);
+		surroundings.push([x-1+offset,y+3,z-1]);
+		surroundings.push([x-2,y+4,z-1]);
+		surroundings.push([x-2+offset,y+5,z-1]);
+		surroundings.push([x-3,y+6,z-1]);
+		surroundings.push([x-3+offset,y+7,z-1]);
+		
+		surroundings.push([x,y,z+1]); 			// blocks above
+		surroundings.push([x-0+offset,y+1,z+1]); 
+		surroundings.push([x-1,y+2,z+1]);
+		surroundings.push([x-1+offset,y+3,z+1]);
+		surroundings.push([x-2,y+4,z+1]);
+		surroundings.push([x-2+offset,y+5,z+1]);
+		surroundings.push([x-3,y+6,z+1]);
+		surroundings.push([x-3+offset,y+7,z+1]);
+	}	
+	else if(which === 4)
+	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x+1,y,z-1]); 
+		surroundings.push([x+1+offset,y+1,z-1]);
+		surroundings.push([x+2+offset,y+1,z-1]);
+		surroundings.push([x+3,y+2,z-1]);
+		surroundings.push([x+4,y+2,z-1]);
+		surroundings.push([x+4+offset,y+3,z-1]);
+		surroundings.push([x+5+offset,y+3,z-1]);
+		
+		surroundings.push([x,y,z+1]); 			// blocks above
+		surroundings.push([x+1,y,z+1]); 
+		surroundings.push([x+1+offset,y+1,z+1]);
+		surroundings.push([x+2+offset,y+1,z+1]);
+		surroundings.push([x+3,y+2,z+1]);
+		surroundings.push([x+4,y+2,z+1]);
+		surroundings.push([x+4+offset,y+3,z+1]);
+		surroundings.push([x+5+offset,y+3,z+1]);
+	}	
+	else if(which === 5)
+	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x-1,y,z-1]); 
+		surroundings.push([x-1+offset,y+1,z-1]);
+		surroundings.push([x-2+offset,y+1,z-1]);
+		surroundings.push([x-3,y+2,z-1]);
+		surroundings.push([x-4,y+2,z-1]);
+		surroundings.push([x-4+offset,y+3,z-1]);
+		surroundings.push([x-5+offset,y+3,z-1]);
+		
+		surroundings.push([x,y,z+1]); 			// blocks above
+		surroundings.push([x-1,y,z+1]); 
+		surroundings.push([x-1+offset,y+1,z+1]);
+		surroundings.push([x-2+offset,y+1,z+1]);
+		surroundings.push([x-3,y+2,z+1]);
+		surroundings.push([x-4,y+2,z+1]);
+		surroundings.push([x-4+offset,y+3,z+1]);
+		surroundings.push([x-5+offset,y+3,z+1]);
+	}
+	else if(which === 6)
+	{
+		surroundings.push([x,y,z-1]);	// blocks beneath 	
+		surroundings.push([x+1,y,z-1]); 	
+		
+		surroundings.push([x,y,z+4]);	// blocks above 	
+		surroundings.push([x+1,y,z+4]); 	
+	}
+	else if(which === 7)
+	{
+		surroundings.push([x,y,z-1]);	// blocks beneath 	
+		surroundings.push([x+0+offset,y+1,z-1]); 	
+		
+		surroundings.push([x,y,z+4]);	// blocks above 	
+		surroundings.push([x+0+offset,y+1,z+4]); 	
+	}
+	else if(which === 8)
+	{
+		surroundings.push([x,y,z-1]);	// blocks beneath 	
+		surroundings.push([x-1+offset,y+1,z-1]); 	
+		
+		surroundings.push([x,y,z+4]);	// blocks above 	
+		surroundings.push([x-1+offset,y+1,z+4]); 	
+	}
+	else if(which === 9)
+	{
+		surroundings.push([x,y,z-1]); 			// blocks beneath
+		surroundings.push([x+offset,y+1,z-1]); 
+		surroundings.push([x+1,y+2,z-1]);
+		surroundings.push([x+1+offset,y+3,z-1]);
+		
+		surroundings.push([x,y,z+2]); 			// blocks above
+		surroundings.push([x+offset,y+1,z+2]); 
+		surroundings.push([x+1,y+2,z+2]);
+		surroundings.push([x+1+offset,y+3,z+2]);
+	}
+	else if(which === 10)
+	{
+		
+	}
+	else if(which === 11)
+	{
+		
+	}
+	else if(which === 12)
+	{
+		
+	}
+	else if(which === 13)
+	{
+		
+	}
 	
 	var occupadolength = occupado[coordx][coordy].length;
 	for(var s = 0; s < surroundings.length; s++)
 	{
-		if(which === 1)
-			console.log('checking to see if surrounding block [' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "]");
+		//console.log('checking to see if surrounding block [' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "]");
 		
 		//console.log("surroundings" + surroundings[s]);
 		for(var o = 0; o < occupadolength; o++)
 		{
 			
-			//for(var o = 0; o < occupadolength; o++)
-			//{
-			//	console.log("occupado " + occupado[coordx][coordy][o]);
-			//}
-			//if($.inArray(surroundings[s], occupado[coordx][coordy]) !== -1)
 			if(surroundings[s][0] === occupado[coordx][coordy][o][0] && surroundings[s][1] === occupado[coordx][coordy][o][1] && surroundings[s][2] === occupado[coordx][coordy][o][2])
 			{
-				if(surroundings[s] == occupado[coordx][coordy][o])
-					console.log('inARRAY! double equals');
-				else
-				{
-					if(occupado[coordx][coordy][o][0] === 0 && occupado[coordx][coordy][o][1] === 0 && occupado[coordx][coordy][o][2] === -1)
-					{	
-						//console.log('not inArray surroundings[' + s + ']=[' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "][" + o + '] =' + occupado[coordx][coordy][o]);
-						console.log("no match occupado 0,0,-1 double equals s ", surroundings[s]);
-						console.log("no match occupado 0,0,-1 double equals o ", occupado[coordx][coordy][o]);
-					}
-				}
-				
-				if($.inArray(surroundings[s], occupado[coordx][coordy]) != -1)
-					console.log('inARRAY!');
-				else
-				{
-					if(occupado[coordx][coordy][o][0] === 0 && occupado[coordx][coordy][o][1] === 0 && occupado[coordx][coordy][o][2] === -1)
-					{
-						//console.log('not inArray surroundings[' + s + ']=[' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "][" + o + '] =' + occupado[coordx][coordy][o]);
-						console.log("no match occupado 0,0,-1 inarray s ", surroundings[s]);
-						console.log("no match occupado 0,0,-1 inarray o ", occupado[coordx][coordy][o]);
-					}
-				}
-				
 				if(which === 0)
 				{
-					//console.log("which === 0, adding 8 blocks to occupado (length=" + occupado[coordx][coordy].length + ")");
 					occupado[coordx][coordy].push([x,y,z]);
 					occupado[coordx][coordy].push([x,y,z+1]);
 					occupado[coordx][coordy].push([x,y,z+2]);
@@ -174,11 +295,9 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 					occupado[coordx][coordy].push([x,y,z+5]);
 					occupado[coordx][coordy].push([x,y,z+6]);
 					occupado[coordx][coordy].push([x,y,z+7]);
-					//console.log("which === 0, DONE adding 8 blocks to occupado (length=" + occupado[coordx][coordy].length + ")");
 				}
 				else if(which === 1)
 				{
-					console.log("which === 1, adding 8 blocks to occupado (length=" + occupado[coordx][coordy].length + ")");
 					occupado[coordx][coordy].push([x,y,z]);
 					occupado[coordx][coordy].push([x+offset,y+1,z]);
 					occupado[coordx][coordy].push([x+1,y+2,z]);
@@ -187,16 +306,117 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 					occupado[coordx][coordy].push([x+2+offset,y+5,z]);
 					occupado[coordx][coordy].push([x+3,y+6,z]);
 					occupado[coordx][coordy].push([x+3+offset,y+7,z]);
-					console.log("which === 1, adding 8 blocks to occupado (length=" + occupado[coordx][coordy].length + ")");
 				}	
-				if(which === 1)
-					console.log('touches another? TRUE');
+				else if(which === 2)
+				{
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x+1,y,z]);
+					occupado[coordx][coordy].push([x+2,y,z]);
+					occupado[coordx][coordy].push([x+3,y,z]);
+					occupado[coordx][coordy].push([x+4,y,z]);
+					occupado[coordx][coordy].push([x+5,y,z]);
+					occupado[coordx][coordy].push([x+6,y,z]);
+					occupado[coordx][coordy].push([x+7,y,z]);
+				}	
+				else if(which === 3)
+				{
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x-0+offset,y+1,z]);
+					occupado[coordx][coordy].push([x-1,y+2,z]);
+					occupado[coordx][coordy].push([x-1+offset,y+3,z]);
+					occupado[coordx][coordy].push([x-2,y+4,z]);
+					occupado[coordx][coordy].push([x-2+offset,y+5,z]);
+					occupado[coordx][coordy].push([x-3,y+6,z]);
+					occupado[coordx][coordy].push([x-3+offset,y+7,z]);
+				}	
+				else if(which === 4)
+				{
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x+1,y,z]);
+					occupado[coordx][coordy].push([x+1+offset,y+1,z]);
+					occupado[coordx][coordy].push([x+2+offset,y+1,z]);
+					occupado[coordx][coordy].push([x+3,y+2,z]);
+					occupado[coordx][coordy].push([x+4,y+2,z]);
+					occupado[coordx][coordy].push([x+4+offset,y+3,z]);
+					occupado[coordx][coordy].push([x+5+offset,y+3,z]);
+				}
+				else if(which === 5)
+				{
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x-1,y,z]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
+					occupado[coordx][coordy].push([x-2+offset,y+1,z]);
+					occupado[coordx][coordy].push([x-3,y+2,z]);
+					occupado[coordx][coordy].push([x-4,y+2,z]);
+					occupado[coordx][coordy].push([x-4+offset,y+3,z]);
+					occupado[coordx][coordy].push([x-5+offset,y+3,z]);
+				}
+				else if(which === 6)
+				{
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x+1,y,z]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x+1,y,z+1]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x+1,y,z+1]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x+1,y,z+1]);
+				}
+				else if(which === 7)
+				{
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x+0+offset,y+1,z]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x+0+offset,y+1,z+1]);
+					occupado[coordx][coordy].push([x,y,z+2]);
+					occupado[coordx][coordy].push([x+0+offset,y+1,z+2]);
+					occupado[coordx][coordy].push([x,y,z+3]);
+					occupado[coordx][coordy].push([x+0+offset,y+1,z+3]);
+				}
+				else if(which === 8)
+				{
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z+1]);
+					occupado[coordx][coordy].push([x,y,z+2]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z+2]);
+					occupado[coordx][coordy].push([x,y,z+3]);
+					occupado[coordx][coordy].push([x-1+offset,y+1,z+3]);
+				}
+				else if(which === 9)
+				{
+					occupado[coordx][coordy].push([x,y,z]);
+					occupado[coordx][coordy].push([x+offset,y+1,z]);
+					occupado[coordx][coordy].push([x+1,y+2,z]);
+					occupado[coordx][coordy].push([x+1+offset,y+3,z]);
+					occupado[coordx][coordy].push([x,y,z+1]);
+					occupado[coordx][coordy].push([x+offset,y+1,z+1]);
+					occupado[coordx][coordy].push([x+1,y+2,z+1]);
+					occupado[coordx][coordy].push([x+1+offset,y+3,z+1]);
+				}
+				else if(which === 10)
+				{
+					
+				}
+				else if(which === 11)
+				{
+					
+				}
+				else if(which === 12)
+				{
+					
+				}
+				else if(which === 13)
+				{
+					
+				}
+				//console.log('touches another? TRUE');
 				return true;
 			}
 		}	
 	}	
-	if(which === 1)
-		console.log('touches another? FALSE');
+	//console.log('touches another? FALSE');
 	return false;
 }
 
