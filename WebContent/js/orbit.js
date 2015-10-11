@@ -97,35 +97,34 @@ function init() {
 	{	
 		generateMap(mapsize, mapsize);
 		
-//		the 6 corners
-//		var c = 0;
-//		var r = 0;
-//		var t = 0;
-//		var z = 0;
-//		var created = 0;
-//		var drewblock = false;
-//		
-//		while(created < 100)
-//		{
-//			t = getRandomIntInclusive(1,4);
-//			c = getRandomIntInclusive(-50,50);
-//			r = getRandomIntInclusive(-66,66);
-//			z = getRandomIntInclusive(0,20);
-//			drewblock = false;
-//			while(drewblock == false)
-//			{
-//				t = getRandomIntInclusive(1,4);
-//				c = getRandomIntInclusive(-50,50);
-//				r = getRandomIntInclusive(-66,66);
-//				z =  getRandomIntInclusive(0,20);
-//				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
-//			}	
-//			created++;
-//		}	
+		var c = 0;
+		var r = 0;
+		var t = 0;
+		var z = 0;
+		var created = 0;
+		var drewblock = false;
+		
+		while(created < 500)
+		{
+			t = getRandomIntInclusive(0,13);
+			c = getRandomIntInclusive(-50,50);
+			r = getRandomIntInclusive(-66,66);
+			z = getRandomIntInclusive(0,20);
+			drewblock = false;
+			while(drewblock == false)
+			{
+				t = getRandomIntInclusive(0,13);
+				c = getRandomIntInclusive(-50,50);
+				r = getRandomIntInclusive(-66,66);
+				z =  getRandomIntInclusive(0,20);
+				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
+			}	
+			created++;
+		}	
 		
 //		drawBlock(8,8,0,0,0,10, getRandomIntInclusive(0,16777214));
-		drawBlock(8,8,1,-4,-4,0, getRandomIntInclusive(0,16777214));
-		drawBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
+//		drawBlock(8,8,1,-4,-4,0, getRandomIntInclusive(0,16777214));
+//		drawBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
 //		drawBlock(8,8,2,15,15,10, getRandomIntInclusive(0,16777214));
 //		drawBlock(8,8,3,25,25,10, getRandomIntInclusive(0,16777214));
 		//drawBlock(8,8,0,5,5,0, getRandomIntInclusive(0,16777214));
