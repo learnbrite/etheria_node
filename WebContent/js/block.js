@@ -1,49 +1,4 @@
-function blockHexCoordsValid(x, y)
-{
-	if(-33 <= y && y <= 33)
-	{
-		if(y % 2 !== 0 ) // odd
-		{
-			if(-50 <= x && x <= 49)
-				return true;
-		}
-		else // even
-		{
-			if(-49 <= x && x <= 49)
-				return true;
-		}	
-	}	
-	else
-	{	
-		if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
-		{
-			if(y % 2 !== 0 ) // odd
-			{
-				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
-					return true;
-			}	
-			else	// even
-			{
-				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
-					return true;
-			}
-		}
-		else
-		{	
-			if(y % 2 === 0 ) // even
-			{
-				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
-					return true;
-			}	
-			else	// odd
-			{
-				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
-					return true;
-			}
-		}
-	}
-	return false;
-}
+var offset = 0;
 
 var occupado; // occupado[coordx][coordy] contains the set of occupied x,y,z spaces in this tile
 
@@ -54,8 +9,7 @@ for (i = 0; i < mapsize; i++) {
 		occupado[i][j] = [];  // each x,y is also an array of [x,y,z] values, so occupado[0][1] might contain [[2,3,4],[5,6,7]...]
 }
 
-
-// initialize occupado with the floor (all the z=-1 for the tile) 
+//initialize occupado with the floor (all the z=-1 for the tile) 
 for (i = 0; i < mapsize; i++) {
 	for(j = 0; j < mapsize; j++) {
 		for(var row = -66; row <= 66; row++)
@@ -108,242 +62,195 @@ for (i = 0; i < mapsize; i++) {
 	}
 }
 
-var stickyblocks = false;
+var blocks = [{
+	'which':0,
+	'description': 'B-T column',
+	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7]],
+	'surroundedby':  [[0,0,-1],[0,0,8]]
+},
+{
+	'which':1,
+	'description': 'SW-NE diagonal beam',
+	'occupies': [[0,0,0],[0+offset,1,0],[1,2,0],[1+offset,3,0],[2,4,0],[2+offset,5,0],[3,6,0],[3+offset,7,0]],
+	'surroundedby':  [[0,0,-1],[0+offset,1,-1],[1,2,-1],[1+offset,3,-1],[2,4,-1],[2+offset,5,-1],[3,6,-1],[3+offset,7,-1],
+	                  [0,0,1],[0+offset,1,1],[1,2,1],[1+offset,3,1],[2,4,1],[2+offset,5,1],[3,6,1],[3+offset,7,1]]
+},
+{
+	'which':2,
+	'description': 'W-E horizontal beam',
+	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0],[7,0,0]],
+	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],[4,0,-1],[5,0,-1],[6,0,-1],[7,0,-1],
+	                  [0,0,1],[1,0,1],[2,0,1],[3,0,1],[4,0,1],[5,0,1],[6,0,1],[7,0,1]],
+},
+{
+	'which':3,
+	'description': 'SE-NW diagonal beam',
+	'occupies': [[0,0,0],[-1+offset,1,0],[-1,2,0],[-2+offset,3,0],[-2,4,0],[-3+offset,5,0],[-3,6,0],[-4+offset,7,0]],
+	'surroundedby':  [[0,0,-1],[-1+offset,1,-1],[-1,2,-1],[-2+offset,3,-1],[-2,4,-1],[-3+offset,5,-1],[-3,6,-1],[-4+offset,7,-1],
+	                  [0,0,1],[-1+offset,1,1],[-1,2,1],[-2+offset,3,1],[-2,4,1],[-3+offset,5,1],[-3,6,1],[-4+offset,7,1]]
+},
+{
+	'which':4,
+	'description': 'SW-NE diagonal snake',
+	'occupies': [[0,0,0],[1,0,0],[1+offset,1,0],[2+offset,1,0],[3,2,0],[4,2,0],[4+offset,3,0],[5+offset,3,0]],
+	'surroundedby':  [[0,0,-1],[1,0,-1],[1+offset,1,-1],[2+offset,1,-1],[3,2,-1],[4,2,-1],[4+offset,3,-1],[5+offset,3,-1],
+	                  [0,0,1],[1,0,1],[1+offset,1,1],[2+offset,1,1],[3,2,1],[4,2,1],[4+offset,3,1],[5+offset,3,1]]
+},
+{
+	'which':5,
+	'description': 'SE-NW diagonal snake',
+	'occupies': [[0,0,0],[-1,0,0],[-1+offset,1,0],[-2+offset,1,0],[-3,2,0],[-4,2,0],[-4+offset,3,0],[-5+offset,3,0]],
+	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1+offset,1,-1],[-2+offset,1,-1],[-3,2,-1],[-4,2,-1],[-4+offset,3,-1],[-5+offset,3,-1],
+	                  [0,0,1],[-1,0,1],[-1+offset,1,1],[-2+offset,1,1],[-3,2,1],[-4,2,1],[-4+offset,3,1],[-5+offset,3,1]]
+},
+{
+	'which':6,
+	'description': 'W-E quadruple-decker',
+	'occupies': [[0,0,0],[1,0,0],[0,0,1],[1,0,1],[0,0,2],[1,0,2],[0,0,3],[1,0,3]],
+	'surroundedby':  [[0,0,-1],[1,0,-1],
+	                  [0,0,4],[1,0,4]]
+},
+{
+	'which':7,
+	'description': 'SW-NE quadruple-decker',
+	'occupies': [[0,0,0],[0+offset,1,0],[0,0,1],[0+offset,1,1],[0,0,2],[0+offset,1,2],[0,0,3],[0+offset,1,3]],
+	'surroundedby':  [[0,0,-1],[0+offset,1,-1],
+	                  [0,0,4],[0+offset,1,4]]
+},
+{
+	'which':8,
+	'description': 'SE-NW quadruple-decker',
+	'occupies': [[0,0,0],[-1+offset,1,0],[0,0,1],[-1+offset,1,1],[0,0,2],[-1+offset,1,2],[0,0,3],[-1+offset,1,3]],
+	'surroundedby':  [[0,0,-1],[-1+offset,1,-1],
+	                  [0,0,4],[-1+offset,1,4]]
+},
+{
+
+	'which':9,
+	'description': 'SW-NE double-decker',
+	'occupies': [[0,0,0],[0+offset,1,0],[1,2,0],[1+offset,3,0],[0,0,1],[0+offset,1,1],[1,2,1],[1+offset,3,1]],
+	'surroundedby':  [[0,0,-1],[0+offset,1,-1],[1,2,-1],[1+offset,3,-1],
+	                  [0,0,2],[0+offset,1,2],[1,2,2],[1+offset,3,2]]
+},
+{
+	'which':10,
+	'description': 'W-E double-decker',
+	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[0,0,1],[1,0,1],[2,0,1],[3,0,1]],
+	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],
+	                  [0,0,2],[1,0,2],[2,0,2],[3,0,2]]
+},
+{
+	'which':11,
+	'description': 'SE-NW double-decker',
+	'occupies': [[0,0,0],[-1+offset,1,0],[-1,2,0],[-2+offset,3,0],[0,0,1],[-1+offset,1,1],[-1,2,1],[-2+offset,3,1]],
+	'surroundedby':  [[0,0,-1],[-1+offset,1,-1],[-1,2,-1],[-2+offset,3,-1],
+	                  [0,0,2],[-1+offset,1,2],[-1,2,2],[-2+offset,3,2]]
+},
+{
+	'which':12,
+	'description': 'SW-NE double-decker diagonal snake',
+	'occupies': [[0,0,0],[1,0,0],[1+offset,1,0],[2+offset,1,0],[0,0,1],[1,0,1],[1+offset,1,1],[2+offset,1,1]],
+	'surroundedby':  [[0,0,-1],[1,0,-1],[1+offset,1,-1],[2+offset,1,-1],
+	                  [0,0,2],[1,0,2],[1+offset,1,2],[2+offset,1,2]]
+},
+{
+	'which':13,
+	'description': 'SE-NW double-decker diagonal snake',
+	'occupies': [[0,0,0],[-1,0,0],[-1+offset,1,0],[-2+offset,1,0],[0,0,1],[-1,0,1],[-1+offset,1,1],[-2+offset,1,1]],
+	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1+offset,1,-1],[-2+offset,1,-1],
+	                  [0,0,2],[-1,0,2],[-1+offset,1,2],[-2+offset,1,2]]
+},
+//{
+//	'which':14,
+//	
+//},
+//{
+//	'which':15,
+//	
+//},
+//{
+//	'which':16,
+//	
+//},
+//{
+//	'which':17,
+//	
+//},
+//{
+//	'which':18,
+//	
+//},
+//{
+//	'which':19,
+//	
+//}
+]
+
+function blockHexCoordsValid(x, y)
+{
+	if(-33 <= y && y <= 33)
+	{
+		if(y % 2 !== 0 ) // odd
+		{
+			if(-50 <= x && x <= 49)
+				return true;
+		}
+		else // even
+		{
+			if(-49 <= x && x <= 49)
+				return true;
+		}	
+	}	
+	else
+	{	
+		if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
+		{
+			if(y % 2 !== 0 ) // odd
+			{
+				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+					return true;
+			}	
+			else	// even
+			{
+				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+					return true;
+			}
+		}
+		else
+		{	
+			if(y % 2 === 0 ) // even
+			{
+				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+					return true;
+			}	
+			else	// odd
+			{
+				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 
 function touchesAnother(coordx, coordy, which, x, y , z)
 {
 	//console.log('touches another?');
-	var offset = 0;
 	if(y % 2 !== 0) // if the starting y is odd
 		offset = 1;
+	else
+		offset = 0;
+	
 	var surroundings = [];
-	if(which === 0) // 8 high column
+	
+	for(var b = 0; b < blocks[which].surroundedby.length; b++)
 	{
-		//console.log('generating surroundings array. adding surroundings ' + " " + x + "," + y + "," + (z-1) + " and " + " " + x + "," + y + "," + (z+8));
-		surroundings.push([x,y,z-1]); // block beneath
-		surroundings.push([x,y,z+8]); // block above
-		
-//		if(stickyblocks === true)
-//		{	
-//			for(var rings = z+0; rings < z+8; rings++)
-//			{
-//				surroundings.push([x+offset,y+1,rings]); 	// NE
-//				surroundings.push([x+1,y,rings]); 			// E 
-//				surroundings.push([x+offset,y-1,rings]);	// SE
-//				surroundings.push([x-offset,y-1,rings]);	// SW
-//				surroundings.push([x-1,y,rings]);			// W
-//				surroundings.push([x-offset,y+1,rings]); 	// NW
-//			}
-//		}
+		surroundings.push([blocks[which].surroundedby[b][0]+x, blocks[which].surroundedby[b][1]+y, blocks[which].surroundedby[b][2]+z]);
 	}
-	else if(which === 1)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x+offset,y+1,z-1]); 
-		surroundings.push([x+1,y+2,z-1]);
-		surroundings.push([x+1+offset,y+3,z-1]);
-		surroundings.push([x+2,y+4,z-1]);
-		surroundings.push([x+2+offset,y+5,z-1]);
-		surroundings.push([x+3,y+6,z-1]);
-		surroundings.push([x+3+offset,y+7,z-1]);
-		
-		surroundings.push([x,y,z+1]); 			// blocks above
-		surroundings.push([x+offset,y+1,z+1]); 
-		surroundings.push([x+1,y+2,z+1]);
-		surroundings.push([x+1+offset,y+3,z+1]);
-		surroundings.push([x+2,y+4,z+1]);
-		surroundings.push([x+2+offset,y+5,z+1]);
-		surroundings.push([x+3,y+6,z+1]);
-		surroundings.push([x+3+offset,y+7,z+1]);
-	}	
-	else if(which === 2)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x+offset,y+1,z-1]); 
-		surroundings.push([x+1,y+2,z-1]);
-		surroundings.push([x+1+offset,y+3,z-1]);
-		surroundings.push([x+2,y+4,z-1]);
-		surroundings.push([x+2+offset,y+5,z-1]);
-		surroundings.push([x+3,y+6,z-1]);
-		surroundings.push([x+3+offset,y+7,z-1]);
-		
-		surroundings.push([x,y,z+1]); 			// blocks above
-		surroundings.push([x+offset,y+1,z+1]); 
-		surroundings.push([x+1,y+2,z+1]);
-		surroundings.push([x+1+offset,y+3,z+1]);
-		surroundings.push([x+2,y+4,z+1]);
-		surroundings.push([x+2+offset,y+5,z+1]);
-		surroundings.push([x+3,y+6,z+1]);
-		surroundings.push([x+3+offset,y+7,z+1]);
-	}	
-	else if(which === 2)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x+1,y,z-1]); 
-		surroundings.push([x+2,y,z-1]);
-		surroundings.push([x+3,y,z-1]);
-		surroundings.push([x+4,y,z-1]);
-		surroundings.push([x+5,y,z-1]);
-		surroundings.push([x+6,y,z-1]);
-		surroundings.push([x+7,y,z-1]);
-		
-		surroundings.push([x,y,z+1]); 			// blocks above
-		surroundings.push([x+1,y,z+1]); 
-		surroundings.push([x+2,y,z+1]);
-		surroundings.push([x+3,y,z+1]);
-		surroundings.push([x+4,y,z+1]);
-		surroundings.push([x+5,y,z+1]);
-		surroundings.push([x+6,y,z+1]);
-		surroundings.push([x+7,y,z+1]);
-	}	
-	else if(which === 3)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x-1+offset,y+1,z-1]); 
-		surroundings.push([x-1,y+2,z-1]);
-		surroundings.push([x-2+offset,y+3,z-1]);
-		surroundings.push([x-2,y+4,z-1]);
-		surroundings.push([x-3+offset,y+5,z-1]);
-		surroundings.push([x-3,y+6,z-1]);
-		surroundings.push([x-4+offset,y+7,z-1]);
-		
-		surroundings.push([x,y,z+1]); 			// blocks above
-		surroundings.push([x-1+offset,y+1,z+1]); 
-		surroundings.push([x-1,y+2,z+1]);
-		surroundings.push([x-2+offset,y+3,z+1]);
-		surroundings.push([x-2,y+4,z+1]);
-		surroundings.push([x-3+offset,y+5,z+1]);
-		surroundings.push([x-3,y+6,z+1]);
-		surroundings.push([x-4+offset,y+7,z+1]);
-	}	
-	else if(which === 4)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x+1,y,z-1]); 
-		surroundings.push([x+1+offset,y+1,z-1]);
-		surroundings.push([x+2+offset,y+1,z-1]);
-		surroundings.push([x+3,y+2,z-1]);
-		surroundings.push([x+4,y+2,z-1]);
-		surroundings.push([x+4+offset,y+3,z-1]);
-		surroundings.push([x+5+offset,y+3,z-1]);
-		
-		surroundings.push([x,y,z+1]); 			// blocks above
-		surroundings.push([x+1,y,z+1]); 
-		surroundings.push([x+1+offset,y+1,z+1]);
-		surroundings.push([x+2+offset,y+1,z+1]);
-		surroundings.push([x+3,y+2,z+1]);
-		surroundings.push([x+4,y+2,z+1]);
-		surroundings.push([x+4+offset,y+3,z+1]);
-		surroundings.push([x+5+offset,y+3,z+1]);
-	}	
-	else if(which === 5)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x-1,y,z-1]); 
-		surroundings.push([x-1+offset,y+1,z-1]);
-		surroundings.push([x-2+offset,y+1,z-1]);
-		surroundings.push([x-3,y+2,z-1]);
-		surroundings.push([x-4,y+2,z-1]);
-		surroundings.push([x-4+offset,y+3,z-1]);
-		surroundings.push([x-5+offset,y+3,z-1]);
-		
-		surroundings.push([x,y,z+1]); 			// blocks above
-		surroundings.push([x-1,y,z+1]); 
-		surroundings.push([x-1+offset,y+1,z+1]);
-		surroundings.push([x-2+offset,y+1,z+1]);
-		surroundings.push([x-3,y+2,z+1]);
-		surroundings.push([x-4,y+2,z+1]);
-		surroundings.push([x-4+offset,y+3,z+1]);
-		surroundings.push([x-5+offset,y+3,z+1]);
-	}
-	else if(which === 6)
-	{
-		surroundings.push([x,y,z-1]);	// blocks beneath 	
-		surroundings.push([x+1,y,z-1]); 	
-		
-		surroundings.push([x,y,z+4]);	// blocks above 	
-		surroundings.push([x+1,y,z+4]); 	
-	}
-	else if(which === 7)
-	{
-		surroundings.push([x,y,z-1]);	// blocks beneath 	
-		surroundings.push([x+0+offset,y+1,z-1]); 	
-		
-		surroundings.push([x,y,z+4]);	// blocks above 	
-		surroundings.push([x+0+offset,y+1,z+4]); 	
-	}
-	else if(which === 8)
-	{
-		surroundings.push([x,y,z-1]);	// blocks beneath 	
-		surroundings.push([x-1+offset,y+1,z-1]); 	
-		
-		surroundings.push([x,y,z+4]);	// blocks above 	
-		surroundings.push([x-1+offset,y+1,z+4]); 	
-	}
-	else if(which === 9)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x+offset,y+1,z-1]); 
-		surroundings.push([x+1,y+2,z-1]);
-		surroundings.push([x+1+offset,y+3,z-1]);
-		
-		surroundings.push([x,y,z+2]); 			// blocks above
-		surroundings.push([x+offset,y+1,z+2]); 
-		surroundings.push([x+1,y+2,z+2]);
-		surroundings.push([x+1+offset,y+3,z+2]);
-	}
-	else if(which === 10)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x+1,y,z-1]); 
-		surroundings.push([x+2,y,z-1]);
-		surroundings.push([x+3,y,z-1]);
-		
-		surroundings.push([x,y,z+2]); 			// blocks above
-		surroundings.push([x+1,y,z+2]); 
-		surroundings.push([x+2,y,z+2]);
-		surroundings.push([x+3,y,z+2]);
-	}
-	else if(which === 11)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x-1+offset,y+1,z-1]); 
-		surroundings.push([x-1,y+2,z-1]);
-		surroundings.push([x-2+offset,y+3,z-1]);
-		
-		surroundings.push([x,y,z+2]); 			// blocks above
-		surroundings.push([x-1+offset,y+1,z+2]); 
-		surroundings.push([x-1,y+2,z+2]);
-		surroundings.push([x-2+offset,y+3,z+2]);
-	}
-	else if(which === 12)
-	{
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x+1,y,z-1]); 
-		surroundings.push([x+1+offset,y+1,z-1]);
-		surroundings.push([x+2+offset,y+1,z-1]);
-		
-		surroundings.push([x,y,z+2]); 			// blocks above
-		surroundings.push([x+1,y,z+2]); 
-		surroundings.push([x+1+offset,y+1,z+2]);
-		surroundings.push([x+2+offset,y+1,z+2]);
-	}
-	else if(which === 13)
-	{
-//		drawBlockHex(coordx, coordy, x, y, z, darkenColor(color, 1),2);
-//		drawBlockHex(coordx, coordy, x-1, y, z, darkenColor(color, .98),2);
-//		drawBlockHex(coordx, coordy, x-2+offset, y+1, z, darkenColor(color, .96),2);
-//		drawBlockHex(coordx, coordy, x-3+offset, y+1, z, darkenColor(color, .94),2);
-		surroundings.push([x,y,z-1]); 			// blocks beneath
-		surroundings.push([x-1,y,z-1]); 
-		surroundings.push([x-1+offset,y+1,z-1]);
-		surroundings.push([x-2+offset,y+1,z-1]);
-		
-		surroundings.push([x,y,z+2]); 			// blocks above
-		surroundings.push([x-1,y,z+2]); 
-		surroundings.push([x-1+offset,y+1,z+2]);
-		surroundings.push([x-2+offset,y+1,z+2]);
-	}
+	console.log(surroundings.length);
+
 	
 	var occupadolength = occupado[coordx][coordy].length;
 	for(var s = 0; s < surroundings.length; s++)
@@ -368,9 +275,11 @@ function wouldOverlap(coordx, coordy, which, x, y , z)
 {
 	//console.log('Checking wouldOverlap for which=' + which + " " + x + "," + y + "," + z)
 	// make an array of [x,y,z] objects this block would occupy and then check occupado to see if any of them are already occupied.
-	var offset = 0;
 	if(y % 2 !== 0) // if the starting y is odd
 		offset = 1;
+	else
+		offset = 0;
+	
 	var wouldoccupy = [];
 	if(which === 0)
 	{
@@ -554,9 +463,10 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	// but starting at 0,1 the other 3 blocks are 1,2, 1,3 and 1, 3 (x+1,y+1, x+1,y+2 and x+2,y+3)
 	// See? Kinda weird.
 	//console.log("drawblock(" + coordx + ", "+ coordy + ", " + which + "," + x + ", "+ y + ", "+ z + ", " + color);
-	var offset = 0;
 	if(y % 2 !== 0) // if the starting y is odd
 		offset = 1;
+	else
+		offset = 0;
 	
 	var xyz = [];
 	var centers = [];
@@ -1095,4 +1005,194 @@ function drawBlockHex(coordx, coordy, x, y, z, color, extrusion_multiple)
 //	console.log("LOWER " + coordx + "," + coordy + " extrudeamount=" + tileextrusion  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
 //	mesh.position.set( 0, 0, tileextrusion + centers[0][2] * blockextrude);
 //	scene.add( mesh );
+//}
+
+//if(which === 0) // 8 high column
+//{
+//	surroundings.push([x,y,z-1]); // block beneath
+//	surroundings.push([x,y,z+8]); // block above
+//}
+//else if(which === 1)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x+offset,y+1,z-1]); 
+//	surroundings.push([x+1,y+2,z-1]);
+//	surroundings.push([x+1+offset,y+3,z-1]);
+//	surroundings.push([x+2,y+4,z-1]);
+//	surroundings.push([x+2+offset,y+5,z-1]);
+//	surroundings.push([x+3,y+6,z-1]);
+//	surroundings.push([x+3+offset,y+7,z-1]);
+//	
+//	surroundings.push([x,y,z+1]); 			// blocks above
+//	surroundings.push([x+offset,y+1,z+1]); 
+//	surroundings.push([x+1,y+2,z+1]);
+//	surroundings.push([x+1+offset,y+3,z+1]);
+//	surroundings.push([x+2,y+4,z+1]);
+//	surroundings.push([x+2+offset,y+5,z+1]);
+//	surroundings.push([x+3,y+6,z+1]);
+//	surroundings.push([x+3+offset,y+7,z+1]);
+//}	
+//else if(which === 2)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x+1,y,z-1]); 
+//	surroundings.push([x+2,y,z-1]);
+//	surroundings.push([x+3,y,z-1]);
+//	surroundings.push([x+4,y,z-1]);
+//	surroundings.push([x+5,y,z-1]);
+//	surroundings.push([x+6,y,z-1]);
+//	surroundings.push([x+7,y,z-1]);
+//	
+//	surroundings.push([x,y,z+1]); 			// blocks above
+//	surroundings.push([x+1,y,z+1]); 
+//	surroundings.push([x+2,y,z+1]);
+//	surroundings.push([x+3,y,z+1]);
+//	surroundings.push([x+4,y,z+1]);
+//	surroundings.push([x+5,y,z+1]);
+//	surroundings.push([x+6,y,z+1]);
+//	surroundings.push([x+7,y,z+1]);
+//}	
+//else if(which === 3)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x-1+offset,y+1,z-1]); 
+//	surroundings.push([x-1,y+2,z-1]);
+//	surroundings.push([x-2+offset,y+3,z-1]);
+//	surroundings.push([x-2,y+4,z-1]);
+//	surroundings.push([x-3+offset,y+5,z-1]);
+//	surroundings.push([x-3,y+6,z-1]);
+//	surroundings.push([x-4+offset,y+7,z-1]);
+//	
+//	surroundings.push([x,y,z+1]); 			// blocks above
+//	surroundings.push([x-1+offset,y+1,z+1]); 
+//	surroundings.push([x-1,y+2,z+1]);
+//	surroundings.push([x-2+offset,y+3,z+1]);
+//	surroundings.push([x-2,y+4,z+1]);
+//	surroundings.push([x-3+offset,y+5,z+1]);
+//	surroundings.push([x-3,y+6,z+1]);
+//	surroundings.push([x-4+offset,y+7,z+1]);
+//}	
+//else if(which === 4)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x+1,y,z-1]); 
+//	surroundings.push([x+1+offset,y+1,z-1]);
+//	surroundings.push([x+2+offset,y+1,z-1]);
+//	surroundings.push([x+3,y+2,z-1]);
+//	surroundings.push([x+4,y+2,z-1]);
+//	surroundings.push([x+4+offset,y+3,z-1]);
+//	surroundings.push([x+5+offset,y+3,z-1]);
+//	
+//	surroundings.push([x,y,z+1]); 			// blocks above
+//	surroundings.push([x+1,y,z+1]); 
+//	surroundings.push([x+1+offset,y+1,z+1]);
+//	surroundings.push([x+2+offset,y+1,z+1]);
+//	surroundings.push([x+3,y+2,z+1]);
+//	surroundings.push([x+4,y+2,z+1]);
+//	surroundings.push([x+4+offset,y+3,z+1]);
+//	surroundings.push([x+5+offset,y+3,z+1]);
+//}	
+//else if(which === 5)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x-1,y,z-1]); 
+//	surroundings.push([x-1+offset,y+1,z-1]);
+//	surroundings.push([x-2+offset,y+1,z-1]);
+//	surroundings.push([x-3,y+2,z-1]);
+//	surroundings.push([x-4,y+2,z-1]);
+//	surroundings.push([x-4+offset,y+3,z-1]);
+//	surroundings.push([x-5+offset,y+3,z-1]);
+//	
+//	surroundings.push([x,y,z+1]); 			// blocks above
+//	surroundings.push([x-1,y,z+1]); 
+//	surroundings.push([x-1+offset,y+1,z+1]);
+//	surroundings.push([x-2+offset,y+1,z+1]);
+//	surroundings.push([x-3,y+2,z+1]);
+//	surroundings.push([x-4,y+2,z+1]);
+//	surroundings.push([x-4+offset,y+3,z+1]);
+//	surroundings.push([x-5+offset,y+3,z+1]);
+//}
+//else if(which === 6)
+//{
+//	surroundings.push([x,y,z-1]);	// blocks beneath 	
+//	surroundings.push([x+1,y,z-1]); 	
+//	
+//	surroundings.push([x,y,z+4]);	// blocks above 	
+//	surroundings.push([x+1,y,z+4]); 	
+//}
+//else if(which === 7)
+//{
+//	surroundings.push([x,y,z-1]);	// blocks beneath 	
+//	surroundings.push([x+0+offset,y+1,z-1]); 	
+//	
+//	surroundings.push([x,y,z+4]);	// blocks above 	
+//	surroundings.push([x+0+offset,y+1,z+4]); 	
+//}
+//else if(which === 8)
+//{
+//	surroundings.push([x,y,z-1]);	// blocks beneath 	
+//	surroundings.push([x-1+offset,y+1,z-1]); 	
+//	
+//	surroundings.push([x,y,z+4]);	// blocks above 	
+//	surroundings.push([x-1+offset,y+1,z+4]); 	
+//}
+//else if(which === 9)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x+offset,y+1,z-1]); 
+//	surroundings.push([x+1,y+2,z-1]);
+//	surroundings.push([x+1+offset,y+3,z-1]);
+//	
+//	surroundings.push([x,y,z+2]); 			// blocks above
+//	surroundings.push([x+offset,y+1,z+2]); 
+//	surroundings.push([x+1,y+2,z+2]);
+//	surroundings.push([x+1+offset,y+3,z+2]);
+//}
+//else if(which === 10)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x+1,y,z-1]); 
+//	surroundings.push([x+2,y,z-1]);
+//	surroundings.push([x+3,y,z-1]);
+//	
+//	surroundings.push([x,y,z+2]); 			// blocks above
+//	surroundings.push([x+1,y,z+2]); 
+//	surroundings.push([x+2,y,z+2]);
+//	surroundings.push([x+3,y,z+2]);
+//}
+//else if(which === 11)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x-1+offset,y+1,z-1]); 
+//	surroundings.push([x-1,y+2,z-1]);
+//	surroundings.push([x-2+offset,y+3,z-1]);
+//	
+//	surroundings.push([x,y,z+2]); 			// blocks above
+//	surroundings.push([x-1+offset,y+1,z+2]); 
+//	surroundings.push([x-1,y+2,z+2]);
+//	surroundings.push([x-2+offset,y+3,z+2]);
+//}
+//else if(which === 12)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x+1,y,z-1]); 
+//	surroundings.push([x+1+offset,y+1,z-1]);
+//	surroundings.push([x+2+offset,y+1,z-1]);
+//	
+//	surroundings.push([x,y,z+2]); 			// blocks above
+//	surroundings.push([x+1,y,z+2]); 
+//	surroundings.push([x+1+offset,y+1,z+2]);
+//	surroundings.push([x+2+offset,y+1,z+2]);
+//}
+//else if(which === 13)
+//{
+//	surroundings.push([x,y,z-1]); 			// blocks beneath
+//	surroundings.push([x-1,y,z-1]); 
+//	surroundings.push([x-1+offset,y+1,z-1]);
+//	surroundings.push([x-2+offset,y+1,z-1]);
+//	
+//	surroundings.push([x,y,z+2]); 			// blocks above
+//	surroundings.push([x-1,y,z+2]); 
+//	surroundings.push([x-1+offset,y+1,z+2]);
+//	surroundings.push([x-2+offset,y+1,z+2]);
 //}

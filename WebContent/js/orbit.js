@@ -123,8 +123,10 @@ function init() {
 			created++;
 		}	
 		
-		//drawBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
-		
+//		drawBlock(8,8,0,0,0,10, getRandomIntInclusive(0,16777214));
+//		drawBlock(8,8,1,5,5,10, getRandomIntInclusive(0,16777214));
+//		drawBlock(8,8,2,15,15,10, getRandomIntInclusive(0,16777214));
+//		drawBlock(8,8,3,25,25,10, getRandomIntInclusive(0,16777214));
 		//drawBlock(8,8,0,5,5,0, getRandomIntInclusive(0,16777214));
 		
 		//drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
