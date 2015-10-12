@@ -184,10 +184,10 @@ var offsetblocks = [{
 // these are effed up
 {
 	'which':17,
-	'description': 'NE stairstep',
-	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0+onetimeoffset,1,1],[-1,2,1],[-1,2,2],[-1+onetimeoffset,3,2],[-1+onetimeoffset,3,3],[-2,4,3]],
-	'surroundedby': [[0,0,-1],[0+onetimeoffset,1,-1],[-1,2,0],[-1+onetimeoffset,3,1],[-2,4,2],
-	                 [0,0,1] ,[0+onetimeoffset,1,2],[-1,2,3],[-1+onetimeoffset,3,4],[-2,4,4]]
+	'description': 'NE-SW stairstep',
+	'occupies': [[0,0,0],[-1+onetimeoffset,-1,0],[-1+onetimeoffset,-1,1],[-1,-2,1],[-1,-2,2],[-2+onetimeoffset,-3,2],[-2+onetimeoffset,-3,3],[-2,-4,3]],
+	'surroundedby': [[0,0,-1],[-1+onetimeoffset,-1,-1],[-1,-2,0],[-2+onetimeoffset,-3,1],[-2,-4,2],
+	                 [0,0,1] ,[-1+onetimeoffset,-1,2],[-1,-2,3],[-2+onetimeoffset,-3,4],[-2,-4,4]]
 },
 {
 	'which':18,
@@ -199,9 +199,9 @@ var offsetblocks = [{
 {
 	'which':19,
 	'description': 'SE-NW stairstep',
-	'occupies': [[0,0,0],[0+onetimeoffset,-1,0],[0+onetimeoffset,-1,1],[-1,-2,1],[-1,-2,2],[-1+onetimeoffset,-3,2],[-1+onetimeoffset,-3,3],[-2,-4,3]],
-	'surroundedby': [[0,0,-1],[0+onetimeoffset,-1,-1],[-1,-2,0],[-1+onetimeoffset,-3,1],[-2,-4,2],
-	                 [0,0,1] ,[0+onetimeoffset,-1,2],[-1,-2,3],[-1+onetimeoffset,-3,4],[-2,-4,4]]
+	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1+onetimeoffset,1,1],[-1,2,1],[-1,2,2],[-2+onetimeoffset,3,2],[-2+onetimeoffset,3,3],[-2,4,3]],
+	'surroundedby': [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,0],[-2+onetimeoffset,3,1],[-2,4,2],
+	                 [0,0,1] ,[-1+onetimeoffset,1,2],[-1,2,3],[-2+onetimeoffset,3,4],[-2,4,4]]
 },
 ]
 
@@ -328,9 +328,9 @@ var normalblocks = [{
 {
 	'which':17,
 	'description': 'NE-SW stairstep',
-	'occupies': [[0,0,0],[0,1,0],[0,1,1],[-1,2,1],[-1,2,2],[-1,3,2],[-1,3,3],[-2,4,3]],
-	'surroundedby': [[0,0,-1],[0,1,-1],[-1,2,0],[-1,3,1],[-2,4,2]
-	                 [0,0,1] ,[0,1,2],[-1,2,3],[-1,3,4],[-2,4,4]]
+	'occupies': [[0,0,0],[-1,-1,0],[-1,-1,1],[-1,-2,1],[-1,-2,2],[-2,-3,2],[-2,-3,3],[-2,-4,3]],
+	'surroundedby': [[0,0,-1],[-1,-1,-1],[-1,-2,0],[-2,-3,1],[-2,-4,2],
+	                 [0,0,1] ,[-1,-1,2],[-1,-2,3],[-2,-3,4],[-2,-4,4]]
 },
 {
 	'which':18,
@@ -342,9 +342,9 @@ var normalblocks = [{
 {
 	'which':19,
 	'description': 'SE-NW stairstep',
-	'occupies': [[0,0,0],[0,-1,0],[0,-1,1],[-1,-2,1],[-1,-2,2],[-1,-3,2],[-1,-3,3],[-2,-4,3]],
-	'surroundedby': [[0,0,-1],[0,-1,-1],[-1,-2,0],[-1,-3,1],[-2,-4,2],
-	                 [0,0,1] ,[0,-1,2],[-1,-2,3],[-1,-3,4],[-2,-4,4]]
+	'occupies': [[0,0,0],[-1,1,0],[-1,1,1],[-1,2,1],[-1,2,2],[-2,3,2],[-2,3,3],[-2,4,3]],
+	'surroundedby': [[0,0,-1],[-1,1,-1],[-1,2,0],[-2,3,1],[-2,4,2],
+	                 [0,0,1] ,[-1,1,2],[-1,2,3],[-2,3,4],[-2,4,4]]
 },
 ]
 

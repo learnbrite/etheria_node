@@ -104,16 +104,16 @@ function init() {
 		var created = 0;
 		var drewblock = false;
 		
-		while(created < 500)
+		while(created < 50)
 		{
-			t = getRandomIntInclusive(18,18);
+			t = getRandomIntInclusive(19,19);
 			c = getRandomIntInclusive(-50,50);
 			r = getRandomIntInclusive(-66,66);
 			z = getRandomIntInclusive(0,40);
 			drewblock = false;
 			while(drewblock == false)
 			{
-				t = getRandomIntInclusive(18,18);
+				t = getRandomIntInclusive(19,19);
 				c = getRandomIntInclusive(-50,50);
 				r = getRandomIntInclusive(-66,66);
 				z =  getRandomIntInclusive(0,40);
