@@ -106,17 +106,17 @@ function init() {
 		
 		while(created < 500)
 		{
-			t = getRandomIntInclusive(0,13);
+			t = getRandomIntInclusive(14,14);
 			c = getRandomIntInclusive(-50,50);
 			r = getRandomIntInclusive(-66,66);
-			z = getRandomIntInclusive(0,20);
+			z = getRandomIntInclusive(0,40);
 			drewblock = false;
 			while(drewblock == false)
 			{
-				t = getRandomIntInclusive(0,13);
+				t = getRandomIntInclusive(14,14);
 				c = getRandomIntInclusive(-50,50);
 				r = getRandomIntInclusive(-66,66);
-				z =  getRandomIntInclusive(0,20);
+				z =  getRandomIntInclusive(0,40);
 				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
 			}	
 			created++;
@@ -594,7 +594,7 @@ function guid() {
 	      .toString(16)
 	      .substring(1);
 	  }
-	  return s4() + s4() + s4() + s4() + s4() + + s4() + s4() + s4();
+	  return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
 	}
 
 /* accepts parameters

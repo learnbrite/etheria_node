@@ -160,10 +160,13 @@ var offsetblocks = [{
 	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1+onetimeoffset,1,-1],[-2+onetimeoffset,1,-1],
 	                  [0,0,2],[-1,0,2],[-1+onetimeoffset,1,2],[-2+onetimeoffset,1,2]]
 },
-//{
-//	'which':14,
-//	
-//},
+{
+	'which':14,
+	'description': 'SW-NE stairstep',
+	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0+onetimeoffset,1,1],[1,2,1],[1,2,2],[1+onetimeoffset,3,2],[1+onetimeoffset,3,3],[2,4,3]],
+	'surroundedby': [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,0],[1+onetimeoffset,3,1],[2,4,2]
+	                 [0,0,1] ,[0+onetimeoffset,1,2],[1,2,3],[1+onetimeoffset,3,4],[2,4,4]]
+},
 //{
 //	'which':15,
 //	
@@ -284,10 +287,13 @@ var normalblocks = [{
 	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1,1,-1],[-2,1,-1],
 	                  [0,0,2],[-1,0,2],[-1,1,2],[-2,1,2]]
 },
-//{
-//	'which':14,
-//	
-//},
+{
+	'which':14,
+	'description': 'SW-NE stairstep',
+	'occupies': [[0,0,0],[0,1,0],[0,1,1],[1,2,1],[1,2,2],[1,3,2],[1,3,3],[2,4,3]],
+	'surroundedby': [[0,0,-1],[0,1,-1],[1,2,0],[1,3,1],[2,4,2]
+	                 [0,0,1] ,[0,1,2],[1,2,3],[1,3,4],[2,4,4]]
+},
 //{
 //	'which':15,
 //	
