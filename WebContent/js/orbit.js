@@ -106,14 +106,14 @@ function init() {
 		
 		while(created < 500)
 		{
-			t = getRandomIntInclusive(14,14);
+			t = getRandomIntInclusive(18,18);
 			c = getRandomIntInclusive(-50,50);
 			r = getRandomIntInclusive(-66,66);
 			z = getRandomIntInclusive(0,40);
 			drewblock = false;
 			while(drewblock == false)
 			{
-				t = getRandomIntInclusive(14,14);
+				t = getRandomIntInclusive(18,18);
 				c = getRandomIntInclusive(-50,50);
 				r = getRandomIntInclusive(-66,66);
 				z =  getRandomIntInclusive(0,40);

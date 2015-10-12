@@ -164,29 +164,45 @@ var offsetblocks = [{
 	'which':14,
 	'description': 'SW-NE stairstep',
 	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0+onetimeoffset,1,1],[1,2,1],[1,2,2],[1+onetimeoffset,3,2],[1+onetimeoffset,3,3],[2,4,3]],
-	'surroundedby': [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,0],[1+onetimeoffset,3,1],[2,4,2]
+	'surroundedby': [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,0],[1+onetimeoffset,3,1],[2,4,2],
 	                 [0,0,1] ,[0+onetimeoffset,1,2],[1,2,3],[1+onetimeoffset,3,4],[2,4,4]]
 },
-//{
-//	'which':15,
-//	
-//},
-//{
-//	'which':16,
-//	
-//},
-//{
-//	'which':17,
-//	
-//},
-//{
-//	'which':18,
-//	
-//},
-//{
-//	'which':19,
-//	
-//}
+{
+	'which':15,
+	'description': 'W-E stairstep',
+	'occupies': [[0,0,0],[1,0,0],[1,0,1],[2,0,1],[2,0,2],[3,0,2],[3,0,3],[4,0,3]],
+	'surroundedby': [[0,0,-1],[1,0,-1],[2,0,0],[3,0,1],[4,0,2],
+	                 [0,0,1] ,[1,0,2],[2,0,3],[3,0,4],[4,0,4]]
+},
+{
+	'which':16,
+	'description': 'SW-NE stairstep',
+	'occupies': [[0,0,0],[0+onetimeoffset,-1,0],[0+onetimeoffset,-1,1],[1,-2,1],[1,-2,2],[1+onetimeoffset,-3,2],[1+onetimeoffset,-3,3],[2,-4,3]],
+	'surroundedby': [[0,0,-1],[0+onetimeoffset,-1,-1],[1,-2,0],[1+onetimeoffset,-3,1],[2,-4,2],
+	                 [0,0,1] ,[0+onetimeoffset,-1,2],[1,-2,3],[1+onetimeoffset,-3,4],[2,-4,4]]
+},
+// these are effed up
+{
+	'which':17,
+	'description': 'NE stairstep',
+	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0+onetimeoffset,1,1],[-1,2,1],[-1,2,2],[-1+onetimeoffset,3,2],[-1+onetimeoffset,3,3],[-2,4,3]],
+	'surroundedby': [[0,0,-1],[0+onetimeoffset,1,-1],[-1,2,0],[-1+onetimeoffset,3,1],[-2,4,2],
+	                 [0,0,1] ,[0+onetimeoffset,1,2],[-1,2,3],[-1+onetimeoffset,3,4],[-2,4,4]]
+},
+{
+	'which':18,
+	'description': 'W-E stairstep',
+	'occupies': [[0,0,0],[-1,0,0],[-1,0,1],[-2,0,1],[-2,0,2],[-3,0,2],[-3,0,3],[-4,0,3]],
+	'surroundedby': [[0,0,-1],[-1,0,-1],[-2,0,0],[-3,0,1],[-4,0,2],
+	                 [0,0,1] ,[-1,0,2],[-2,0,3],[-3,0,4],[-4,0,4]]
+},
+{
+	'which':19,
+	'description': 'SE-NW stairstep',
+	'occupies': [[0,0,0],[0+onetimeoffset,-1,0],[0+onetimeoffset,-1,1],[-1,-2,1],[-1,-2,2],[-1+onetimeoffset,-3,2],[-1+onetimeoffset,-3,3],[-2,-4,3]],
+	'surroundedby': [[0,0,-1],[0+onetimeoffset,-1,-1],[-1,-2,0],[-1+onetimeoffset,-3,1],[-2,-4,2],
+	                 [0,0,1] ,[0+onetimeoffset,-1,2],[-1,-2,3],[-1+onetimeoffset,-3,4],[-2,-4,4]]
+},
 ]
 
 var normalblocks = [{
@@ -294,26 +310,42 @@ var normalblocks = [{
 	'surroundedby': [[0,0,-1],[0,1,-1],[1,2,0],[1,3,1],[2,4,2]
 	                 [0,0,1] ,[0,1,2],[1,2,3],[1,3,4],[2,4,4]]
 },
-//{
-//	'which':15,
-//	
-//},
-//{
-//	'which':16,
-//	
-//},
-//{
-//	'which':17,
-//	
-//},
-//{
-//	'which':18,
-//	
-//},
-//{
-//	'which':19,
-//	
-//}
+{
+	'which':15,
+	'description': 'W-E stairstep',
+	'occupies': [[0,0,0],[1,0,0],[1,0,1],[2,0,1],[2,0,2],[3,0,2],[3,0,3],[4,0,3]],
+	'surroundedby': [[0,0,-1],[1,0,-1],[2,0,0],[3,0,1],[4,0,2],
+	                 [0,0,1] ,[1,0,2],[2,0,3],[3,0,4],[4,0,4]]
+},
+{
+	'which':16,
+	'description': 'NW-SE stairstep',
+	'occupies': [[0,0,0],[0,-1,0],[0,-1,1],[1,-2,1],[1,-2,2],[1,-3,2],[1,-3,3],[2,-4,3]],
+	'surroundedby': [[0,0,-1],[0,-1,-1],[1,-2,0],[1,-3,1],[2,-4,2],
+	                 [0,0,1] ,[0,-1,2],[1,-2,3],[1,-3,4],[2,-4,4]]
+},
+// these are effed up
+{
+	'which':17,
+	'description': 'NE-SW stairstep',
+	'occupies': [[0,0,0],[0,1,0],[0,1,1],[-1,2,1],[-1,2,2],[-1,3,2],[-1,3,3],[-2,4,3]],
+	'surroundedby': [[0,0,-1],[0,1,-1],[-1,2,0],[-1,3,1],[-2,4,2]
+	                 [0,0,1] ,[0,1,2],[-1,2,3],[-1,3,4],[-2,4,4]]
+},
+{
+	'which':18,
+	'description': 'E-W stairstep',
+	'occupies': [[0,0,0],[-1,0,0],[-1,0,1],[-2,0,1],[-2,0,2],[-3,0,2],[-3,0,3],[-4,0,3]],
+	'surroundedby': [[0,0,-1],[-1,0,-1],[-2,0,0],[-3,0,1],[-4,0,2],
+	                 [0,0,1] ,[-1,0,2],[-2,0,3],[-3,0,4],[-4,0,4]]
+},
+{
+	'which':19,
+	'description': 'SE-NW stairstep',
+	'occupies': [[0,0,0],[0,-1,0],[0,-1,1],[-1,-2,1],[-1,-2,2],[-1,-3,2],[-1,-3,3],[-2,-4,3]],
+	'surroundedby': [[0,0,-1],[0,-1,-1],[-1,-2,0],[-1,-3,1],[-2,-4,2],
+	                 [0,0,1] ,[0,-1,2],[-1,-2,3],[-1,-3,4],[-2,-4,4]]
+},
 ]
 
 function blockHexCoordsValid(x, y)
