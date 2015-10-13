@@ -10,50 +10,51 @@ for (i = 0; i < mapsize; i++) {
 }
 
 //initialize occupado with the floor (all the z=-1 for the tile) 
-for (i = 0; i < mapsize; i++) {
-	for(j = 0; j < mapsize; j++) {
-		for(var row = -66; row <= 66; row++)
+
+for (row = 0; row < mapsize; row++) {
+	for(col = 0; col < mapsize; col++) {
+		for(var y = -66; y <= 66; y++)
 		{
-			if(row % 2 !== 0 ) // odd
-				col = -50;
+			if(y % 2 !== 0 ) // odd
+				x = -50;
 			else
-				col = -49;
+				x = -49;
 			
-			if(row >= -33 && row <= 33)
+			if(y >= -33 && y <= 33)
 			{
-				for(col; col <= 49; col++)
+				for(x; x <= 49; x++)
 				{
-					occupado[i][j].push([col,row,-1]);
+					occupado[col][row].push([x,y,-1]);
 				}
 			}	
 			else
 			{	
-				for(col; col <= 49; col++)
+				for(x; x <= 49; x++)
 				{
-					if((row >= 0 && col >= 0) || (row < 0 && col > 0)) // first or 4th quadrants
+					if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
 					{
-						if(row % 2 !== 0 ) // odd
+						if(y % 2 !== 0 ) // odd
 						{
-							if (((Math.abs(col)/3) + (Math.abs(row)/2)) <= 33)
-								occupado[i][j].push([col,row,-1]);
+							if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+								occupado[col][row].push([x,y,-1]);
 						}	
 						else	// even
 						{
-							if ((((Math.abs(col)+1)/3) + ((Math.abs(row)-1)/2)) <= 33)
-								occupado[i][j].push([col,row,-1]);
+							if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+								occupado[col][row].push([x,y,-1]);
 						}
 					}
 					else
 					{	
-						if(row % 2 === 0 ) // even
+						if(y % 2 === 0 ) // even
 						{
-							if (((Math.abs(col)/3) + (Math.abs(row)/2)) <= 33)
-								occupado[i][j].push([col,row,-1]);
+							if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+								occupado[col][row].push([x,y,-1]);
 						}	
 						else	// odd
 						{
-							if ((((Math.abs(col)+1)/3) + ((Math.abs(row)-1)/2)) <= 33)
-								occupado[i][j].push([col,row,-1]);
+							if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+								occupado[col][row].push([x,y,-1]);
 						}
 					}
 				}
@@ -61,149 +62,149 @@ for (i = 0; i < mapsize; i++) {
 		}	
 	}
 }
-var onetimeoffset = 1;
-var offsetblocks = [{
-	'which':0,
-	'description': 'B-T column',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7]],
-	'surroundedby':  [[0,0,-1],[0,0,8]]
-},
-{
-	'which':1,
-	'description': 'SW-NE diagonal beam',
-	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[1,2,0],[1+onetimeoffset,3,0],[2,4,0],[2+onetimeoffset,5,0],[3,6,0],[3+onetimeoffset,7,0]],
-	'surroundedby':  [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,-1],[1+onetimeoffset,3,-1],[2,4,-1],[2+onetimeoffset,5,-1],[3,6,-1],[3+onetimeoffset,7,-1],
-	                  [0,0,1],[0+onetimeoffset,1,1],[1,2,1],[1+onetimeoffset,3,1],[2,4,1],[2+onetimeoffset,5,1],[3,6,1],[3+onetimeoffset,7,1]]
-},
-{
-	'which':2,
-	'description': 'W-E horizontal beam',
-	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0],[7,0,0]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],[4,0,-1],[5,0,-1],[6,0,-1],[7,0,-1],
-	                  [0,0,1],[1,0,1],[2,0,1],[3,0,1],[4,0,1],[5,0,1],[6,0,1],[7,0,1]],
-},
-{
-	'which':3,
-	'description': 'SE-NW diagonal beam',
-	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1,2,0],[-2+onetimeoffset,3,0],[-2,4,0],[-3+onetimeoffset,5,0],[-3,6,0],[-4+onetimeoffset,7,0]],
-	'surroundedby':  [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,-1],[-2+onetimeoffset,3,-1],[-2,4,-1],[-3+onetimeoffset,5,-1],[-3,6,-1],[-4+onetimeoffset,7,-1],
-	                  [0,0,1],[-1+onetimeoffset,1,1],[-1,2,1],[-2+onetimeoffset,3,1],[-2,4,1],[-3+onetimeoffset,5,1],[-3,6,1],[-4+onetimeoffset,7,1]]
-},
-{
-	'which':4,
-	'description': 'SW-NE diagonal snake',
-	'occupies': [[0,0,0],[1,0,0],[1+onetimeoffset,1,0],[2+onetimeoffset,1,0],[3,2,0],[4,2,0],[4+onetimeoffset,3,0],[5+onetimeoffset,3,0]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],[1+onetimeoffset,1,-1],[2+onetimeoffset,1,-1],[3,2,-1],[4,2,-1],[4+onetimeoffset,3,-1],[5+onetimeoffset,3,-1],
-	                  [0,0,1],[1,0,1],[1+onetimeoffset,1,1],[2+onetimeoffset,1,1],[3,2,1],[4,2,1],[4+onetimeoffset,3,1],[5+onetimeoffset,3,1]]
-},
-{
-	'which':5,
-	'description': 'SE-NW diagonal snake',
-	'occupies': [[0,0,0],[-1,0,0],[-1+onetimeoffset,1,0],[-2+onetimeoffset,1,0],[-3,2,0],[-4,2,0],[-4+onetimeoffset,3,0],[-5+onetimeoffset,3,0]],
-	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1+onetimeoffset,1,-1],[-2+onetimeoffset,1,-1],[-3,2,-1],[-4,2,-1],[-4+onetimeoffset,3,-1],[-5+onetimeoffset,3,-1],
-	                  [0,0,1],[-1,0,1],[-1+onetimeoffset,1,1],[-2+onetimeoffset,1,1],[-3,2,1],[-4,2,1],[-4+onetimeoffset,3,1],[-5+onetimeoffset,3,1]]
-},
-{
-	'which':6,
-	'description': 'W-E quadruple-decker',
-	'occupies': [[0,0,0],[1,0,0],[0,0,1],[1,0,1],[0,0,2],[1,0,2],[0,0,3],[1,0,3]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],
-	                  [0,0,4],[1,0,4]]
-},
-{
-	'which':7,
-	'description': 'SW-NE quadruple-decker',
-	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0,0,1],[0+onetimeoffset,1,1],[0,0,2],[0+onetimeoffset,1,2],[0,0,3],[0+onetimeoffset,1,3]],
-	'surroundedby':  [[0,0,-1],[0+onetimeoffset,1,-1],
-	                  [0,0,4],[0+onetimeoffset,1,4]]
-},
-{
-	'which':8,
-	'description': 'SE-NW quadruple-decker',
-	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[0,0,1],[-1+onetimeoffset,1,1],[0,0,2],[-1+onetimeoffset,1,2],[0,0,3],[-1+onetimeoffset,1,3]],
-	'surroundedby':  [[0,0,-1],[-1+onetimeoffset,1,-1],
-	                  [0,0,4],[-1+onetimeoffset,1,4]]
-},
-{
-
-	'which':9,
-	'description': 'SW-NE double-decker',
-	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[1,2,0],[1+onetimeoffset,3,0],[0,0,1],[0+onetimeoffset,1,1],[1,2,1],[1+onetimeoffset,3,1]],
-	'surroundedby':  [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,-1],[1+onetimeoffset,3,-1],
-	                  [0,0,2],[0+onetimeoffset,1,2],[1,2,2],[1+onetimeoffset,3,2]]
-},
-{
-	'which':10,
-	'description': 'W-E double-decker',
-	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[0,0,1],[1,0,1],[2,0,1],[3,0,1]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],
-	                  [0,0,2],[1,0,2],[2,0,2],[3,0,2]]
-},
-{
-	'which':11,
-	'description': 'SE-NW double-decker',
-	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1,2,0],[-2+onetimeoffset,3,0],[0,0,1],[-1+onetimeoffset,1,1],[-1,2,1],[-2+onetimeoffset,3,1]],
-	'surroundedby':  [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,-1],[-2+onetimeoffset,3,-1],
-	                  [0,0,2],[-1+onetimeoffset,1,2],[-1,2,2],[-2+onetimeoffset,3,2]]
-},
-{
-	'which':12,
-	'description': 'SW-NE double-decker diagonal snake',
-	'occupies': [[0,0,0],[1,0,0],[1+onetimeoffset,1,0],[2+onetimeoffset,1,0],[0,0,1],[1,0,1],[1+onetimeoffset,1,1],[2+onetimeoffset,1,1]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],[1+onetimeoffset,1,-1],[2+onetimeoffset,1,-1],
-	                  [0,0,2],[1,0,2],[1+onetimeoffset,1,2],[2+onetimeoffset,1,2]]
-},
-{
-	'which':13,
-	'description': 'SE-NW double-decker diagonal snake',
-	'occupies': [[0,0,0],[-1,0,0],[-1+onetimeoffset,1,0],[-2+onetimeoffset,1,0],[0,0,1],[-1,0,1],[-1+onetimeoffset,1,1],[-2+onetimeoffset,1,1]],
-	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1+onetimeoffset,1,-1],[-2+onetimeoffset,1,-1],
-	                  [0,0,2],[-1,0,2],[-1+onetimeoffset,1,2],[-2+onetimeoffset,1,2]]
-},
-{
-	'which':14,
-	'description': 'SW-NE stairstep',
-	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0+onetimeoffset,1,1],[1,2,1],[1,2,2],[1+onetimeoffset,3,2],[1+onetimeoffset,3,3],[2,4,3]],
-	'surroundedby': [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,0],[1+onetimeoffset,3,1],[2,4,2],
-	                 [0,0,1] ,[0+onetimeoffset,1,2],[1,2,3],[1+onetimeoffset,3,4],[2,4,4]]
-},
-{
-	'which':15,
-	'description': 'W-E stairstep',
-	'occupies': [[0,0,0],[1,0,0],[1,0,1],[2,0,1],[2,0,2],[3,0,2],[3,0,3],[4,0,3]],
-	'surroundedby': [[0,0,-1],[1,0,-1],[2,0,0],[3,0,1],[4,0,2],
-	                 [0,0,1] ,[1,0,2],[2,0,3],[3,0,4],[4,0,4]]
-},
-{
-	'which':16,
-	'description': 'SW-NE stairstep',
-	'occupies': [[0,0,0],[0+onetimeoffset,-1,0],[0+onetimeoffset,-1,1],[1,-2,1],[1,-2,2],[1+onetimeoffset,-3,2],[1+onetimeoffset,-3,3],[2,-4,3]],
-	'surroundedby': [[0,0,-1],[0+onetimeoffset,-1,-1],[1,-2,0],[1+onetimeoffset,-3,1],[2,-4,2],
-	                 [0,0,1] ,[0+onetimeoffset,-1,2],[1,-2,3],[1+onetimeoffset,-3,4],[2,-4,4]]
-},
-// these are effed up
-{
-	'which':17,
-	'description': 'NE-SW stairstep',
-	'occupies': [[0,0,0],[-1+onetimeoffset,-1,0],[-1+onetimeoffset,-1,1],[-1,-2,1],[-1,-2,2],[-2+onetimeoffset,-3,2],[-2+onetimeoffset,-3,3],[-2,-4,3]],
-	'surroundedby': [[0,0,-1],[-1+onetimeoffset,-1,-1],[-1,-2,0],[-2+onetimeoffset,-3,1],[-2,-4,2],
-	                 [0,0,1] ,[-1+onetimeoffset,-1,2],[-1,-2,3],[-2+onetimeoffset,-3,4],[-2,-4,4]]
-},
-{
-	'which':18,
-	'description': 'W-E stairstep',
-	'occupies': [[0,0,0],[-1,0,0],[-1,0,1],[-2,0,1],[-2,0,2],[-3,0,2],[-3,0,3],[-4,0,3]],
-	'surroundedby': [[0,0,-1],[-1,0,-1],[-2,0,0],[-3,0,1],[-4,0,2],
-	                 [0,0,1] ,[-1,0,2],[-2,0,3],[-3,0,4],[-4,0,4]]
-},
-{
-	'which':19,
-	'description': 'SE-NW stairstep',
-	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1+onetimeoffset,1,1],[-1,2,1],[-1,2,2],[-2+onetimeoffset,3,2],[-2+onetimeoffset,3,3],[-2,4,3]],
-	'surroundedby': [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,0],[-2+onetimeoffset,3,1],[-2,4,2],
-	                 [0,0,1] ,[-1+onetimeoffset,1,2],[-1,2,3],[-2+onetimeoffset,3,4],[-2,4,4]]
-},
-]
+//var onetimeoffset = 1;
+//var offsetblocks = [{
+//	'which':0,
+//	'description': 'B-T column',
+//	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7]],
+//	'surroundedby':  [[0,0,-1],[0,0,8]]
+//},
+//{
+//	'which':1,
+//	'description': 'SW-NE diagonal beam',
+//	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[1,2,0],[1+onetimeoffset,3,0],[2,4,0],[2+onetimeoffset,5,0],[3,6,0],[3+onetimeoffset,7,0]],
+//	'surroundedby':  [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,-1],[1+onetimeoffset,3,-1],[2,4,-1],[2+onetimeoffset,5,-1],[3,6,-1],[3+onetimeoffset,7,-1],
+//	                  [0,0,1],[0+onetimeoffset,1,1],[1,2,1],[1+onetimeoffset,3,1],[2,4,1],[2+onetimeoffset,5,1],[3,6,1],[3+onetimeoffset,7,1]]
+//},
+//{
+//	'which':2,
+//	'description': 'W-E horizontal beam',
+//	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0],[7,0,0]],
+//	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],[4,0,-1],[5,0,-1],[6,0,-1],[7,0,-1],
+//	                  [0,0,1],[1,0,1],[2,0,1],[3,0,1],[4,0,1],[5,0,1],[6,0,1],[7,0,1]],
+//},
+//{
+//	'which':3,
+//	'description': 'SE-NW diagonal beam',
+//	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1,2,0],[-2+onetimeoffset,3,0],[-2,4,0],[-3+onetimeoffset,5,0],[-3,6,0],[-4+onetimeoffset,7,0]],
+//	'surroundedby':  [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,-1],[-2+onetimeoffset,3,-1],[-2,4,-1],[-3+onetimeoffset,5,-1],[-3,6,-1],[-4+onetimeoffset,7,-1],
+//	                  [0,0,1],[-1+onetimeoffset,1,1],[-1,2,1],[-2+onetimeoffset,3,1],[-2,4,1],[-3+onetimeoffset,5,1],[-3,6,1],[-4+onetimeoffset,7,1]]
+//},
+//{
+//	'which':4,
+//	'description': 'SW-NE diagonal snake',
+//	'occupies': [[0,0,0],[1,0,0],[1+onetimeoffset,1,0],[2+onetimeoffset,1,0],[3,2,0],[4,2,0],[4+onetimeoffset,3,0],[5+onetimeoffset,3,0]],
+//	'surroundedby':  [[0,0,-1],[1,0,-1],[1+onetimeoffset,1,-1],[2+onetimeoffset,1,-1],[3,2,-1],[4,2,-1],[4+onetimeoffset,3,-1],[5+onetimeoffset,3,-1],
+//	                  [0,0,1],[1,0,1],[1+onetimeoffset,1,1],[2+onetimeoffset,1,1],[3,2,1],[4,2,1],[4+onetimeoffset,3,1],[5+onetimeoffset,3,1]]
+//},
+//{
+//	'which':5,
+//	'description': 'SE-NW diagonal snake',
+//	'occupies': [[0,0,0],[-1,0,0],[-1+onetimeoffset,1,0],[-2+onetimeoffset,1,0],[-3,2,0],[-4,2,0],[-4+onetimeoffset,3,0],[-5+onetimeoffset,3,0]],
+//	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1+onetimeoffset,1,-1],[-2+onetimeoffset,1,-1],[-3,2,-1],[-4,2,-1],[-4+onetimeoffset,3,-1],[-5+onetimeoffset,3,-1],
+//	                  [0,0,1],[-1,0,1],[-1+onetimeoffset,1,1],[-2+onetimeoffset,1,1],[-3,2,1],[-4,2,1],[-4+onetimeoffset,3,1],[-5+onetimeoffset,3,1]]
+//},
+//{
+//	'which':6,
+//	'description': 'W-E quadruple-decker',
+//	'occupies': [[0,0,0],[1,0,0],[0,0,1],[1,0,1],[0,0,2],[1,0,2],[0,0,3],[1,0,3]],
+//	'surroundedby':  [[0,0,-1],[1,0,-1],
+//	                  [0,0,4],[1,0,4]]
+//},
+//{
+//	'which':7,
+//	'description': 'SW-NE quadruple-decker',
+//	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0,0,1],[0+onetimeoffset,1,1],[0,0,2],[0+onetimeoffset,1,2],[0,0,3],[0+onetimeoffset,1,3]],
+//	'surroundedby':  [[0,0,-1],[0+onetimeoffset,1,-1],
+//	                  [0,0,4],[0+onetimeoffset,1,4]]
+//},
+//{
+//	'which':8,
+//	'description': 'SE-NW quadruple-decker',
+//	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[0,0,1],[-1+onetimeoffset,1,1],[0,0,2],[-1+onetimeoffset,1,2],[0,0,3],[-1+onetimeoffset,1,3]],
+//	'surroundedby':  [[0,0,-1],[-1+onetimeoffset,1,-1],
+//	                  [0,0,4],[-1+onetimeoffset,1,4]]
+//},
+//{
+//
+//	'which':9,
+//	'description': 'SW-NE double-decker',
+//	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[1,2,0],[1+onetimeoffset,3,0],[0,0,1],[0+onetimeoffset,1,1],[1,2,1],[1+onetimeoffset,3,1]],
+//	'surroundedby':  [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,-1],[1+onetimeoffset,3,-1],
+//	                  [0,0,2],[0+onetimeoffset,1,2],[1,2,2],[1+onetimeoffset,3,2]]
+//},
+//{
+//	'which':10,
+//	'description': 'W-E double-decker',
+//	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[0,0,1],[1,0,1],[2,0,1],[3,0,1]],
+//	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],
+//	                  [0,0,2],[1,0,2],[2,0,2],[3,0,2]]
+//},
+//{
+//	'which':11,
+//	'description': 'SE-NW double-decker',
+//	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1,2,0],[-2+onetimeoffset,3,0],[0,0,1],[-1+onetimeoffset,1,1],[-1,2,1],[-2+onetimeoffset,3,1]],
+//	'surroundedby':  [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,-1],[-2+onetimeoffset,3,-1],
+//	                  [0,0,2],[-1+onetimeoffset,1,2],[-1,2,2],[-2+onetimeoffset,3,2]]
+//},
+//{
+//	'which':12,
+//	'description': 'SW-NE double-decker diagonal snake',
+//	'occupies': [[0,0,0],[1,0,0],[1+onetimeoffset,1,0],[2+onetimeoffset,1,0],[0,0,1],[1,0,1],[1+onetimeoffset,1,1],[2+onetimeoffset,1,1]],
+//	'surroundedby':  [[0,0,-1],[1,0,-1],[1+onetimeoffset,1,-1],[2+onetimeoffset,1,-1],
+//	                  [0,0,2],[1,0,2],[1+onetimeoffset,1,2],[2+onetimeoffset,1,2]]
+//},
+//{
+//	'which':13,
+//	'description': 'SE-NW double-decker diagonal snake',
+//	'occupies': [[0,0,0],[-1,0,0],[-1+onetimeoffset,1,0],[-2+onetimeoffset,1,0],[0,0,1],[-1,0,1],[-1+onetimeoffset,1,1],[-2+onetimeoffset,1,1]],
+//	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1+onetimeoffset,1,-1],[-2+onetimeoffset,1,-1],
+//	                  [0,0,2],[-1,0,2],[-1+onetimeoffset,1,2],[-2+onetimeoffset,1,2]]
+//},
+//{
+//	'which':14,
+//	'description': 'SW-NE stairstep',
+//	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0+onetimeoffset,1,1],[1,2,1],[1,2,2],[1+onetimeoffset,3,2],[1+onetimeoffset,3,3],[2,4,3]],
+//	'surroundedby': [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,0],[1+onetimeoffset,3,1],[2,4,2],
+//	                 [0,0,1] ,[0+onetimeoffset,1,2],[1,2,3],[1+onetimeoffset,3,4],[2,4,4]]
+//},
+//{
+//	'which':15,
+//	'description': 'W-E stairstep',
+//	'occupies': [[0,0,0],[1,0,0],[1,0,1],[2,0,1],[2,0,2],[3,0,2],[3,0,3],[4,0,3]],
+//	'surroundedby': [[0,0,-1],[1,0,-1],[2,0,0],[3,0,1],[4,0,2],
+//	                 [0,0,1] ,[1,0,2],[2,0,3],[3,0,4],[4,0,4]]
+//},
+//{
+//	'which':16,
+//	'description': 'SW-NE stairstep',
+//	'occupies': [[0,0,0],[0+onetimeoffset,-1,0],[0+onetimeoffset,-1,1],[1,-2,1],[1,-2,2],[1+onetimeoffset,-3,2],[1+onetimeoffset,-3,3],[2,-4,3]],
+//	'surroundedby': [[0,0,-1],[0+onetimeoffset,-1,-1],[1,-2,0],[1+onetimeoffset,-3,1],[2,-4,2],
+//	                 [0,0,1] ,[0+onetimeoffset,-1,2],[1,-2,3],[1+onetimeoffset,-3,4],[2,-4,4]]
+//},
+//// these are effed up
+//{
+//	'which':17,
+//	'description': 'NE-SW stairstep',
+//	'occupies': [[0,0,0],[-1+onetimeoffset,-1,0],[-1+onetimeoffset,-1,1],[-1,-2,1],[-1,-2,2],[-2+onetimeoffset,-3,2],[-2+onetimeoffset,-3,3],[-2,-4,3]],
+//	'surroundedby': [[0,0,-1],[-1+onetimeoffset,-1,-1],[-1,-2,0],[-2+onetimeoffset,-3,1],[-2,-4,2],
+//	                 [0,0,1] ,[-1+onetimeoffset,-1,2],[-1,-2,3],[-2+onetimeoffset,-3,4],[-2,-4,4]]
+//},
+//{
+//	'which':18,
+//	'description': 'W-E stairstep',
+//	'occupies': [[0,0,0],[-1,0,0],[-1,0,1],[-2,0,1],[-2,0,2],[-3,0,2],[-3,0,3],[-4,0,3]],
+//	'surroundedby': [[0,0,-1],[-1,0,-1],[-2,0,0],[-3,0,1],[-4,0,2],
+//	                 [0,0,1] ,[-1,0,2],[-2,0,3],[-3,0,4],[-4,0,4]]
+//},
+//{
+//	'which':19,
+//	'description': 'SE-NW stairstep',
+//	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1+onetimeoffset,1,1],[-1,2,1],[-1,2,2],[-2+onetimeoffset,3,2],[-2+onetimeoffset,3,3],[-2,4,3]],
+//	'surroundedby': [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,0],[-2+onetimeoffset,3,1],[-2,4,2],
+//	                 [0,0,1] ,[-1+onetimeoffset,1,2],[-1,2,3],[-2+onetimeoffset,3,4],[-2,4,4]]
+//},
+//]
 
 var normalblocks = [{
 	'which':0,
@@ -307,7 +308,7 @@ var normalblocks = [{
 	'which':14,
 	'description': 'SW-NE stairstep',
 	'occupies': [[0,0,0],[0,1,0],[0,1,1],[1,2,1],[1,2,2],[1,3,2],[1,3,3],[2,4,3]],
-	'surroundedby': [[0,0,-1],[0,1,-1],[1,2,0],[1,3,1],[2,4,2]
+	'surroundedby': [[0,0,-1],[0,1,-1],[1,2,0],[1,3,1],[2,4,2],
 	                 [0,0,1] ,[0,1,2],[1,2,3],[1,3,4],[2,4,4]]
 },
 {
@@ -347,6 +348,41 @@ var normalblocks = [{
 	                 [0,0,1] ,[-1,1,2],[-1,2,3],[-2,3,4],[-2,4,4]]
 },
 ]
+
+var str = "";
+var str2 = "etheria.initializeBlockDefinition(";
+for(var trick = 0; trick < normalblocks.length; trick++)
+{
+	str = str + "blocks[" + trick + "].which = " + (normalblocks[trick].which*1) + ";\n";
+	str2 = str2 + (normalblocks[trick].which*1) + ", ";
+	str = str + "blocks[" + trick + "].description = \'" + normalblocks[trick].description + "\';\n";
+	str2 = str2 + "\"" + normalblocks[trick].description + "\", [";
+	for(var trickocc = 0; trickocc < normalblocks[trick].occupies.length; trickocc++)
+	{
+		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][0] = " + normalblocks[trick].occupies[trickocc][0] + ";\n";
+		str2 = str2 + normalblocks[trick].occupies[trickocc][0] + ",";
+		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][1] = " + normalblocks[trick].occupies[trickocc][1] + ";\n";
+		str2 = str2 + normalblocks[trick].occupies[trickocc][1] + ",";
+		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][2] = " + normalblocks[trick].occupies[trickocc][2] + ";\n";
+		if(trickocc === (normalblocks[trick].occupies.length-1))
+			str2 = str2 + normalblocks[trick].occupies[trickocc][2] + "],[";
+		else
+			str2 = str2 + normalblocks[trick].occupies[trickocc][2] + ",";
+	}	
+	for(var orange = 0; orange < normalblocks[trick].surroundedby.length; orange++)
+	{
+		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][0] = " + normalblocks[trick].surroundedby[orange][0] + ";\n";
+		str2 = str2 + normalblocks[trick].surroundedby[orange][0] + ",";
+		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][1] = " + normalblocks[trick].surroundedby[orange][1] + ";\n";
+		str2 = str2 + normalblocks[trick].surroundedby[orange][0] + ",";
+		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][2] = " + normalblocks[trick].surroundedby[orange][2] + ";\n";
+		if(trickocc === (normalblocks[trick].occupies.length-1))
+			str2 = str2 + normalblocks[trick].surroundedby[orange][2] + "]).sendTransaction({from:eth.coinbase,gas:3000000})";
+		else
+			str2 = str2 + normalblocks[trick].surroundedby[orange][2] + ",";
+	}	
+}	
+console.log(str2);
 
 function blockHexCoordsValid(x, y)
 {
@@ -510,17 +546,30 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	// See? Kinda weird.
 	//console.log("drawblock(" + coordx + ", "+ coordy + ", " + which + "," + x + ", "+ y + ", "+ z + ", " + color);
 	var blocks;
-	if(y % 2 !== 0) // if the starting y is odd
-		blocks = offsetblocks;
-	else
-		blocks = normalblocks;
+//	if(y % 2 !== 0) // if the starting y is odd
+//	{
+//		blocks = offsetblocks;
+//	}
+//	else
+	blocks = normalblocks;
+	
+	var occupiesx = 0;
+	var occupiesy = 0;
+	var occupiesz = 0;
 	
 	if(isValidLocation(blocks, coordx, coordy, which, x, y, z))
 	{
 		for(var b = 0; b < blocks[which].occupies.length; b++)
 		{
-			drawBlockHex(coordx, coordy, blocks[which].occupies[b][0]+x, blocks[which].occupies[b][1]+y, blocks[which].occupies[b][2]+z, color,1);
-			occupado[coordx][coordy].push([blocks[which].occupies[b][0]+x, blocks[which].occupies[b][1]+y, blocks[which].occupies[b][2]+z]);
+			occupiesx = blocks[which].occupies[b][0];
+			occupiesy = blocks[which].occupies[b][1];
+			occupiesz = blocks[which].occupies[b][2];
+			
+			if(occupiesy % 2 !== 0)
+				occupiesx++;
+			
+			drawBlockHex(coordx, coordy, occupiesx+x, occupiesy+y, occupiesz+z, color,1);
+			occupado[coordx][coordy].push([occupiesx+x, occupiesy+y, occupiesz+z]);
 		}
 		return true;
 	}
