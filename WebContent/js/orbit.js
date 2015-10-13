@@ -97,32 +97,43 @@ function init() {
 	{	
 		generateMap(mapsize, mapsize);
 		
-		var c = 0;
-		var r = 0;
-		var t = 0;
-		var z = 0;
-		var created = 0;
-		var drewblock = false;
+//		var c = 0;
+//		var r = 0;
+//		var t = 0;
+//		var z = 0;
+//		var created = 0;
+//		var drewblock = false;
+//		
+//		while(created < 250)
+//		{
+//			t = getRandomIntInclusive(4,5);
+//			c = getRandomIntInclusive(-50,50);
+//			r = getRandomIntInclusive(-66,66);
+//			z = getRandomIntInclusive(0,40);
+//			drewblock = false;
+//			while(drewblock == false)
+//			{
+//				t = getRandomIntInclusive(4,5);
+//				c = getRandomIntInclusive(-50,50);
+//				r = getRandomIntInclusive(-66,66);
+//				z =  getRandomIntInclusive(0,40);
+//				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
+//			}	
+//			created++;
+//		}	
 		
-		while(created < 250)
-		{
-			t = getRandomIntInclusive(0,19);
-			c = getRandomIntInclusive(-50,50);
-			r = getRandomIntInclusive(-66,66);
-			z = getRandomIntInclusive(0,40);
-			drewblock = false;
-			while(drewblock == false)
-			{
-				t = getRandomIntInclusive(0,19);
-				c = getRandomIntInclusive(-50,50);
-				r = getRandomIntInclusive(-66,66);
-				z =  getRandomIntInclusive(0,40);
-				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
-			}	
-			created++;
-		}	
+		// TESTS // DO NOT DELETE
+//		drawBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
+//		drawBlock(8,8,0,0,0,-1, getRandomIntInclusive(0,16777214));  // fail
+//		drawBlock(8,8,0,0,0,5, getRandomIntInclusive(0,16777214));	 // fail
+//		drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));	 // succeed
+//		
+//		drawBlock(8,8,1,0,2,0, getRandomIntInclusive(0,16777214));	// succeed (flat on ground)
+//		drawBlock(8,8,1,4,2,1, getRandomIntInclusive(0,16777214));  // fail (doesn't rest on anything)
+//		drawBlock(8,8,1,0,3,0, getRandomIntInclusive(0,16777214));	// fail (overlaps)
+//		drawBlock(8,8,1,0,3,1, getRandomIntInclusive(0,16777214));	// succeeds (rests on first, offset by 1)
+//		drawBlock(8,8,1,4,10,2, getRandomIntInclusive(0,16777214));	// succeeds (rests on previous, at the very end)
 		
-//		drawBlock(8,8,0,0,0,10, getRandomIntInclusive(0,16777214));
 //		drawBlock(8,8,1,-4,-4,0, getRandomIntInclusive(0,16777214));
 //		drawBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
 //		drawBlock(8,8,2,15,15,10, getRandomIntInclusive(0,16777214));
@@ -136,128 +147,7 @@ function init() {
 //		drawBlock(8,8,2,6,5,0, getRandomIntInclusive(0,16777214));
 //		
 //		drawBlock(8,8,3,-5,-5,0, getRandomIntInclusive(0,16777214));
-		
-//		var c = 0;
-//		var r = 0;
-//		var t = 0;
-//		var z = 0;
-//		var created = 0;
-//		var drewblock = false;
-//		
-//		while(created < 2)
-//		{
-//			t = getRandomIntInclusive(0,1);
-//			c = getRandomIntInclusive(-50,50);
-//			r = getRandomIntInclusive(-66,66);
-//			z = getRandomIntInclusive(0,10);
-//			drewblock = false;
-//			while(drewblock == false)
-//			{
-//				t = getRandomIntInclusive(0,1);
-//				c = getRandomIntInclusive(-50,50);
-//				r = getRandomIntInclusive(-66,66);
-//				z = getRandomIntInclusive(0,10);
-//				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
-//			}	
-//			created++;
-//		}	
-//		
-//		while(created < 1)
-//		{
-//			t = 0;//getRandomIntInclusive(0,13);
-//			c = getRandomIntInclusive(-90,90);
-//			r = getRandomIntInclusive(-90,90);
-//			z = getRandomIntInclusive(0,90);
-//			drewblock = false;
-//			while(drewblock == false)
-//			{
-//				t = 0;//getRandomIntInclusive(0,13);
-//				c = getRandomIntInclusive(-90,90);
-//				r = getRandomIntInclusive(-90,90);
-//				z = getRandomIntInclusive(0,90);
-//				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
-//			}	
-//			created++;
-//		}	
-		
-		// 2nd quadrant		
-		// where y is even, diags valid if (Math.abs(x)/3 + Math.abs(y)/2) <= 33)
-//		drawBlock(8,8,0,-48,34,0, 0xFF0000); // 8 high column = 82, 16 + 17 = 33 
-//		drawBlock(8,8,0,-45,36,0, 0xFF0000); // 8 high column = 81, 15 + 18 = 33
-//		drawBlock(8,8,0,-42,38,0, 0xFF0000); // 8 high column = 80, 14 + 19 = 33
-//		drawBlock(8,8,0,-39,40,0, 0xFF0000); // 8 high column = 79
-//		drawBlock(8,8,0,-36,42,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-33,44,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-30,46,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-27,48,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-24,50,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-21,52,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-18,54,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-15,56,0, 0xFF0000); // 8 high column
-////		
-////		// where y is odd (Math.abs(x+1)/3 + Math.abs(y-1)/2) <= 33)
-//		drawBlock(8,8,0,-47,35,0, 0xFF0000); // 8 high column = 82
-//		drawBlock(8,8,0,-44,37,0, 0xFF0000); // 8 high column = 81
-//		drawBlock(8,8,0,-41,39,0, 0xFF0000); // 8 high column = 80
-//		drawBlock(8,8,0,-38,41,0, 0xFF0000); // 8 high column = 79
-//		drawBlock(8,8,0,-35,43,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-32,45,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-29,47,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-26,49,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-23,51,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-20,53,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-17,55,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-14,57,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-11,59,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-8,61,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,63,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-2,65,0, 0xFF0000); // 8 high column
-//		
-//		// 1st quadrant
-//		// where y is even, diags valid if (Math.abs(x)/3 + Math.abs(y)/2) <= 33)
-//		drawBlock(8,8,0,48,34,0, 0x00FFFF); // 8 high column = 82, 16 + 17 = 33 
-//		drawBlock(8,8,0,45,36,0, 0x00FFFF); // 8 high column = 81, 15 + 18 = 33
-//		drawBlock(8,8,0,42,38,0, 0x00FFFF); // 8 high column = 80, 14 + 19 = 33
-//		drawBlock(8,8,0,39,40,0, 0x00FFFF); // 8 high column = 79
-//		drawBlock(8,8,0,36,42,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,33,44,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,30,46,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,27,48,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,24,50,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,21,52,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,18,54,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,15,56,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,12,58,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,9,60,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,6,62,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,3,64,0, 0x00FFFF); // 8 high column
-//		drawBlock(8,8,0,0,66,0, 0x00FFFF); // 8 high column
-		
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,0,-5,-5,0, 0xFF0000); // 8 high column
-//		drawBlock(8,8,1,-20,0,0, 0xFF0000); 
-//		drawBlock(8,8,2,-49,-4,0, 0x00FF00); 
-//		drawBlock(8,8,3,-46,8,0, 0x0000FF); 
-//		drawBlock(8,8,4,-40,0,0, 0xFFFF00); 
-//		drawBlock(8,8,5,-20,0,0, 0xFF00FF); 
-//		drawBlock(8,8,6,0,0,0, 0x00FFFF); // CYAN double tower horizontal
-//		drawBlock(8,8,7,-2,0,0, 0xFF0000); 
-//		drawBlock(8,8,8,6,0,0, 0x00FF00); // GREEN double tower se/nw
-//		drawBlock(8,8,9,14,0,0, 0x0000FF); 
-//		drawBlock(8,8,10,22,0,0, 0xFF0000); 
-//		drawBlock(8,8,11,32,0,0, 0x00FF00); 
-//		drawBlock(8,8,12,-32,20,0, 0xFF0000); 
-//		drawBlock(8,8,13,-25,20,0, 0x00FF00); 
+
 //		console.log(JSON.stringify(map));
 	}
 	else

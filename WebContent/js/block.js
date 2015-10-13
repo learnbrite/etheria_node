@@ -62,151 +62,9 @@ for (row = 0; row < mapsize; row++) {
 		}	
 	}
 }
-//var onetimeoffset = 1;
-//var offsetblocks = [{
-//	'which':0,
-//	'description': 'B-T column',
-//	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7]],
-//	'surroundedby':  [[0,0,-1],[0,0,8]]
-//},
-//{
-//	'which':1,
-//	'description': 'SW-NE diagonal beam',
-//	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[1,2,0],[1+onetimeoffset,3,0],[2,4,0],[2+onetimeoffset,5,0],[3,6,0],[3+onetimeoffset,7,0]],
-//	'surroundedby':  [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,-1],[1+onetimeoffset,3,-1],[2,4,-1],[2+onetimeoffset,5,-1],[3,6,-1],[3+onetimeoffset,7,-1],
-//	                  [0,0,1],[0+onetimeoffset,1,1],[1,2,1],[1+onetimeoffset,3,1],[2,4,1],[2+onetimeoffset,5,1],[3,6,1],[3+onetimeoffset,7,1]]
-//},
-//{
-//	'which':2,
-//	'description': 'W-E horizontal beam',
-//	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0],[7,0,0]],
-//	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],[4,0,-1],[5,0,-1],[6,0,-1],[7,0,-1],
-//	                  [0,0,1],[1,0,1],[2,0,1],[3,0,1],[4,0,1],[5,0,1],[6,0,1],[7,0,1]],
-//},
-//{
-//	'which':3,
-//	'description': 'SE-NW diagonal beam',
-//	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1,2,0],[-2+onetimeoffset,3,0],[-2,4,0],[-3+onetimeoffset,5,0],[-3,6,0],[-4+onetimeoffset,7,0]],
-//	'surroundedby':  [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,-1],[-2+onetimeoffset,3,-1],[-2,4,-1],[-3+onetimeoffset,5,-1],[-3,6,-1],[-4+onetimeoffset,7,-1],
-//	                  [0,0,1],[-1+onetimeoffset,1,1],[-1,2,1],[-2+onetimeoffset,3,1],[-2,4,1],[-3+onetimeoffset,5,1],[-3,6,1],[-4+onetimeoffset,7,1]]
-//},
-//{
-//	'which':4,
-//	'description': 'SW-NE diagonal snake',
-//	'occupies': [[0,0,0],[1,0,0],[1+onetimeoffset,1,0],[2+onetimeoffset,1,0],[3,2,0],[4,2,0],[4+onetimeoffset,3,0],[5+onetimeoffset,3,0]],
-//	'surroundedby':  [[0,0,-1],[1,0,-1],[1+onetimeoffset,1,-1],[2+onetimeoffset,1,-1],[3,2,-1],[4,2,-1],[4+onetimeoffset,3,-1],[5+onetimeoffset,3,-1],
-//	                  [0,0,1],[1,0,1],[1+onetimeoffset,1,1],[2+onetimeoffset,1,1],[3,2,1],[4,2,1],[4+onetimeoffset,3,1],[5+onetimeoffset,3,1]]
-//},
-//{
-//	'which':5,
-//	'description': 'SE-NW diagonal snake',
-//	'occupies': [[0,0,0],[-1,0,0],[-1+onetimeoffset,1,0],[-2+onetimeoffset,1,0],[-3,2,0],[-4,2,0],[-4+onetimeoffset,3,0],[-5+onetimeoffset,3,0]],
-//	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1+onetimeoffset,1,-1],[-2+onetimeoffset,1,-1],[-3,2,-1],[-4,2,-1],[-4+onetimeoffset,3,-1],[-5+onetimeoffset,3,-1],
-//	                  [0,0,1],[-1,0,1],[-1+onetimeoffset,1,1],[-2+onetimeoffset,1,1],[-3,2,1],[-4,2,1],[-4+onetimeoffset,3,1],[-5+onetimeoffset,3,1]]
-//},
-//{
-//	'which':6,
-//	'description': 'W-E quadruple-decker',
-//	'occupies': [[0,0,0],[1,0,0],[0,0,1],[1,0,1],[0,0,2],[1,0,2],[0,0,3],[1,0,3]],
-//	'surroundedby':  [[0,0,-1],[1,0,-1],
-//	                  [0,0,4],[1,0,4]]
-//},
-//{
-//	'which':7,
-//	'description': 'SW-NE quadruple-decker',
-//	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0,0,1],[0+onetimeoffset,1,1],[0,0,2],[0+onetimeoffset,1,2],[0,0,3],[0+onetimeoffset,1,3]],
-//	'surroundedby':  [[0,0,-1],[0+onetimeoffset,1,-1],
-//	                  [0,0,4],[0+onetimeoffset,1,4]]
-//},
-//{
-//	'which':8,
-//	'description': 'SE-NW quadruple-decker',
-//	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[0,0,1],[-1+onetimeoffset,1,1],[0,0,2],[-1+onetimeoffset,1,2],[0,0,3],[-1+onetimeoffset,1,3]],
-//	'surroundedby':  [[0,0,-1],[-1+onetimeoffset,1,-1],
-//	                  [0,0,4],[-1+onetimeoffset,1,4]]
-//},
-//{
-//
-//	'which':9,
-//	'description': 'SW-NE double-decker',
-//	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[1,2,0],[1+onetimeoffset,3,0],[0,0,1],[0+onetimeoffset,1,1],[1,2,1],[1+onetimeoffset,3,1]],
-//	'surroundedby':  [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,-1],[1+onetimeoffset,3,-1],
-//	                  [0,0,2],[0+onetimeoffset,1,2],[1,2,2],[1+onetimeoffset,3,2]]
-//},
-//{
-//	'which':10,
-//	'description': 'W-E double-decker',
-//	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[0,0,1],[1,0,1],[2,0,1],[3,0,1]],
-//	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],
-//	                  [0,0,2],[1,0,2],[2,0,2],[3,0,2]]
-//},
-//{
-//	'which':11,
-//	'description': 'SE-NW double-decker',
-//	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1,2,0],[-2+onetimeoffset,3,0],[0,0,1],[-1+onetimeoffset,1,1],[-1,2,1],[-2+onetimeoffset,3,1]],
-//	'surroundedby':  [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,-1],[-2+onetimeoffset,3,-1],
-//	                  [0,0,2],[-1+onetimeoffset,1,2],[-1,2,2],[-2+onetimeoffset,3,2]]
-//},
-//{
-//	'which':12,
-//	'description': 'SW-NE double-decker diagonal snake',
-//	'occupies': [[0,0,0],[1,0,0],[1+onetimeoffset,1,0],[2+onetimeoffset,1,0],[0,0,1],[1,0,1],[1+onetimeoffset,1,1],[2+onetimeoffset,1,1]],
-//	'surroundedby':  [[0,0,-1],[1,0,-1],[1+onetimeoffset,1,-1],[2+onetimeoffset,1,-1],
-//	                  [0,0,2],[1,0,2],[1+onetimeoffset,1,2],[2+onetimeoffset,1,2]]
-//},
-//{
-//	'which':13,
-//	'description': 'SE-NW double-decker diagonal snake',
-//	'occupies': [[0,0,0],[-1,0,0],[-1+onetimeoffset,1,0],[-2+onetimeoffset,1,0],[0,0,1],[-1,0,1],[-1+onetimeoffset,1,1],[-2+onetimeoffset,1,1]],
-//	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1+onetimeoffset,1,-1],[-2+onetimeoffset,1,-1],
-//	                  [0,0,2],[-1,0,2],[-1+onetimeoffset,1,2],[-2+onetimeoffset,1,2]]
-//},
-//{
-//	'which':14,
-//	'description': 'SW-NE stairstep',
-//	'occupies': [[0,0,0],[0+onetimeoffset,1,0],[0+onetimeoffset,1,1],[1,2,1],[1,2,2],[1+onetimeoffset,3,2],[1+onetimeoffset,3,3],[2,4,3]],
-//	'surroundedby': [[0,0,-1],[0+onetimeoffset,1,-1],[1,2,0],[1+onetimeoffset,3,1],[2,4,2],
-//	                 [0,0,1] ,[0+onetimeoffset,1,2],[1,2,3],[1+onetimeoffset,3,4],[2,4,4]]
-//},
-//{
-//	'which':15,
-//	'description': 'W-E stairstep',
-//	'occupies': [[0,0,0],[1,0,0],[1,0,1],[2,0,1],[2,0,2],[3,0,2],[3,0,3],[4,0,3]],
-//	'surroundedby': [[0,0,-1],[1,0,-1],[2,0,0],[3,0,1],[4,0,2],
-//	                 [0,0,1] ,[1,0,2],[2,0,3],[3,0,4],[4,0,4]]
-//},
-//{
-//	'which':16,
-//	'description': 'SW-NE stairstep',
-//	'occupies': [[0,0,0],[0+onetimeoffset,-1,0],[0+onetimeoffset,-1,1],[1,-2,1],[1,-2,2],[1+onetimeoffset,-3,2],[1+onetimeoffset,-3,3],[2,-4,3]],
-//	'surroundedby': [[0,0,-1],[0+onetimeoffset,-1,-1],[1,-2,0],[1+onetimeoffset,-3,1],[2,-4,2],
-//	                 [0,0,1] ,[0+onetimeoffset,-1,2],[1,-2,3],[1+onetimeoffset,-3,4],[2,-4,4]]
-//},
-//// these are effed up
-//{
-//	'which':17,
-//	'description': 'NE-SW stairstep',
-//	'occupies': [[0,0,0],[-1+onetimeoffset,-1,0],[-1+onetimeoffset,-1,1],[-1,-2,1],[-1,-2,2],[-2+onetimeoffset,-3,2],[-2+onetimeoffset,-3,3],[-2,-4,3]],
-//	'surroundedby': [[0,0,-1],[-1+onetimeoffset,-1,-1],[-1,-2,0],[-2+onetimeoffset,-3,1],[-2,-4,2],
-//	                 [0,0,1] ,[-1+onetimeoffset,-1,2],[-1,-2,3],[-2+onetimeoffset,-3,4],[-2,-4,4]]
-//},
-//{
-//	'which':18,
-//	'description': 'W-E stairstep',
-//	'occupies': [[0,0,0],[-1,0,0],[-1,0,1],[-2,0,1],[-2,0,2],[-3,0,2],[-3,0,3],[-4,0,3]],
-//	'surroundedby': [[0,0,-1],[-1,0,-1],[-2,0,0],[-3,0,1],[-4,0,2],
-//	                 [0,0,1] ,[-1,0,2],[-2,0,3],[-3,0,4],[-4,0,4]]
-//},
-//{
-//	'which':19,
-//	'description': 'SE-NW stairstep',
-//	'occupies': [[0,0,0],[-1+onetimeoffset,1,0],[-1+onetimeoffset,1,1],[-1,2,1],[-1,2,2],[-2+onetimeoffset,3,2],[-2+onetimeoffset,3,3],[-2,4,3]],
-//	'surroundedby': [[0,0,-1],[-1+onetimeoffset,1,-1],[-1,2,0],[-2+onetimeoffset,3,1],[-2,4,2],
-//	                 [0,0,1] ,[-1+onetimeoffset,1,2],[-1,2,3],[-2+onetimeoffset,3,4],[-2,4,4]]
-//},
-//]
 
-var normalblocks = [{
+
+var blocks = [{
 	'which':0,
 	'description': 'B-T column',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7]],
@@ -243,9 +101,9 @@ var normalblocks = [{
 {
 	'which':5,
 	'description': 'SE-NW diagonal snake',
-	'occupies': [[0,0,0],[-1,0,0],[-1,1,0],[-2,1,0],[-3,2,0],[-4,2,0],[-4,3,0],[-5,3,0]],
-	'surroundedby':  [[0,0,-1],[-1,0,-1],[-1,1,-1],[-2,1,-1],[-3,2,-1],[-4,2,-1],[-4,3,-1],[-5,3,-1],
-	                  [0,0,1],[-1,0,1],[-1,1,1],[-2,1,1],[-3,2,1],[-4,2,1],[-4,3,1],[-5,3,1]]
+	'occupies': [[0,0,0],[-1,0,0],[-2,1,0],[-3,1,0],[-3,2,0],[-4,2,0],[-5,3,0],[-6,3,0]],
+	'surroundedby':  [[0,0,-1],[-1,0,-1],[-2,1,-1],[-3,1,-1],[-3,2,-1],[-4,2,-1],[-5,3,-1],[-6,3,-1],
+	                  [0,0,1],[-1,0,1],[-2,1,1],[-3,1,1],[-3,2,1],[-4,2,1],[-5,3,1],[-6,3,1]]
 },
 {
 	'which':6,
@@ -269,7 +127,6 @@ var normalblocks = [{
 	                  [0,0,4],[-1,1,4]]
 },
 {
-
 	'which':9,
 	'description': 'SW-NE double-decker',
 	'occupies': [[0,0,0],[0,1,0],[1,2,0],[1,3,0],[0,0,1],[0,1,1],[1,2,1],[1,3,1]],
@@ -325,7 +182,6 @@ var normalblocks = [{
 	'surroundedby': [[0,0,-1],[0,-1,-1],[1,-2,0],[1,-3,1],[2,-4,2],
 	                 [0,0,1] ,[0,-1,2],[1,-2,3],[1,-3,4],[2,-4,4]]
 },
-// these are effed up
 {
 	'which':17,
 	'description': 'NE-SW stairstep',
@@ -349,40 +205,40 @@ var normalblocks = [{
 },
 ]
 
-var str = "";
-var str2 = "etheria.initializeBlockDefinition(";
-for(var trick = 0; trick < normalblocks.length; trick++)
-{
-	str = str + "blocks[" + trick + "].which = " + (normalblocks[trick].which*1) + ";\n";
-	str2 = str2 + (normalblocks[trick].which*1) + ", ";
-	str = str + "blocks[" + trick + "].description = \'" + normalblocks[trick].description + "\';\n";
-	str2 = str2 + "\"" + normalblocks[trick].description + "\", [";
-	for(var trickocc = 0; trickocc < normalblocks[trick].occupies.length; trickocc++)
-	{
-		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][0] = " + normalblocks[trick].occupies[trickocc][0] + ";\n";
-		str2 = str2 + normalblocks[trick].occupies[trickocc][0] + ",";
-		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][1] = " + normalblocks[trick].occupies[trickocc][1] + ";\n";
-		str2 = str2 + normalblocks[trick].occupies[trickocc][1] + ",";
-		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][2] = " + normalblocks[trick].occupies[trickocc][2] + ";\n";
-		if(trickocc === (normalblocks[trick].occupies.length-1))
-			str2 = str2 + normalblocks[trick].occupies[trickocc][2] + "],[";
-		else
-			str2 = str2 + normalblocks[trick].occupies[trickocc][2] + ",";
-	}	
-	for(var orange = 0; orange < normalblocks[trick].surroundedby.length; orange++)
-	{
-		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][0] = " + normalblocks[trick].surroundedby[orange][0] + ";\n";
-		str2 = str2 + normalblocks[trick].surroundedby[orange][0] + ",";
-		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][1] = " + normalblocks[trick].surroundedby[orange][1] + ";\n";
-		str2 = str2 + normalblocks[trick].surroundedby[orange][0] + ",";
-		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][2] = " + normalblocks[trick].surroundedby[orange][2] + ";\n";
-		if(trickocc === (normalblocks[trick].occupies.length-1))
-			str2 = str2 + normalblocks[trick].surroundedby[orange][2] + "]).sendTransaction({from:eth.coinbase,gas:3000000})";
-		else
-			str2 = str2 + normalblocks[trick].surroundedby[orange][2] + ",";
-	}	
-}	
-console.log(str2);
+//var str = "";
+//var str2 = "etheria.initializeBlockDefinition(";
+//for(var trick = 0; trick < normalblocks.length; trick++)
+//{
+//	str = str + "blocks[" + trick + "].which = " + (normalblocks[trick].which*1) + ";\n";
+//	str2 = str2 + (normalblocks[trick].which*1) + ", ";
+//	str = str + "blocks[" + trick + "].description = \'" + normalblocks[trick].description + "\';\n";
+//	str2 = str2 + "\"" + normalblocks[trick].description + "\", [";
+//	for(var trickocc = 0; trickocc < normalblocks[trick].occupies.length; trickocc++)
+//	{
+//		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][0] = " + normalblocks[trick].occupies[trickocc][0] + ";\n";
+//		str2 = str2 + normalblocks[trick].occupies[trickocc][0] + ",";
+//		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][1] = " + normalblocks[trick].occupies[trickocc][1] + ";\n";
+//		str2 = str2 + normalblocks[trick].occupies[trickocc][1] + ",";
+//		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][2] = " + normalblocks[trick].occupies[trickocc][2] + ";\n";
+//		if(trickocc === (normalblocks[trick].occupies.length-1))
+//			str2 = str2 + normalblocks[trick].occupies[trickocc][2] + "],[";
+//		else
+//			str2 = str2 + normalblocks[trick].occupies[trickocc][2] + ",";
+//	}	
+//	for(var orange = 0; orange < normalblocks[trick].surroundedby.length; orange++)
+//	{
+//		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][0] = " + normalblocks[trick].surroundedby[orange][0] + ";\n";
+//		str2 = str2 + normalblocks[trick].surroundedby[orange][0] + ",";
+//		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][1] = " + normalblocks[trick].surroundedby[orange][1] + ";\n";
+//		str2 = str2 + normalblocks[trick].surroundedby[orange][0] + ",";
+//		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][2] = " + normalblocks[trick].surroundedby[orange][2] + ";\n";
+//		if(trickocc === (normalblocks[trick].occupies.length-1))
+//			str2 = str2 + normalblocks[trick].surroundedby[orange][2] + "]).sendTransaction({from:eth.coinbase,gas:3000000})";
+//		else
+//			str2 = str2 + normalblocks[trick].surroundedby[orange][2] + ",";
+//	}	
+//}	
+//console.log(str2);
 
 function blockHexCoordsValid(x, y)
 {
@@ -431,37 +287,46 @@ function blockHexCoordsValid(x, y)
 	return false;
 }
 
-function wouldFallOutside(blocks, coordx, coordy, which, x, y , z)
+function wouldFallOutside(coordx, coordy, which, x, y , z)
 {
 	//console.log('Checking wouldOverlap for which=' + which + " " + x + "," + y + "," + z)
 	// make an array of [x,y,z] objects this block would occupy and then check occupado to see if any of them are already occupied.
-	if(y % 2 !== 0) // if the starting y is odd
-		offset = 1;
-	else
-		offset = 0;
+	var occupiesx = 0;
+	var occupiesy = 0;
 	
 	var wouldfalloutside = [];
 	for(var b = 0; b < blocks[which].occupies.length; b++)
 	{
-		if(!blockHexCoordsValid(blocks[which].occupies[b][0]+x, blocks[which].occupies[b][1]+y))
+		occupiesx = blocks[which].occupies[b][0];
+		occupiesy = blocks[which].occupies[b][1];
+		if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
+		{
+			occupiesx = occupiesx + 1;
+		}
+		if(!blockHexCoordsValid(occupiesx+x, occupiesy+y))
 			return true;
 	}
 	return false;
 }
 
-function wouldOverlap(blocks, coordx, coordy, which, x, y , z)
+function wouldOverlap(coordx, coordy, which, x, y , z)
 {
 	//console.log('Checking wouldOverlap for which=' + which + " " + x + "," + y + "," + z)
 	// make an array of [x,y,z] objects this block would occupy and then check occupado to see if any of them are already occupied.
-	if(y % 2 !== 0) // if the starting y is odd
-		offset = 1;
-	else
-		offset = 0;
+	
+	var occupiesx = 0;
+	var occupiesy = 0;
+	var occupiesz = 0;
 	
 	var wouldoccupy = [];
 	for(var b = 0; b < blocks[which].occupies.length; b++)
 	{
-		wouldoccupy.push([blocks[which].occupies[b][0]+x, blocks[which].occupies[b][1]+y, blocks[which].occupies[b][2]+z]);
+		occupiesx = blocks[which].occupies[b][0];
+		occupiesy = blocks[which].occupies[b][1];
+		occupiesz = blocks[which].occupies[b][2];
+		if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
+			occupiesx = occupiesx + 1;
+		wouldoccupy.push([occupiesx+x, occupiesy+y, occupiesz+z]);
 	}
 	
 	for(var w = 0; w < wouldoccupy.length; w++)
@@ -482,18 +347,25 @@ function wouldOverlap(blocks, coordx, coordy, which, x, y , z)
 	return false;
 }
 
-function touchesAnother(blocks, coordx, coordy, which, x, y , z)
+function touchesAnother(coordx, coordy, which, x, y , z)
 {
 	//console.log('touches another?');
-	if(y % 2 !== 0) // if the starting y is odd
-		offset = 1;
-	else
-		offset = 0;
+	var sx = 0;
+	var sy = 0;
+	var sz = 0;
 	
 	var surroundings = [];
 	for(var b = 0; b < blocks[which].surroundedby.length; b++)
 	{
-		surroundings.push([blocks[which].surroundedby[b][0]+x, blocks[which].surroundedby[b][1]+y, blocks[which].surroundedby[b][2]+z]);
+		sx = blocks[which].surroundedby[b][0];
+		sy = blocks[which].surroundedby[b][1];
+		sz = blocks[which].surroundedby[b][2];
+		
+		if(y % 2 !== 0 && sy%2 !== 0) // if y is odd, offset the x by 1
+		{
+			sx = sx + 1;
+		}
+		surroundings.push([sx+x, sy+y, sz+z]);
 	}
 	//console.log(surroundings.length);
 	
@@ -516,17 +388,16 @@ function touchesAnother(blocks, coordx, coordy, which, x, y , z)
 }
 
 
-
-function isValidLocation(blocks, coordx,coordy,which,x,y,z)
+function isValidLocation(coordx,coordy,which,x,y,z)
 {
 	//console.log("isValidLocation which=" + which + " " + x + ", "+ y + ", "+ z);
-	if(!wouldFallOutside(blocks, coordx,coordy,which,x,y,z))
+	if(!wouldFallOutside(coordx,coordy,which,x,y,z))
 	{
 		//console.log("falls inside");
-		if(!wouldOverlap(blocks, coordx,coordy,which,x,y,z))
+		if(!wouldOverlap(coordx,coordy,which,x,y,z))
 		{
 			//console.log("doesn't overlap");
-			if(touchesAnother(blocks, coordx,coordy,which,x,y,z))
+			if(touchesAnother(coordx,coordy,which,x,y,z))
 			{
 				//console.log("touches another");
 				return true;
@@ -545,29 +416,22 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	// but starting at 0,1 the other 3 blocks are 1,2, 1,3 and 1, 3 (x+1,y+1, x+1,y+2 and x+2,y+3)
 	// See? Kinda weird.
 	//console.log("drawblock(" + coordx + ", "+ coordy + ", " + which + "," + x + ", "+ y + ", "+ z + ", " + color);
-	var blocks;
-//	if(y % 2 !== 0) // if the starting y is odd
-//	{
-//		blocks = offsetblocks;
-//	}
-//	else
-	blocks = normalblocks;
-	
 	var occupiesx = 0;
 	var occupiesy = 0;
 	var occupiesz = 0;
 	
-	if(isValidLocation(blocks, coordx, coordy, which, x, y, z))
+	if(isValidLocation(coordx, coordy, which, x, y, z)) // have not sent offset to these functions. Must take care of inside them.
 	{
 		for(var b = 0; b < blocks[which].occupies.length; b++)
 		{
 			occupiesx = blocks[which].occupies[b][0];
 			occupiesy = blocks[which].occupies[b][1];
 			occupiesz = blocks[which].occupies[b][2];
-			
-			if(occupiesy % 2 !== 0)
-				occupiesx++;
-			
+			if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
+			{
+				occupiesx = occupiesx + 1;
+			}
+			//console.log('drawing ' + (occupiesx+x) + " " + (occupiesy+y) + " " + occupiesz+z);
 			drawBlockHex(coordx, coordy, occupiesx+x, occupiesy+y, occupiesz+z, color,1);
 			occupado[coordx][coordy].push([occupiesx+x, occupiesy+y, occupiesz+z]);
 		}
