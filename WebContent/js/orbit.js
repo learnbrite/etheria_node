@@ -107,17 +107,17 @@ function init() {
 		
 		while(created < 500)
 		{
-			t = getRandomIntInclusive(0,19);
+			t = getRandomIntInclusive(0,31);
 			c = getRandomIntInclusive(-50,50);
 			r = getRandomIntInclusive(-66,66);
-			z = getRandomIntInclusive(0,0);
+			z = getRandomIntInclusive(0,10);
 			drewblock = false;
 			while(drewblock == false)
 			{
-				t = getRandomIntInclusive(0,19);
+				t = getRandomIntInclusive(0,31);
 				c = getRandomIntInclusive(-50,50);
 				r = getRandomIntInclusive(-66,66);
-				z =  getRandomIntInclusive(0,0);
+				z =  getRandomIntInclusive(0,10);
 				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
 			}	
 			created++;
