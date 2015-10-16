@@ -35,7 +35,7 @@ var blockwidth = Math.sqrt(3)/2 * blockheight;
 var blockextrude = blocksize;
 
 var NORMALIZE_ELEVATIONS = false;
-var GENERATE_NEW_MAP = true;
+var GENERATE_NEW_MAP = false;
 var EXTRUSION_FACTOR = size/75;
 
 var camera, controls, scene, renderer;
@@ -171,9 +171,11 @@ function init() {
 			type: 'GET', 
 			url: 'http://localhost:1337/map', 
 	        dataType: 'json',
-	        timeout: 10000,
+	        timeout: 100000,
 	        async: false, // same origin, so this is ok 
 	        success: function (data, status) {
+	        	console.log('back from /map');
+	        	console.log(JSON.stringify(data));
 	        	map = data;
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -209,6 +211,8 @@ function init() {
 		map[x][y].normalization_factor = normalization_factor;
 	}
 	
+//	console.log(map[1][6].blocks);
+	
 	for(var row = 0; row < mapsize; row++)
 	{
 		for(var col = 0; col < mapsize; col++)
@@ -221,16 +225,16 @@ function init() {
 			{
 				for(var b = 0; b < map[col][row].blocks.length; b++)
 				{
-					if(map[col][row].blocks[b].z >= 0) // z below 0 doesn't get drawn
+					if(map[col][row].blocks[b][3] >= 0) // z below 0 doesn't get drawn
 					{	
 						console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(map[col][row].blocks[b]));
+						//drawBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
 						drawBlock(col,row,
-								map[col][row].blocks[b].which,
-								map[col][row].blocks[b].x,
-								map[col][row].blocks[b].y,
-								map[col][row].blocks[b].z,
-								//0x0000FF
-								(map[col][row].blocks[b].r+128) * Math.pow(16,4) + (map[col][row].blocks[b].g+128) * Math.pow(16,2) + (map[col][row].blocks[b].b+128)
+								map[col][row].blocks[b][0], // which
+								map[col][row].blocks[b][1], // x
+								map[col][row].blocks[b][2],  // y
+								map[col][row].blocks[b][3],  // z
+								(map[col][row].blocks[b][4]+128) * 65536 // 256 color possibilities (0-255) each times 65536 will produce numbers in the range hex color range 0-16777216
 								);
 					}
 				}	

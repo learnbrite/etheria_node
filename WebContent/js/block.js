@@ -64,7 +64,7 @@ for (row = 0; row < mapsize; row++) {
 }
 
 
-var blocks = [{
+var blockdefs = [{
 	'which':0,
 	'description': 'column',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7]],
@@ -402,10 +402,10 @@ function wouldFallOutside(coordx, coordy, which, x, y , z)
 	var occupiesx = 0;
 	var occupiesy = 0;
 	
-	for(var b = 0; b < blocks[which].occupies.length; b++)
+	for(var b = 0; b < blockdefs[which].occupies.length; b++)
 	{
-		occupiesx = blocks[which].occupies[b][0];
-		occupiesy = blocks[which].occupies[b][1];
+		occupiesx = blockdefs[which].occupies[b][0];
+		occupiesy = blockdefs[which].occupies[b][1];
 		if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
 		{
 			occupiesx = occupiesx + 1;
@@ -426,11 +426,11 @@ function wouldOverlap(coordx, coordy, which, x, y , z)
 	var occupiesz = 0;
 	
 	var wouldoccupy = [];
-	for(var b = 0; b < blocks[which].occupies.length; b++)
+	for(var b = 0; b < blockdefs[which].occupies.length; b++)
 	{
-		occupiesx = blocks[which].occupies[b][0];
-		occupiesy = blocks[which].occupies[b][1];
-		occupiesz = blocks[which].occupies[b][2];
+		occupiesx = blockdefs[which].occupies[b][0];
+		occupiesy = blockdefs[which].occupies[b][1];
+		occupiesz = blockdefs[which].occupies[b][2];
 		if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
 			occupiesx = occupiesx + 1;
 		wouldoccupy.push([occupiesx+x, occupiesy+y, occupiesz+z]);
@@ -462,11 +462,11 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 	var sz = 0;
 	
 	var surroundings = [];
-	for(var b = 0; b < blocks[which].attachesto.length; b++)
+	for(var b = 0; b < blockdefs[which].attachesto.length; b++)
 	{
-		sx = blocks[which].attachesto[b][0];
-		sy = blocks[which].attachesto[b][1];
-		sz = blocks[which].attachesto[b][2];
+		sx = blockdefs[which].attachesto[b][0];
+		sy = blockdefs[which].attachesto[b][1];
+		sz = blockdefs[which].attachesto[b][2];
 		
 		if(y % 2 !== 0 && sy%2 !== 0) // if y is odd, offset the x by 1
 		{
@@ -529,11 +529,11 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	
 	if(isValidLocation(coordx, coordy, which, x, y, z)) // have not sent offset to these functions. Must take care of inside them.
 	{
-		for(var b = 0; b < blocks[which].occupies.length; b++)
+		for(var b = 0; b < blockdefs[which].occupies.length; b++)
 		{
-			occupiesx = blocks[which].occupies[b][0];
-			occupiesy = blocks[which].occupies[b][1];
-			occupiesz = blocks[which].occupies[b][2];
+			occupiesx = blockdefs[which].occupies[b][0];
+			occupiesy = blockdefs[which].occupies[b][1];
+			occupiesz = blockdefs[which].occupies[b][2];
 			if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
 			{
 				occupiesx = occupiesx + 1;
