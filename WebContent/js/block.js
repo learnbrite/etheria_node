@@ -68,261 +68,242 @@ var blocks = [{
 	'which':0,
 	'description': 'column',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7]],
-	'surroundedby':  [[0,0,-1],[0,0,8]]
+	'attachesto':  [[0,0,-1],[0,0,8]]
 },
 {
 	'which':1,
 	'description': 'SW-NE diagonal beam',
 	'occupies': [[0,0,0],[0,1,0],[1,2,0],[1,3,0],[2,4,0],[2,5,0],[3,6,0],[3,7,0]],
-	'surroundedby':  [[0,0,-1],[0,1,-1],[1,2,-1],[1,3,-1],[2,4,-1],[2,5,-1],[3,6,-1],[3,7,-1],
+	'attachesto':  [[0,0,-1],[0,1,-1],[1,2,-1],[1,3,-1],[2,4,-1],[2,5,-1],[3,6,-1],[3,7,-1],
 	                  [0,0,1],[0,1,1],[1,2,1],[1,3,1],[2,4,1],[2,5,1],[3,6,1],[3,7,1]]
 },
 {
 	'which':2,
 	'description': 'W-E horizontal beam',
 	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0],[7,0,0]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],[4,0,-1],[5,0,-1],[6,0,-1],[7,0,-1],
+	'attachesto':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],[4,0,-1],[5,0,-1],[6,0,-1],[7,0,-1],
 	                  [0,0,1],[1,0,1],[2,0,1],[3,0,1],[4,0,1],[5,0,1],[6,0,1],[7,0,1]],
 },
 {
 	'which':3,
 	'description': 'SE-NW diagonal beam',
 	'occupies': [[0,0,0],[-1,1,0],[-1,2,0],[-2,3,0],[-2,4,0],[-3,5,0],[-3,6,0],[-4,7,0]],
-	'surroundedby':  [[0,0,-1],[-1,1,-1],[-1,2,-1],[-2,3,-1],[-2,4,-1],[-3,5,-1],[-3,6,-1],[-4,7,-1],
+	'attachesto':  [[0,0,-1],[-1,1,-1],[-1,2,-1],[-2,3,-1],[-2,4,-1],[-3,5,-1],[-3,6,-1],[-4,7,-1],
 	                  [0,0,1],[-1,1,1],[-1,2,1],[-2,3,1],[-2,4,1],[-3,5,1],[-3,6,1],[-4,7,1]]
 },
 {
 	'which':4,
 	'description': 'SW-NE diagonal snake',
 	'occupies': [[0,0,0],[1,0,0],[1,1,0],[2,1,0],[3,2,0],[4,2,0],[4,3,0],[5,3,0]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],[1,1,-1],[2,1,-1],[3,2,-1],[4,2,-1],[4,3,-1],[5,3,-1],
+	'attachesto':  [[0,0,-1],[1,0,-1],[1,1,-1],[2,1,-1],[3,2,-1],[4,2,-1],[4,3,-1],[5,3,-1],
 	                  [0,0,1],[1,0,1],[1,1,1],[2,1,1],[3,2,1],[4,2,1],[4,3,1],[5,3,1]]
 },
 {
 	'which':5,
 	'description': 'SE-NW diagonal snake',
 	'occupies': [[0,0,0],[-1,0,0],[-2,1,0],[-3,1,0],[-3,2,0],[-4,2,0],[-5,3,0],[-6,3,0]],
-	'surroundedby':  [[0,0,-1],[-1,0,-1],[-2,1,-1],[-3,1,-1],[-3,2,-1],[-4,2,-1],[-5,3,-1],[-6,3,-1],
+	'attachesto':  [[0,0,-1],[-1,0,-1],[-2,1,-1],[-3,1,-1],[-3,2,-1],[-4,2,-1],[-5,3,-1],[-6,3,-1],
 	                  [0,0,1],[-1,0,1],[-2,1,1],[-3,1,1],[-3,2,1],[-4,2,1],[-5,3,1],[-6,3,1]]
 },
 {
 	'which':6,
 	'description': 'W-E quadruple-decker',
 	'occupies': [[0,0,0],[1,0,0],[0,0,1],[1,0,1],[0,0,2],[1,0,2],[0,0,3],[1,0,3]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],
+	'attachesto':  [[0,0,-1],[1,0,-1],
 	                  [0,0,4],[1,0,4]]
 },
 {
 	'which':7,
 	'description': 'SW-NE quadruple-decker',
 	'occupies': [[0,0,0],[0,1,0],[0,0,1],[0,1,1],[0,0,2],[0,1,2],[0,0,3],[0,1,3]],
-	'surroundedby':  [[0,0,-1],[0,1,-1],
+	'attachesto':  [[0,0,-1],[0,1,-1],
 	                  [0,0,4],[0,1,4]]
 },
 {
 	'which':8,
 	'description': 'SE-NW quadruple-decker',
 	'occupies': [[0,0,0],[-1,1,0],[0,0,1],[-1,1,1],[0,0,2],[-1,1,2],[0,0,3],[-1,1,3]],
-	'surroundedby':  [[0,0,-1],[-1,1,-1],
+	'attachesto':  [[0,0,-1],[-1,1,-1],
 	                  [0,0,4],[-1,1,4]]
 },
 {
 	'which':9,
 	'description': 'SW-NE double-decker',
 	'occupies': [[0,0,0],[0,1,0],[1,2,0],[1,3,0],[0,0,1],[0,1,1],[1,2,1],[1,3,1]],
-	'surroundedby':  [[0,0,-1],[0,1,-1],[1,2,-1],[1,3,-1],
+	'attachesto':  [[0,0,-1],[0,1,-1],[1,2,-1],[1,3,-1],
 	                  [0,0,2],[0,1,2],[1,2,2],[1,3,2]]
 },
 {
 	'which':10,
 	'description': 'W-E double-decker',
 	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[0,0,1],[1,0,1],[2,0,1],[3,0,1]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],
+	'attachesto':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],
 	                  [0,0,2],[1,0,2],[2,0,2],[3,0,2]]
 },
 {
 	'which':11,
 	'description': 'SE-NW double-decker',
 	'occupies': [[0,0,0],[-1,1,0],[-1,2,0],[-2,3,0],[0,0,1],[-1,1,1],[-1,2,1],[-2,3,1]],
-	'surroundedby':  [[0,0,-1],[-1,1,-1],[-1,2,-1],[-2,3,-1],
+	'attachesto':  [[0,0,-1],[-1,1,-1],[-1,2,-1],[-2,3,-1],
 	                  [0,0,2],[-1,1,2],[-1,2,2],[-2,3,2]]
 },
 {
 	'which':12,
 	'description': 'SW-NE double-decker diagonal snake',
 	'occupies': [[0,0,0],[1,0,0],[1,1,0],[2,1,0],[0,0,1],[1,0,1],[1,1,1],[2,1,1]],
-	'surroundedby':  [[0,0,-1],[1,0,-1],[1,1,-1],[2,1,-1],
+	'attachesto':  [[0,0,-1],[1,0,-1],[1,1,-1],[2,1,-1],
 	                  [0,0,2],[1,0,2],[1,1,2],[2,1,2]]
 },
 {
 	'which':13,
 	'description': 'SE-NW double-decker diagonal snake',
 	'occupies': [[0,0,0],[-1,0,0],[-2,1,0],[-3,1,0],[0,0,1],[-1,0,1],[-2,1,1],[-3,1,1]],
-	'surroundedby':  [[0,0,-1],[-1,0,-1],[-2,1,-1],[-3,1,-1],
+	'attachesto':  [[0,0,-1],[-1,0,-1],[-2,1,-1],[-3,1,-1],
 	                  [0,0,2],[-1,0,2],[-2,1,2],[-3,1,2]]
 },
 {
 	'which':14,
 	'description': 'S-N snake',
 	'occupies': [[0,0,0],[0,1,0],[0,2,0],[0,3,0],[0,4,0],[0,5,0],[0,6,0],[0,7,0]],
-	'surroundedby':  [[0,0,-1],[0,1,-1],[0,2,-1],[0,3,-1],[0,4,-1],[0,5,-1],[0,6,-1],[0,7,-1],
+	'attachesto':  [[0,0,-1],[0,1,-1],[0,2,-1],[0,3,-1],[0,4,-1],[0,5,-1],[0,6,-1],[0,7,-1],
 	                  [0,0,1],[0,1,1],[0,2,1],[0,3,1],[0,4,1],[0,5,1],[0,6,1],[0,7,1]]
 },
 {
 	'which':15,
 	'description': 'S-N snake flipped',
 	'occupies': [[0,0,0],[-1,1,0],[0,2,0],[-1,3,0],[0,4,0],[-1,5,0],[0,6,0],[-1,7,0]],
-	'surroundedby':  [[0,0,-1],[-1,1,-1],[0,2,-1],[-1,3,-1],[0,4,-1],[-1,5,-1],[0,6,-1],[-1,7,-1],
+	'attachesto':  [[0,0,-1],[-1,1,-1],[0,2,-1],[-1,3,-1],[0,4,-1],[-1,5,-1],[0,6,-1],[-1,7,-1],
 	                  [0,0,1],[-1,1,1],[0,2,1],[-1,3,1],[0,4,1],[-1,5,1],[0,6,1],[-1,7,1]]
 },
 {
 	'which':16,
 	'description': 'S-N double-decker snake',
 	'occupies': [[0,0,0],[0,1,0],[0,2,0],[0,3,0],[0,0,1],[0,1,1],[0,2,1],[0,3,1]],
-	'surroundedby':  [[0,0,-1],[0,1,-1],[0,2,-1],[0,3,-1],
+	'attachesto':  [[0,0,-1],[0,1,-1],[0,2,-1],[0,3,-1],
 	                  [0,0,2],[0,1,2],[0,2,2],[0,3,2]]
 },
 {
 	'which':17,
 	'description': 'S-N double-decker snake flipped',
 	'occupies': [[0,0,0],[-1,1,0],[0,2,0],[-1,3,0],[0,0,1],[-1,1,1],[0,2,1],[-1,3,1]],
-	'surroundedby':  [[0,0,-1],[-1,1,-1],[0,2,-1],[-1,3,-1],
+	'attachesto':  [[0,0,-1],[-1,1,-1],[0,2,-1],[-1,3,-1],
 	                  [0,0,2],[-1,1,2],[0,2,2],[-1,3,1]]
 },
 {
 	'which':18,
 	'description': 'SW-NE stairstep',
 	'occupies': [[0,0,0],[0,1,0],[0,1,1],[1,2,1],[1,2,2],[1,3,2],[1,3,3],[2,4,3]],
-	'surroundedby': [[0,0,-1],[0,1,-1],[1,2,0],[1,3,1],[2,4,2],
+	'attachesto': [[0,0,-1],[0,1,-1],[1,2,0],[1,3,1],[2,4,2],
 	                 [0,0,1] ,[0,1,2],[1,2,3],[1,3,4],[2,4,4]]
 },
 {
 	'which':19,
 	'description': 'W-E stairstep',
 	'occupies': [[0,0,0],[1,0,0],[1,0,1],[2,0,1],[2,0,2],[3,0,2],[3,0,3],[4,0,3]],
-	'surroundedby': [[0,0,-1],[1,0,-1],[2,0,0],[3,0,1],[4,0,2],
+	'attachesto': [[0,0,-1],[1,0,-1],[2,0,0],[3,0,1],[4,0,2],
 	                 [0,0,1] ,[1,0,2],[2,0,3],[3,0,4],[4,0,4]]
 },
 {
 	'which':20,
 	'description': 'NW-SE stairstep',
 	'occupies': [[0,0,0],[0,-1,0],[0,-1,1],[1,-2,1],[1,-2,2],[1,-3,2],[1,-3,3],[2,-4,3]],
-	'surroundedby': [[0,0,-1],[0,-1,-1],[1,-2,0],[1,-3,1],[2,-4,2],
+	'attachesto': [[0,0,-1],[0,-1,-1],[1,-2,0],[1,-3,1],[2,-4,2],
 	                 [0,0,1] ,[0,-1,2],[1,-2,3],[1,-3,4],[2,-4,4]]
 },
 {
 	'which':21,
 	'description': 'NE-SW stairstep',
 	'occupies': [[0,0,0],[-1,-1,0],[-1,-1,1],[-1,-2,1],[-1,-2,2],[-2,-3,2],[-2,-3,3],[-2,-4,3]],
-	'surroundedby': [[0,0,-1],[-1,-1,-1],[-1,-2,0],[-2,-3,1],[-2,-4,2],
+	'attachesto': [[0,0,-1],[-1,-1,-1],[-1,-2,0],[-2,-3,1],[-2,-4,2],
 	                 [0,0,1] ,[-1,-1,2],[-1,-2,3],[-2,-3,4],[-2,-4,4]]
 },
 {
 	'which':22,
 	'description': 'E-W stairstep',
 	'occupies': [[0,0,0],[-1,0,0],[-1,0,1],[-2,0,1],[-2,0,2],[-3,0,2],[-3,0,3],[-4,0,3]],
-	'surroundedby': [[0,0,-1],[-1,0,-1],[-2,0,0],[-3,0,1],[-4,0,2],
+	'attachesto': [[0,0,-1],[-1,0,-1],[-2,0,0],[-3,0,1],[-4,0,2],
 	                 [0,0,1] ,[-1,0,2],[-2,0,3],[-3,0,4],[-4,0,4]]
 },
 {
 	'which':23,
 	'description': 'SE-NW stairstep',
 	'occupies': [[0,0,0],[-1,1,0],[-1,1,1],[-1,2,1],[-1,2,2],[-2,3,2],[-2,3,3],[-2,4,3]],
-	'surroundedby': [[0,0,-1],[-1,1,-1],[-1,2,0],[-2,3,1],[-2,4,2],
+	'attachesto': [[0,0,-1],[-1,1,-1],[-1,2,0],[-2,3,1],[-2,4,2],
 	                 [0,0,1] ,[-1,1,2],[-1,2,3],[-2,3,4],[-2,4,4]]
 },
 {
 	'which':24,
 	'description': 'SW-NE arch',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,1,2],[1,2,2],[1,3,2],[1,3,1],[1,3,0]],
-	'surroundedby': [[0,0,-1],[0,1,1],[1,2,1],[1,3,-1],
+	'attachesto': [[0,0,-1],[0,1,1],[1,2,1],[1,3,-1],
 	                 [0,0,3] ,[0,1,3],[1,2,3],[1,3,3]]
 },
 {
 	'which':25,
 	'description': 'W-E arch',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[1,0,2],[2,0,2],[3,0,2],[3,0,1],[3,0,0]],
-	'surroundedby': [[0,0,-1],[1,0,1],[2,0,1],[3,0,-1],
+	'attachesto': [[0,0,-1],[1,0,1],[2,0,1],[3,0,-1],
 	                 [0,0,3] ,[1,0,3],[2,0,3],[3,0,3]]
 },
 {
 	'which':26,
 	'description': 'NW-SE arch',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,-1,2],[1,-2,2],[1,-3,2],[1,-3,1],[1,-3,0]],
-	'surroundedby': [[0,0,-1],[0,-1,1],[1,-2,1],[1,-3,-1],
+	'attachesto': [[0,0,-1],[0,-1,1],[1,-2,1],[1,-3,-1],
 	                 [0,0,3] ,[0,-1,3],[1,-2,3],[1,-3,3]]
 },
 {
 	'which':27,
 	'description': 'SW-NE curved arch',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[1,0,2],[1,1,2],[1,2,2],[1,2,1],[1,2,0]],
-	'surroundedby': [[0,0,-1],[1,0,1],[1,1,1],[1,2,-1],
+	'attachesto': [[0,0,-1],[1,0,1],[1,1,1],[1,2,-1],
 	                 [0,0,3] ,[1,0,3],[1,1,3],[1,2,3]]
 },
 {
 	'which':28,
 	'description': 'NW-SE curved arch',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[-1,-1,2],[0,-2,2],[1,-2,2],[1,-2,1],[1,-2,0]],
-	'surroundedby': [[0,0,-1],[-1,-1,1],[0,-2,1],[1,-2,-1],
+	'attachesto': [[0,0,-1],[-1,-1,1],[0,-2,1],[1,-2,-1],
 	                 [0,0,3] ,[-1,-1,3],[0,-2,3],[1,-2,3]]
 },
 {
 	'which':29,
 	'description': 'NE-SW curved arch',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[-1,0,2],[-2,-1,2],[-1,-2,2],[-1,-2,1],[-1,-2,0]],
-	'surroundedby': [[0,0,-1],[-1,0,1],[-2,-1,1],[-1,-2,-1],
+	'attachesto': [[0,0,-1],[-1,0,1],[-2,-1,1],[-1,-2,-1],
 	                 [0,0,3] ,[-1,0,3],[-2,-1,3],[-1,-2,3]]
 },
 {
 	'which':30,
 	'description': 'NE-SW curved arch',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,1,2],[0,2,2],[-1,2,2],[-1,2,1],[-1,2,0]],
-	'surroundedby': [[0,0,-1],[0,1,1],[0,2,1],[-1,2,-1],
+	'attachesto': [[0,0,-1],[0,1,1],[0,2,1],[-1,2,-1],
 	                 [0,0,3] ,[0,1,3],[0,2,3],[-1,2,3]]
 },
 {
 	'which':31,
 	'description': 'stand',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[-1,1,0],[-1,-1,0],[1,0,0]],
-	'surroundedby': [[0,0,-1],[-1,1,-1],[-1,-1,-1],[1,0,-1],
+	'attachesto': [[0,0,-1],[-1,1,-1],[-1,-1,-1],[1,0,-1],
 	                 [0,0,5],[-1,1,1],[-1,-1,1],[1,0,1]]
 }
 ]
 
-//var str = "";
-//var str2 = "etheria.initializeBlockDefinition(";
-//for(var trick = 0; trick < normalblocks.length; trick++)
+//var str1 = "";
+//var str2 = "";
+//var tempattachesto = [];
+//for(var trick = 0; trick < blocks.length; trick++)
 //{
-//	str = str + "blocks[" + trick + "].which = " + (normalblocks[trick].which*1) + ";\n";
-//	str2 = str2 + (normalblocks[trick].which*1) + ", ";
-//	str = str + "blocks[" + trick + "].description = \'" + normalblocks[trick].description + "\';\n";
-//	str2 = str2 + "\"" + normalblocks[trick].description + "\", [";
-//	for(var trickocc = 0; trickocc < normalblocks[trick].occupies.length; trickocc++)
-//	{
-//		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][0] = " + normalblocks[trick].occupies[trickocc][0] + ";\n";
-//		str2 = str2 + normalblocks[trick].occupies[trickocc][0] + ",";
-//		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][1] = " + normalblocks[trick].occupies[trickocc][1] + ";\n";
-//		str2 = str2 + normalblocks[trick].occupies[trickocc][1] + ",";
-//		str = str + "blocks[" + trick + "].occupies[" + trickocc + "][2] = " + normalblocks[trick].occupies[trickocc][2] + ";\n";
-//		if(trickocc === (normalblocks[trick].occupies.length-1))
-//			str2 = str2 + normalblocks[trick].occupies[trickocc][2] + "],[";
-//		else
-//			str2 = str2 + normalblocks[trick].occupies[trickocc][2] + ",";
-//	}	
-//	for(var orange = 0; orange < normalblocks[trick].surroundedby.length; orange++)
-//	{
-//		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][0] = " + normalblocks[trick].surroundedby[orange][0] + ";\n";
-//		str2 = str2 + normalblocks[trick].surroundedby[orange][0] + ",";
-//		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][1] = " + normalblocks[trick].surroundedby[orange][1] + ";\n";
-//		str2 = str2 + normalblocks[trick].surroundedby[orange][0] + ",";
-//		str = str + "blocks[" + trick + "].surroundedby[" + orange + "][2] = " + normalblocks[trick].surroundedby[orange][2] + ";\n";
-//		if(trickocc === (normalblocks[trick].occupies.length-1))
-//			str2 = str2 + normalblocks[trick].surroundedby[orange][2] + "]).sendTransaction({from:eth.coinbase,gas:3000000})";
-//		else
-//			str2 = str2 + normalblocks[trick].surroundedby[orange][2] + ",";
-//	}	
+//	str1 = str1 + "blockdefstorage.initBlockDefOccupies.sendTransaction(";
+//	str2 = str2 + "blockdefstorage.initBlockDefAttachesto.sendTransaction(";
+//	str1 = str1 + (blocks[trick].which*1) + ", ";
+//	str2 = str2 + (blocks[trick].which*1) + ", ";
+//	str1 = str1 + JSON.stringify(blocks[trick].occupies);
+//	str2 = str2 + JSON.stringify(blocks[trick].attachesto);
+//	str1 = str1 + ",{from:eth.coinbase, gas:3000000});\n";
+//	str2 = str2 + ",{from:eth.coinbase, gas:3000000});\n";
 //}	
-//console.log(str2);
+//console.log(str1 + "\n" + str2);
 
 function blockHexCoordsValid(x, y)
 {
@@ -332,42 +313,85 @@ function blockHexCoordsValid(x, y)
 		{
 			if(-50 <= x && x <= 49)
 				return true;
+			else
+			{
+				//console.log('returning false! ' + x + ',' + y);
+				return false;
+			}	
 		}
 		else // even
 		{
 			if(-49 <= x && x <= 49)
 				return true;
+			else
+			{
+				//console.log('returning false! ' + x + ',' + y);
+				return false;
+			}	
 		}	
 	}	
 	else
 	{	
+		var absx;
+		var absy;
+		if(x < 0)
+			absx = (x*-1);
+		else
+			absx = (x);
+		if(y < 0)
+			absy = (y*-1);
+		else
+			absy = (y);
 		if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
 		{
-			if(y % 2 !== 0 ) // odd
+			if(y % 2 != 0 ) // odd
 			{
-				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+				if (((absx*2) + (absy*3)) <= 198)
 					return true;
+				else
+				{
+					//console.log('returning false! ' + x + ',' + y);
+					return false;
+				}	
 			}	
 			else	// even
 			{
-				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
+				{
 					return true;
+				}
+				else
+				{
+					//console.log('returning false! ' + x + ',' + y);
+					return false;
+				}	
 			}
 		}
 		else
 		{	
-			if(y % 2 === 0 ) // even
+			if(y % 2 == 0 ) // even
 			{
-				if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
+				if (((absx*2) + (absy*3)) <= 198)
 					return true;
+				else
+				{
+					//console.log('returning false! ' + x + ',' + y);
+					return false;
+				}	
 			}	
 			else	// odd
 			{
-				if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
+				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
 					return true;
+				else
+				{
+					//console.log('returning false! ' + x + ',' + y);
+					return false;
+				}	
 			}
 		}
 	}
+	//console.log('END returning false! ' + x + ',' + y);
 	return false;
 }
 
@@ -378,7 +402,6 @@ function wouldFallOutside(coordx, coordy, which, x, y , z)
 	var occupiesx = 0;
 	var occupiesy = 0;
 	
-	var wouldfalloutside = [];
 	for(var b = 0; b < blocks[which].occupies.length; b++)
 	{
 		occupiesx = blocks[which].occupies[b][0];
@@ -439,11 +462,11 @@ function touchesAnother(coordx, coordy, which, x, y , z)
 	var sz = 0;
 	
 	var surroundings = [];
-	for(var b = 0; b < blocks[which].surroundedby.length; b++)
+	for(var b = 0; b < blocks[which].attachesto.length; b++)
 	{
-		sx = blocks[which].surroundedby[b][0];
-		sy = blocks[which].surroundedby[b][1];
-		sz = blocks[which].surroundedby[b][2];
+		sx = blocks[which].attachesto[b][0];
+		sy = blocks[which].attachesto[b][1];
+		sz = blocks[which].attachesto[b][2];
 		
 		if(y % 2 !== 0 && sy%2 !== 0) // if y is odd, offset the x by 1
 		{

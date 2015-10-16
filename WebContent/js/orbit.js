@@ -41,7 +41,7 @@ var EXTRUSION_FACTOR = size/75;
 var camera, controls, scene, renderer;
 var mesh;
 
-var mapsize = 17;
+var mapsize = 33;
 
 var map;
 
@@ -85,7 +85,7 @@ function init() {
 
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
 	//camera.position.set(0,-200,150);
-	camera.position.z = 50;
+	camera.position.z = 500;
 
 	controls = new THREE.OrbitControls(camera);
 	controls.damping = 0.2;
@@ -105,25 +105,39 @@ function init() {
 		var created = 0;
 		var drewblock = false;
 		
-		while(created < 500)
+		while(created < 30)
 		{
 			t = getRandomIntInclusive(0,31);
 			c = getRandomIntInclusive(-50,50);
 			r = getRandomIntInclusive(-66,66);
-			z = getRandomIntInclusive(0,10);
+			z = getRandomIntInclusive(0,0);
 			drewblock = false;
 			while(drewblock == false)
 			{
 				t = getRandomIntInclusive(0,31);
 				c = getRandomIntInclusive(-50,50);
 				r = getRandomIntInclusive(-66,66);
-				z =  getRandomIntInclusive(0,10);
-				drewblock = drawBlock(8,8,t,c,r,z, getRandomIntInclusive(0,16777214));
+				z =  getRandomIntInclusive(0,0);
+				drewblock = drawBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
 			}	
 			created++;
 		}	
 		
 		// TESTS // DO NOT DELETE
+		//drawBlock(8,8,0,0,66,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(8,8,0,49,33,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(8,8,0,49,-33,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(8,8,0,0,-66,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(8,8,0,-50,33,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(8,8,0,-50,-33,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(8,8,0,0,67,0, getRandomIntInclusive(0,16777214)); // fail
+//		drawBlock(8,8,0,1,66,0, getRandomIntInclusive(0,16777214)); // fail
+//		drawBlock(8,8,0,-1,66,0, getRandomIntInclusive(0,16777214)); // fail
+//		drawBlock(8,8,0,50,33,0, getRandomIntInclusive(0,16777214)); // fail
+//		drawBlock(8,8,0,50,-33,0, getRandomIntInclusive(0,16777214)); // fail
+//		drawBlock(8,8,0,-67,0,0, getRandomIntInclusive(0,16777214)); // fail
+//		drawBlock(8,8,0,-51,33,0, getRandomIntInclusive(0,16777214)); // fail
+//		drawBlock(8,8,0,-51,-33,0, getRandomIntInclusive(0,16777214)); // fail
 //		drawBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
 //		drawBlock(8,8,0,0,0,-1, getRandomIntInclusive(0,16777214));  // fail
 //		drawBlock(8,8,0,0,0,5, getRandomIntInclusive(0,16777214));	 // fail
