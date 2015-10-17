@@ -69,11 +69,11 @@ for (i = 0; i < mapsize; i++) {
 	  }
 }
 
-var lastcheck = 0;
-
-app.get('/lastcheck', function (req, res){
-	res.end(lastcheck + "");
-});
+//var lastcheck = 0;
+//
+//app.get('/lastcheck', function (req, res){
+//	res.end(lastcheck + "");
+//});
 
 retrieveMap();
 
@@ -83,6 +83,8 @@ elevationcontract.getElevations.call(function(error, result) { console.log('elev
 console.log('done getting elevations');
 
 var map_retrieval_index = 0;
+
+setInterval(retrieveMap, 180000);
 
 function retrieveMap() {
 	
@@ -208,16 +210,16 @@ app.get('/map', function (req, res) {
 	console.log("entering /map");
 	var map_ja = getMap();
 	res.json(map_ja);  // at this point, we're done answering the request. Now check to see if we need to retrieve the map again.
-	console.log(JSON.stringify(map_ja));
-	console.log(process.hrtime()[0]+" - " + lastcheck + " = " + (process.hrtime()[0] - lastcheck));
-	if((process.hrtime()[0] - lastcheck) > 15) // if it's been more than 15 sec, retrieve map from blockchain
-	{	
-		console.log("been a while. Regenning map");
-		lastcheck = process.hrtime()[0];
-		console.log('executing first in series. Getting map.');
-		retrieveMap();
-		console.log('after getMap');
-	}
+//	console.log(JSON.stringify(map_ja));
+//	console.log(process.hrtime()[0]+" - " + lastcheck + " = " + (process.hrtime()[0] - lastcheck));
+//	if((process.hrtime()[0] - lastcheck) > 15) // if it's been more than 15 sec, retrieve map from blockchain
+//	{	
+//		console.log("been a while. Regenning map");
+//		lastcheck = process.hrtime()[0];
+//		console.log('executing first in series. Getting map.');
+//		retrieveMap();
+//		console.log('after getMap');
+//	}
 });
 
 app.get('/blocks', function (req, res) {
