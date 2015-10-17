@@ -25,7 +25,7 @@ var blockvert = blockheight * 3/4;
 var blockwidth = Math.sqrt(3)/2 * blockheight;
 var blockextrude = blocksize;
 
-var GENERATE_NEW_MAP = true;
+var GENERATE_NEW_MAP = false;
 var EXTRUSION_FACTOR = size/75;
 
 var camera, controls, scene, renderer;
@@ -180,6 +180,7 @@ function init() {
 	{
 		for(var row = 0; row < mapsize; row++)
 		{
+		
 //			if(NORMALIZE_ELEVATIONS)
 //				map[x][y].elevation = (map[x][y].elevation - min) * map[x][y].normalization_factor;
 			drawMapHex(col,row);
@@ -272,12 +273,12 @@ function render() {
 //		if(intersects[ 0 ].object.userData.p > 0)
 //			forsale = "yes";
 		$("#hexinfobodydiv").html(
-				"col: " + intersects[ 0 ].object.userData.col + "<br>" +
-				"row: " + intersects[ 0 ].object.userData.row + "<br>" +
-				"type: " + intersects[ 0 ].object.userData.tiletype + "<br>" + 
-				"elevation: " + intersects[ 0 ].object.userData.elevation + "<br>" +
-				"owner: " + intersects[ 0 ].object.userData.owner + "<br>" +
-				"blocks: " + JSON.stringify(intersects[ 0 ].object.userData.blocks)
+				"<b>col:</b> " + intersects[ 0 ].object.userData.col + " " +
+				"<b>row:</b> " + intersects[ 0 ].object.userData.row + "<br>" +
+				"<b>type:</b> " + intersects[ 0 ].object.userData.tiletype + "<br>" + 
+				"<b>elevation:</b> " + intersects[ 0 ].object.userData.elevation + "<br>" +
+				"<b>owner:</b> " + intersects[ 0 ].object.userData.owner + "<br>" +
+				"<b>blocks:</b> " + JSON.stringify(intersects[ 0 ].object.userData.blocks)
 //				"for sale? " + forsale + "<br>" + 
 //				"price: " + intersects[ 0 ].object.userData.p
 		);
@@ -300,55 +301,55 @@ var hillstexture = THREE.ImageUtils.loadTexture( "images/hills.jpg" );
 var mountainstexture = THREE.ImageUtils.loadTexture( "images/mountains.jpg" );
 var texture;
 
-function drawMapHex(coordx, coordy)
+function drawMapHex(col, row)
 {
 	var color = null;
 	var texturefile = "";
 	var log_color_choice = false;
 	var tiletype = "";
-	if(map[coordx][coordy].elevation >= SEA_LEVEL && 						// higher than ocean level AND
-			(coordy < (TUNDRA_PERCENTAGE * mapsize) || 			// (south of tundra threshold OR
-					coordy > ((1-TUNDRA_PERCENTAGE) * (mapsize-1)))) //  north of tundra threshold)
+	if(map[col][row].elevation >= SEA_LEVEL && 						// higher than ocean level AND
+			(row < (TUNDRA_PERCENTAGE * mapsize) || 			// (south of tundra threshold OR
+					row > ((1-TUNDRA_PERCENTAGE) * (mapsize-1)))) //  north of tundra threshold)
 	{
 		color = TUNDRA_COLOR;
 		texture = tundratexture;
 		tiletype = "tundra";
-		if(coordy < (ICE_PERCENTAGE * mapsize) || coordy > ((1-ICE_PERCENTAGE) * (mapsize - 1)))
+		if(row < (ICE_PERCENTAGE * mapsize) || row > ((1-ICE_PERCENTAGE) * (mapsize - 1)))
 		{
 			color = ICE_COLOR;
 			texture = icetexture;
 			tiletype = "ice";
 		}
 	}
-	else if(map[coordx][coordy].elevation < SEA_LEVEL)
+	else if(map[col][row].elevation < SEA_LEVEL)
 	{
 		color = WATER_COLOR;
 		texture = watertexture;
 		tiletype = "water";
 	}
-	else if(map[coordx][coordy].elevation < SAND_LEVEL)
+	else if(map[col][row].elevation < SAND_LEVEL)
 	{
 		color = SAND_COLOR;
 		texture = sandtexture;
 		tiletype = "sand";
 	}
-	else if(map[coordx][coordy].elevation < GRASSLAND_LEVEL)
+	else if(map[col][row].elevation < GRASSLAND_LEVEL)
 	{
 		color = GRASSLAND_COLOR;
 		texture = grasslandtexture;
 		tiletype = "grassland";
 	}
-	else if(map[coordx][coordy].elevation < HILLS_LEVEL)
+	else if(map[col][row].elevation < HILLS_LEVEL)
 	{
 		color = HILLS_COLOR;
 		texture = hillstexture;
 		tiletype = "hills";
 	}
-	else if(map[coordx][coordy].elevation <= 256)
+	else if(map[col][row].elevation <= 256)
 	{
-		if(map[coordx][coordy].elevation > 255)
+		if(map[col][row].elevation > 255)
 		{
-			//map[coordx][coordy].elevation = 255; // sometimes multiplicative factors put the very top over 255, if so, chop it off
+			//map[col][row].elevation = 255; // sometimes multiplicative factors put the very top over 255, if so, chop it off
 			console.log('WARNING elevationg greater than 255');
 		}
 		color = MOUNTAINS_COLOR;
@@ -366,8 +367,8 @@ function drawMapHex(coordx, coordy)
 			// convert hex to hsl, set the lightness to elevation / 255, convert back to hex.
 			var color_hsv = RGBtoHSV(components.r, components.g, components.b);
 			var color_hsl = HSVtoHSL(color_hsv.h, color_hsv.s, color_hsv.v);
-			//color_hsl.l = color_hsl.l * map[coordx][coordy].elevation / 255; 											// this is the original, but the light/dark was too drastic.
-			color_hsl.l = color_hsl.l * ((255 - map[coordx][coordy].elevation)*2/5 + map[coordx][coordy].elevation) / 255;  // this version softens. 128/255 = ~.5 becomes (((255-128)*2/3) + 128) / 255 = .8333 (repeating, of course)
+			//color_hsl.l = color_hsl.l * map[col][row].elevation / 255; 											// this is the original, but the light/dark was too drastic.
+			color_hsl.l = color_hsl.l * ((255 - map[col][row].elevation)*2/5 + map[col][row].elevation) / 255;  // this version softens. 128/255 = ~.5 becomes (((255-128)*2/3) + 128) / 255 = .8333 (repeating, of course)
 			if(color_hsl.l === 0) // when lightness is all the way zero, it draws a white hex for some reason (maybe the hue is set to something that can't be brightness zero?). w/e This shouldn't happen. Force a black hex.
 				color = 0x000000;
 			else
@@ -377,18 +378,18 @@ function drawMapHex(coordx, coordy)
 				color = color_rgb.r * Math.pow(16,4) + color_rgb.g * Math.pow(16,2) + color_rgb.b;
 			}
 	}
-	// (coordx - (mapsize-1)/2) and (coordy - (mapsize-1)/2) adjust the coords to center in the camera's view
-	var xpoint = (coordx - (mapsize-1)/2) * tilewidth;
-	if(coordy%2 !== 0)
+	// (col - (mapsize-1)/2) and (row - (mapsize-1)/2) adjust the coords to center in the camera's view
+	var xpoint = (col - (mapsize-1)/2) * tilewidth;
+	if(row%2 !== 0)
 		xpoint = xpoint + tilewidth/2;
-	var ypoint = (coordy - (mapsize-1)/2) * tilevert;
+	var ypoint = (row - (mapsize-1)/2) * tilevert;
 	
 	var extrudeamount;
 	
-	if(map[coordx][coordy].elevation < SEA_LEVEL)
+	if(map[col][row].elevation < SEA_LEVEL)
 		extrudeamount = SEA_LEVEL * EXTRUSION_FACTOR;
 	else
-		extrudeamount = map[coordx][coordy].elevation * EXTRUSION_FACTOR;
+		extrudeamount = map[col][row].elevation * EXTRUSION_FACTOR;
 	
 	var extrudeSettings = {
 			amount			: extrudeamount,
@@ -416,7 +417,6 @@ function drawMapHex(coordx, coordy)
 	
 	var hexShape = new THREE.Shape();
 	var centerPoint = new Point(xpoint, ypoint);
-
 	
 	var point0 = hex_corner(centerPoint, size, 0);
 	var point1 = hex_corner(centerPoint, size, 1);
@@ -437,12 +437,14 @@ function drawMapHex(coordx, coordy)
 
 	var mesh = new THREE.Mesh( hexGeom, material );
 	
-	mesh.userData.elevation = map[coordx][coordy].elevation;
-	mesh.userData.owner = map[coordx][coordy].owner;
-	mesh.userData.blocks = map[coordx][coordy].blocks;
+	mesh.userData.elevation = map[col][row].elevation;
+	mesh.userData.owner = map[col][row].owner;
+	mesh.userData.blocks = map[col][row].blocks;
 	mesh.userData.tiletype = tiletype;
-	mesh.userData.col = coordx;
-	mesh.userData.row = coordy;
+	mesh.userData.col = col;
+	mesh.userData.row = row;
+	mesh.userData.name = map[col][row].name;
+	mesh.userData.status = map[col][row].status;
 
 	scene.add( mesh );
 	

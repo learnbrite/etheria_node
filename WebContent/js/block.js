@@ -292,16 +292,24 @@ var blockdefs = [{
 //var str1 = "";
 //var str2 = "";
 //var tempattachesto = [];
-//for(var trick = 0; trick < blocks.length; trick++)
+//for(var b = 0; b < blockdefs.length; b++)
 //{
-//	str1 = str1 + "blockdefstorage.initBlockDefOccupies.sendTransaction(";
-//	str2 = str2 + "blockdefstorage.initBlockDefAttachesto.sendTransaction(";
-//	str1 = str1 + (blocks[trick].which*1) + ", ";
-//	str2 = str2 + (blocks[trick].which*1) + ", ";
-//	str1 = str1 + JSON.stringify(blocks[trick].occupies);
-//	str2 = str2 + JSON.stringify(blocks[trick].attachesto);
-//	str1 = str1 + ",{from:eth.coinbase, gas:3000000});\n";
-//	str2 = str2 + ",{from:eth.coinbase, gas:3000000});\n";
+//	str1 = str1 + "blockdefstorage.initOccupies.sendTransaction(";
+//	str2 = str2 + "blockdefstorage.initAttachesto.sendTransaction(";
+//	str1 = str1 + (blockdefs[b].which*1) + ", ";
+//	str2 = str2 + (blockdefs[b].which*1) + ", ";
+//	str1 = str1 + JSON.stringify(blockdefs[b].occupies);
+//	str2 = str2  + "["
+//	for(var a = 0; a < 16; a++)
+//	{
+//		if(a < blockdefs[b].attachesto.length)
+//			str2 = str2 + JSON.stringify(blockdefs[b].attachesto[a]) + ",";
+//		else
+//			str2 = str2 + "[0,0,0],";
+//	}	
+//	str2 = str2.substring(0,str2.length-1) + "]"
+//	str1 = str1 + ",{from:eth.coinbase, gas:500000});\n";
+//	str2 = str2 + ",{from:eth.coinbase, gas:500000});\n";
 //}	
 //console.log(str1 + "\n" + str2);
 
