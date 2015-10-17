@@ -25,8 +25,7 @@ var blockvert = blockheight * 3/4;
 var blockwidth = Math.sqrt(3)/2 * blockheight;
 var blockextrude = blocksize;
 
-var NORMALIZE_ELEVATIONS = false;
-var GENERATE_NEW_MAP = false;
+var GENERATE_NEW_MAP = true;
 var EXTRUSION_FACTOR = size/75;
 
 var camera, controls, scene, renderer;
@@ -76,7 +75,7 @@ function init() {
 
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
 	//camera.position.set(0,-200,150);
-	camera.position.z = 500;
+	camera.position.z = 200;
 
 	controls = new THREE.OrbitControls(camera);
 	controls.damping = 0.2;
@@ -89,38 +88,39 @@ function init() {
 	{	
 		generateMap(mapsize, mapsize);
 		
-		var c = 0;
-		var r = 0;
-		var t = 0;
-		var z = 0;
-		var created = 0;
-		var drewblock = false;
-		
-		while(created < 30)
-		{
-			t = getRandomIntInclusive(0,31);
-			c = getRandomIntInclusive(-50,50);
-			r = getRandomIntInclusive(-66,66);
-			z = getRandomIntInclusive(0,0);
-			drewblock = false;
-			while(drewblock == false)
-			{
-				t = getRandomIntInclusive(0,31);
-				c = getRandomIntInclusive(-50,50);
-				r = getRandomIntInclusive(-66,66);
-				z =  getRandomIntInclusive(0,0);
-				drewblock = drawBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
-			}	
-			created++;
-		}	
-		
+//		var c = 0;
+//		var r = 0;
+//		var t = 0;
+//		var z = 0;
+//		var created = 0;
+//		var drewblock = false;
+//		
+//		while(created < 30)
+//		{
+//			t = getRandomIntInclusive(0,31);
+//			c = getRandomIntInclusive(-50,50);
+//			r = getRandomIntInclusive(-66,66);
+//			z = getRandomIntInclusive(0,0);
+//			drewblock = false;
+//			while(drewblock == false)
+//			{
+//				t = getRandomIntInclusive(0,31);
+//				c = getRandomIntInclusive(-50,50);
+//				r = getRandomIntInclusive(-66,66);
+//				z =  getRandomIntInclusive(0,0);
+//				drewblock = drawBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
+//			}	
+//			created++;
+//		}	
+//		
 		// TESTS // DO NOT DELETE
-		//drawBlock(8,8,0,0,66,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(8,8,0,49,33,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(8,8,0,49,-33,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(8,8,0,0,-66,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(8,8,0,-50,33,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(8,8,0,-50,-33,0, getRandomIntInclusive(0,16777214)); // succeed
+		drawBlock(16,16,0,0,0,0, getRandomIntInclusive(0,16777214)); // succeed
+		drawBlock(16,16,0,0,66,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(16,16,0,49,33,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(16,16,0,49,-33,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(16,16,0,0,-66,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(16,16,0,-50,33,0, getRandomIntInclusive(0,16777214)); // succeed
+//		drawBlock(16,16,0,-50,-33,0, getRandomIntInclusive(0,16777214)); // succeed
 //		drawBlock(8,8,0,0,67,0, getRandomIntInclusive(0,16777214)); // fail
 //		drawBlock(8,8,0,1,66,0, getRandomIntInclusive(0,16777214)); // fail
 //		drawBlock(8,8,0,-1,66,0, getRandomIntInclusive(0,16777214)); // fail
@@ -175,34 +175,6 @@ function init() {
 		});
 	}
 	
-	var min = 1000000;
-	var max = 0;
-	var ceiling;
-	var normalization_factor;
-	if(NORMALIZE_ELEVATIONS)
-	{	
-		var x = 0;
-		var y = 0;
-		x = 0; y = 0;
-		while(x < mapsize)
-		{
-			y=0;
-			while(y < mapsize)
-			{
-				if(map[x][y].elevation > max)
-					max = map[x][y].elevation;
-				if(map[x][y].elevation < min)
-					min = map[x][y].elevation;
-				y++;
-			}	
-			x++;
-		}	
-		ceiling = max - min; 
-		normalization_factor = 255/ceiling;
-		map[x][y].normalization_factor = normalization_factor;
-	}
-	
-//	console.log(map[1][6].blocks);
 	
 	for(var col = 0; col < mapsize; col++)
 	{
@@ -239,10 +211,6 @@ function init() {
 	light = new THREE.DirectionalLight(0xaaaaaa);
 	light.position.set(1, 1, 1);
 	scene.add(light);
-
-//	light = new THREE.DirectionalLight(0x002288);
-//	light.position.set(-1, -1, -1);
-//	scene.add(light);
 
 	light = new THREE.AmbientLight(0xdddddd);
 	scene.add(light);

@@ -22,20 +22,20 @@ function generateMap(width, height)
 	
 	generateMidpoints(0, 0, mapsize-1, mapsize-1, 1);
 	//console.log(JSON.stringify(map));
-	var str = "";
-	for(var col = 0; col < 33; col++)
-	{
-		str = str + "mapelevationstorage.initElevations.sendTransaction(" + col + ",[";
-		for(var row = 0; row < 33; row++)
-		{
-			if(row != 32)
-				str = str + map[col][row].elevation + ",";
-			else
-				str = str + map[col][row].elevation + "], {from:eth.coinbase,gas:3000000});";
-		}	
-		str = str + "\n";
-	}	
-	console.log(str);
+//	var str = "";
+//	for(var col = 0; col < 33; col++)
+//	{
+//		str = str + "mapelevationstorage.initElevations.sendTransaction(" + col + ",[";
+//		for(var row = 0; row < 33; row++)
+//		{
+//			if(row != 32)
+//				str = str + map[col][row].elevation + ",";
+//			else
+//				str = str + map[col][row].elevation + "], {from:eth.coinbase,gas:3000000});";
+//		}	
+//		str = str + "\n";
+//	}	
+//	console.log(str);
 }
 
 function generateMidpoints(sw_x, sw_y, ne_x, ne_y, depth)

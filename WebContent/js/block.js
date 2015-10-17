@@ -395,126 +395,55 @@ function blockHexCoordsValid(x, y)
 	return false;
 }
 
-function wouldFallOutside(coordx, coordy, which, x, y , z)
+function isValidLocation(col, row, which, x, y, z)
 {
-	//console.log('Checking wouldOverlap for which=' + which + " " + x + "," + y + "," + z)
-	// make an array of [x,y,z] objects this block would occupy and then check occupado to see if any of them are already occupied.
-	var occupiesx = 0;
-	var occupiesy = 0;
+	// var uint8[3][8] wouldoccupy;
+	var wouldoccupy = []; 
+	wouldoccupy = new Array(8);
+	for (i = 0; i < 8; i++) {
+		wouldoccupy[i] = new Array(3);
+	}
 	
-	for(var b = 0; b < blockdefs[which].occupies.length; b++)
+	for(var j = 0; j < 8; j++)
 	{
-		occupiesx = blockdefs[which].occupies[b][0];
-		occupiesy = blockdefs[which].occupies[b][1];
-		if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
+		for(var k = 0; k < 8; k++)
 		{
-			occupiesx = occupiesx + 1;
+			wouldoccupy[k][j] = blockdefs[which].occupies[k][j];
 		}
-		if(!blockHexCoordsValid(occupiesx+x, occupiesy+y))
-			return true;
-	}
-	return false;
-}
-
-function wouldOverlap(coordx, coordy, which, x, y , z)
-{
-	//console.log('Checking wouldOverlap for which=' + which + " " + x + "," + y + "," + z)
-	// make an array of [x,y,z] objects this block would occupy and then check occupado to see if any of them are already occupied.
-	
-	var occupiesx = 0;
-	var occupiesy = 0;
-	var occupiesz = 0;
-	
-	var wouldoccupy = [];
-	for(var b = 0; b < blockdefs[which].occupies.length; b++)
-	{
-		occupiesx = blockdefs[which].occupies[b][0];
-		occupiesy = blockdefs[which].occupies[b][1];
-		occupiesz = blockdefs[which].occupies[b][2];
-		if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
-			occupiesx = occupiesx + 1;
-		wouldoccupy.push([occupiesx+x, occupiesy+y, occupiesz+z]);
-	}
-	
-	for(var w = 0; w < wouldoccupy.length; w++)
-	{
-		//console.log('w=' + w + " " + wouldoccupy[w][0] + "," + wouldoccupy[w][1] + "," + wouldoccupy[w][2]);
-		for(var o = 0; o < occupado[coordx][coordy].length; o++)
-		{
-			//console.log('o=' + o);
-			if(wouldoccupy[w][0] === occupado[coordx][coordy][o][0] && wouldoccupy[w][1] === occupado[coordx][coordy][o][1] && wouldoccupy[w][2] === occupado[coordx][coordy][o][2]) // are the arrays equal?
-			{
-				console.log('[' + wouldoccupy[w][0] + "," + wouldoccupy[w][1] + "," + wouldoccupy[w][2] + "] is contained in occupado[" + coordx + "][" + coordy + "]");
-				console.log(occupado[coordx][coordy][o]);
-				console.log('would occupy');
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-function touchesAnother(coordx, coordy, which, x, y , z)
-{
-	//console.log('touches another?');
-	var sx = 0;
-	var sy = 0;
-	var sz = 0;
-	
-	var surroundings = [];
-	for(var b = 0; b < blockdefs[which].attachesto.length; b++)
-	{
-		sx = blockdefs[which].attachesto[b][0];
-		sy = blockdefs[which].attachesto[b][1];
-		sz = blockdefs[which].attachesto[b][2];
-		
-		if(y % 2 !== 0 && sy%2 !== 0) // if y is odd, offset the x by 1
-		{
-			sx = sx + 1;
-		}
-		surroundings.push([sx+x, sy+y, sz+z]);
-	}
-	//console.log(surroundings.length);
-	
-	var occupadolength = occupado[coordx][coordy].length;
-	for(var s = 0; s < surroundings.length; s++)
-	{
-		//console.log('checking to see if surrounding block [' + surroundings[s][0] + "," + surroundings[s][1] + "," + surroundings[s][2] + "] is contained in occupado[" + coordx + "][" + coordy + "]");
-		for(var o = 0; o < occupadolength; o++)
-		{
-		//	if( surroundings.every( function(n, i) { n === occupado[coordx][coordy][o]; } )) 	// are the two arrays equal?	
-			if(surroundings[s][0] === occupado[coordx][coordy][o][0] && surroundings[s][1] === occupado[coordx][coordy][o][1] && surroundings[s][2] === occupado[coordx][coordy][o][2]) // are the arrays equal?
-			{
-				//console.log('touches another? TRUE');
-				return true;
-			}
-		}	
 	}	
-	//console.log('touches another? FALSE');
-	return false;
-}
-
-
-function isValidLocation(coordx,coordy,which,x,y,z)
-{
-	//console.log("isValidLocation which=" + which + " " + x + ", "+ y + ", "+ z);
-	if(!wouldFallOutside(coordx,coordy,which,x,y,z))
+	
+	var touches = false;
+	for(var b = 0; b < 8; b++) // always 8 hexes
 	{
-		//console.log("falls inside");
-		if(!wouldOverlap(coordx,coordy,which,x,y,z))
+		console.log('checking ' +wouldoccupy[b][0] + "," + wouldoccupy[b][1] + "," + wouldoccupy[b][2]);
+		wouldoccupy[b][0] = wouldoccupy[b][0]+x;
+		wouldoccupy[b][1] = wouldoccupy[b][1]+y;
+		if(y % 2 != 0 && wouldoccupy[b][1]%2 != 0)
+			wouldoccupy[b][0] = wouldoccupy[b][0]+1; // anchor y and this hex y are both odd, offset by +1
+		wouldoccupy[b][2] = wouldoccupy[b][2]+z;
+		console.log('now ' +wouldoccupy[b][0] + "," + wouldoccupy[b][1] + "," + wouldoccupy[b][2]);
+		if(!blockHexCoordsValid(wouldoccupy[b][0], wouldoccupy[b][1])) // this is the out-of-bounds check
 		{
-			//console.log("doesn't overlap");
-			if(touchesAnother(coordx,coordy,which,x,y,z))
-			{
-				//console.log("touches another");
-				return true;
-			}	
-		}	
-	}	
-	return false;
+			console.log('returning false. blockHexCoordsInvalid for ' +  wouldoccupy[b][0] + ", " +  wouldoccupy[b][1]);
+			return false;
+		}
+//		for(var o = 0; o < tiles[col][row].occupado.length; o++)
+//    	{
+//			if(wouldoccupy[b][0] == tiles[col][row].occupado[o][0] && wouldoccupy[b][1] == tiles[col][row].occupado[o][1] && wouldoccupy[b][2] == tiles[col][row].occupado[o][2]) // are the arrays equal?
+//			{
+//				whathappened = 2;
+//				return false; // this hex conflicts. The proposed block does not avoid overlap. Return false immediately.
+//			}
+//    	}
+//		if(touches == false && wouldoccupy[b][2] == 0) // if on the ground, touches is always true, only check if touches is not yet true
+//		{
+//			touches = true;
+//		}	
+	}
+	return true;
 }
 
-function drawBlock(coordx, coordy, which, x, y, z, color)
+function drawBlock(col, row, which, x, y, z, color)
 {
 	// This seems more complicated than it should be, but I don't think it is. 
 	// The issue is that a block of a certain configuration,
@@ -527,20 +456,18 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	var occupiesy = 0;
 	var occupiesz = 0;
 	
-	if(isValidLocation(coordx, coordy, which, x, y, z)) // have not sent offset to these functions. Must take care of inside them.
+	if(isValidLocation(col, row, which, x, y, z)) // have not sent offset to these functions. Must take care of inside them.
 	{
-		for(var b = 0; b < blockdefs[which].occupies.length; b++)
+		for(var b = 0; b < 8; b++)
 		{
 			occupiesx = blockdefs[which].occupies[b][0];
 			occupiesy = blockdefs[which].occupies[b][1];
 			occupiesz = blockdefs[which].occupies[b][2];
 			if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
-			{
-				occupiesx = occupiesx + 1;
-			}
+			{ occupiesx = occupiesx + 1; }
 			//console.log('drawing ' + (occupiesx+x) + " " + (occupiesy+y) + " " + occupiesz+z);
-			drawBlockHex(coordx, coordy, occupiesx+x, occupiesy+y, occupiesz+z, color,1);
-			occupado[coordx][coordy].push([occupiesx+x, occupiesy+y, occupiesz+z]);
+			drawBlockHex(col, row, occupiesx+x, occupiesy+y, occupiesz+z, color,1);
+			occupado[col][row].push([occupiesx+x, occupiesy+y, occupiesz+z]);
 		}
 		return true;
 	}
@@ -550,16 +477,17 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 
 var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
 
-function drawBlockHex(coordx, coordy, x, y, z, color, extrusion_multiple)
+function drawBlockHex(col, row, x, y, z, color, extrusion_multiple)
 {
+	console.log('drawBlockHex ' + col + ", "+ row + " " + x + ", "+ y + ", "+ z + ", " + color);
 	if(extrusion_multiple === null || extrusion_multiple === 0)
 		extrusion_multiple = 1;
 	
 	//console.log("drawBlockHex " + coordx + "," + coordy);
-	var xpoint = (coordx - (mapsize-1)/2) * tilewidth;
-	if(coordy%2 !== 0)
+	var xpoint = (col - (mapsize-1)/2) * tilewidth;
+	if(row%2 !== 0)
 		xpoint = xpoint + tilewidth/2;
-	var ypoint = (coordy - (mapsize-1)/2) * tilevert;
+	var ypoint = (row - (mapsize-1)/2) * tilevert;
 	
 	xpoint = xpoint + x * blockwidth;
 	if(y%2 !== 0)
@@ -600,13 +528,13 @@ function drawBlockHex(coordx, coordy, x, y, z, color, extrusion_multiple)
 
 	var mesh = new THREE.Mesh( hexGeom, material );
 	var tileextrusion;
-	if(map[coordx][coordy].elevation < SEA_LEVEL)
+	if(map[col][row].elevation < SEA_LEVEL)
 	{
 		tileextrusion = SEA_LEVEL * EXTRUSION_FACTOR;
 	}	
 	else
 	{
-		tileextrusion = map[coordx][coordy].elevation * EXTRUSION_FACTOR;
+		tileextrusion = map[col][row].elevation * EXTRUSION_FACTOR;
 	}	
 	//console.log("LOWER " + coordx + "," + coordy + " extrudeamount=" + tileextrusion  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
 	mesh.position.set( 0, 0, tileextrusion + z * blockextrude);
