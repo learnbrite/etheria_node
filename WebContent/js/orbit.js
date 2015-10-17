@@ -9,19 +9,10 @@
 	 {
 	 	"elevation": 134,
 	 	"owner": 0xabc123...,
-	 	"blocks": [
-	 		{ 
-	 			which: 0,
-	 			x: 0,
-	 			y: 1
-	 			z: 0,
-	 			r: 55,
-	 			g: 120,
-	 			b: 4
-	 		}...
+	 	"blocks": [[0,1,2,3,4]...]  // where [which,x,y,z,color]
 	 	]
 	 }
-	 */
+*/
 
 var container;
 var size = 10; // length of one tile segment
@@ -213,9 +204,9 @@ function init() {
 	
 //	console.log(map[1][6].blocks);
 	
-	for(var row = 0; row < mapsize; row++)
+	for(var col = 0; col < mapsize; col++)
 	{
-		for(var col = 0; col < mapsize; col++)
+		for(var row = 0; row < mapsize; row++)
 		{
 //			if(NORMALIZE_ELEVATIONS)
 //				map[x][y].elevation = (map[x][y].elevation - min) * map[x][y].normalization_factor;
@@ -313,8 +304,8 @@ function render() {
 //		if(intersects[ 0 ].object.userData.p > 0)
 //			forsale = "yes";
 		$("#hexinfobodydiv").html(
-				"x: " + intersects[ 0 ].object.userData.x + "<br>" +
-				"y: " + intersects[ 0 ].object.userData.y + "<br>" +
+				"col: " + intersects[ 0 ].object.userData.col + "<br>" +
+				"row: " + intersects[ 0 ].object.userData.row + "<br>" +
 				"type: " + intersects[ 0 ].object.userData.tiletype + "<br>" + 
 				"elevation: " + intersects[ 0 ].object.userData.elevation + "<br>" +
 				"owner: " + intersects[ 0 ].object.userData.owner + "<br>" +
@@ -482,8 +473,8 @@ function drawMapHex(coordx, coordy)
 	mesh.userData.owner = map[coordx][coordy].owner;
 	mesh.userData.blocks = map[coordx][coordy].blocks;
 	mesh.userData.tiletype = tiletype;
-	mesh.userData.x = coordx;
-	mesh.userData.y = coordy;
+	mesh.userData.col = coordx;
+	mesh.userData.row = coordy;
 
 	scene.add( mesh );
 	
