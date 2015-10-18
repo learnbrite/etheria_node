@@ -275,7 +275,7 @@ var blockdefs = [{
 },
 {
 	'which':30,
-	'description': 'NE-SW curved arch',
+	'description': 'SE-NW curved arch',
 	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,1,2],[0,2,2],[-1,2,2],[-1,2,1],[-1,2,0]],
 	'attachesto': [[0,0,-1],[0,1,1],[0,2,1],[-1,2,-1],
 	                 [0,0,3] ,[0,1,3],[0,2,3],[-1,2,3]]
@@ -487,7 +487,7 @@ var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
 
 function drawBlockHex(col, row, x, y, z, color, extrusion_multiple)
 {
-	console.log('drawBlockHex ' + col + ", "+ row + " " + x + ", "+ y + ", "+ z + ", " + color);
+	//console.log('drawBlockHex ' + col + ", "+ row + " " + x + ", "+ y + ", "+ z + ", " + color);
 	if(extrusion_multiple === null || extrusion_multiple === 0)
 		extrusion_multiple = 1;
 	

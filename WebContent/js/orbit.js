@@ -165,8 +165,8 @@ function init() {
 	        timeout: 100000,
 	        async: false, // same origin, so this is ok 
 	        success: function (data, status) {
-	        	console.log('back from /map');
-	        	console.log(JSON.stringify(data));
+	        	//console.log('back from /map');
+	        	//console.log(JSON.stringify(data));
 	        	map = data;
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -443,8 +443,8 @@ function drawMapHex(col, row)
 	mesh.userData.tiletype = tiletype;
 	mesh.userData.col = col;
 	mesh.userData.row = row;
-	mesh.userData.name = map[col][row].name;
-	mesh.userData.status = map[col][row].status;
+//	mesh.userData.name = map[col][row].name;
+//	mesh.userData.status = map[col][row].status;
 
 	scene.add( mesh );
 	

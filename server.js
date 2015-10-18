@@ -16,12 +16,12 @@ var web3 = require('web3');
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 
 //var abi = [{"constant":true,"inputs":[],"name":"getElevations","outputs":[{"name":"","type":"uint8[17][17]"}],"type":"function"},{"constant":true,"inputs":[],"name":"getIlliquidBalance","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"}],"name":"buyTile","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_b32","type":"bytes32"},{"name":"byteindex","type":"uint8"}],"name":"getUint8FromByte32","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"row","type":"uint8"},{"name":"_elevations","type":"uint8[17]"}],"name":"initializeTiles","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"}],"name":"makeOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"}],"name":"getOfferers","outputs":[{"name":"","type":"address[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"},{"name":"indexOfBlockToEdit","type":"uint256"},{"name":"block","type":"int8[7]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"retrieveLiquidBalance","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getLiquidBalance","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getOwners","outputs":[{"name":"","type":"address[17][17]"}],"type":"function"},{"constant":true,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"}],"name":"getBlocksForTile","outputs":[{"name":"","type":"int8[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"},{"name":"i","type":"uint8"}],"name":"acceptOffer","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"},{"name":"i","type":"uint8"}],"name":"rejectOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"}],"name":"getOffers","outputs":[{"name":"","type":"uint256[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"x","type":"uint8"},{"name":"y","type":"uint8"}],"name":"retractOffer","outputs":[],"type":"function"},{"inputs":[],"type":"constructor"}];
-var abi =[{"constant":false,"inputs":[{"name":"which","type":"uint8"}],"name":"getAttachesto","outputs":[{"name":"","type":"int8[3][8]"}],"type":"function"},{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"which","type":"uint8"}],"name":"getOccupies","outputs":[{"name":"","type":"int8[3][8]"}],"type":"function"},{"constant":true,"inputs":[{"name":"which","type":"uint8"}],"name":"getOccupiesFromBDR","outputs":[{"name":"","type":"int8[3][8]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getElevation","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_b32","type":"bytes32"},{"name":"byteindex","type":"uint8"}],"name":"getUint8FromByte32","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"makeOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOfferers","outputs":[{"name":"","type":"address[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getOwners","outputs":[{"name":"","type":"address[33][33]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"}],"name":"acceptOffer","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"}],"name":"rejectOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOffers","outputs":[{"name":"","type":"uint256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"retractOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"}]; 
-var etheriaaddress = "0xd95f00d25b226b09e0a387bf35823c027501d750";
+var abi =[{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"row","type":"uint8"},{"name":"col","type":"uint8"}],"name":"getWhatHappened","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":true,"inputs":[{"name":"_b32","type":"bytes32"},{"name":"byteindex","type":"uint8"}],"name":"getUint8FromByte32","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"makeOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOfferers","outputs":[{"name":"","type":"address[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOccupado","outputs":[{"name":"","type":"int8[3][]"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"}],"name":"acceptOffer","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"}],"name":"rejectOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOffers","outputs":[{"name":"","type":"uint256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"retractOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"}];
+var etheriaaddress = "0x96b93e5d82cb6546468d3ee1012896b3ce5dc3fe";
 var etheria = web3.eth.contract(abi).at(etheriaaddress);
 
-var elevation_abi = [{"constant":true,"inputs":[],"name":"getElevations","outputs":[{"name":"","type":"uint8[33][33]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getElevation","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"_elevations","type":"uint8[33]"}],"name":"initElevations","outputs":[],"type":"function"}];
-var elevationaddress = "0xc35a4e966bf792734a25ea524448ea54de385e4e";
+var elevation_abi = [{"constant":true,"inputs":[],"name":"getElevations","outputs":[{"name":"","type":"uint8[1089]"}],"type":"function"},{"constant":false,"inputs":[],"name":"setLocked","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getElevation","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"_elevations","type":"uint8[33]"}],"name":"initElevations","outputs":[],"type":"function"}];
+var elevationaddress = "0x68549d7dbb7a956f955ec1263f55494f05972a6b";
 var elevationcontract = web3.eth.contract(elevation_abi).at(elevationaddress);
 
 var app = express();
@@ -48,7 +48,17 @@ app.use(express.static('WebContent'));
  */
 var mapsize = 33; //etheria.getMapsize(); 
 var elevations;
+elevations = new Array(mapsize);
+for (i = 0; i < mapsize; i++) {
+	elevations[i] = new Array(mapsize);
+}
+
 var owners;
+owners = new Array(mapsize);
+for (i = 0; i < mapsize; i++) {
+	owners[i] = new Array(mapsize);
+}
+
 var names;
 names = new Array(mapsize);
 for (i = 0; i < mapsize; i++) {
@@ -64,9 +74,6 @@ var blocks;
 blocks = new Array(mapsize);
 for (i = 0; i < mapsize; i++) {
 	  blocks[i] = new Array(mapsize);
-	  for (j = 0; j < mapsize; j++) {
-		  blocks[i][j] = [];
-	  }
 }
 
 //var lastcheck = 0;
@@ -79,56 +86,48 @@ retrieveMap();
 
 //map-wide information retrieval // only need to do this once as elevations will never change.
 console.log('getting elevations');
-elevationcontract.getElevations.call(function(error, result) { console.log('elevations callback'); elevations = result; });
+elevationcontract.getElevations.call(function(error, result) { 
+	console.log('elevations callback ' + JSON.stringify(result));
+	var somecounter = 0;
+	for(var col = 0; col < mapsize; col++)
+	{
+		for(var row = 0; row < mapsize; row++)
+		{
+			console.log("setting elevations[" + col + "][" + row + "] = result[" + somecounter + "] " + (result[somecounter]*1));
+			elevations[col][row] = result[somecounter]*1;
+			somecounter++;
+		}
+	}
+});
 console.log('done getting elevations');
 
 var map_retrieval_index = 0;
 
-setInterval(retrieveMap, 180000);
+setInterval(function () { retrieveMap(map_retrieval_index); map_retrieval_index++; if(map_retrieval_index === mapsize) { map_retrieval_index = 0; }}, 5000);
 
-function retrieveMap() {
+function retrieveMap ( row ) {
 	
 	//map-wide information retrieval // only need to do this once
-	console.log('getting owners');
-	etheria.getOwners.call(function(error, result) { console.log('owners callback'); owners = result; });
-	console.log('done getting owners');
-		
 	// tile-by-tile information retrieval
 	
 //	var batch = web3.createBatch();
 //	batch.add(web3.eth.getBalance.request('0x0000000000000000000000000000000000000000', 'latest', callback));
 //	batch.add(web3.eth.contract(abi).at(address).balance.request(address, callback2));
-	
-
-	
-	
-//	if(map_retrieval_index === 0)
+//	for(var row = 0; row < mapsize; row++)
 //	{
-//		row = 0;
-//		rowlimit = 10;
-//	}
-//	else if(map_retrieval_index === 1)
-//	{
-//		row = 11;
-//		rowlimit = 21;
-//	}
-//	else
-//	{
-//		row = 22;
-//		rowlimit = 32;
-//	}
-	for(var row = 0; row < mapsize; row++)
-	{
 		for(var col = 0; col < mapsize; col++)
 		{
-			console.log('getting blocks for ' + col + "," + row);
+			//console.log('getting blocks for ' + col + "," + row);
 			var gB = function() { 
 				var c = col;
 				var r = row;
 				etheria.getBlocks.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
-//				if(typeof result !== "undefined" && result !== null && result.length > 0)
-//				{	
-					console.log('returned from getting blocks for ' + c + "," + r);
+					if(typeof result === "undefined" || result === null)
+					{
+						console.log('WARNING: Retrieval of blocks at c,r ' + c + "," + r + 'failed');
+					}	
+					else
+					{
 						for(var u = 0; u < result.length; u++)
 						{
 							for(var v = 0; v < 5; v++)
@@ -137,22 +136,42 @@ function retrieveMap() {
 							}	
 						}
 						blocks[c][r] = result;
+					}
 				});
-//				batch.add(etheria.getName.request(c, r, function(error, result) { 
-//					names[c][r] = result; 
-//				}));
-//				batch.add(etheria.getStatus.request(c, r, function(error, result) { 
-//					statuses[c][r] = result; 
-//				}));
+				etheria.getOwner.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+					if(typeof result === "undefined" || result === null)
+					{
+						console.log('WARNING: Retrieval of owner c,r ' + c + "," + r + 'failed');
+					}	
+					else
+					{
+						owners[c][r] = result;
+					}
+				});
+				etheria.getName.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+					if(typeof result === "undefined" || result === null)
+					{
+						console.log('WARNING: Retrieval of name c,r ' + c + "," + r + 'failed');
+					}	
+					else
+					{
+						names[c][r] = result;
+					}
+				});
+				etheria.getStatus.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+					if(typeof result === "undefined" || result === null)
+					{
+						console.log('WARNING: Retrieval of status c,r ' + c + "," + r + 'failed');
+					}	
+					else
+					{
+						statuses[c][r] = result;
+					}
+				});
 			};
 			gB();
-			//console.log('done getting blocks');
 		}
-	}
-//	map_retrieval_index++;
-//	if(map_retrieval_index == 3)
-//		map_retrieval_index = 0;
-//	batch.execute();
+//	}
 	
 }
 
