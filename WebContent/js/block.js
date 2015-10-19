@@ -483,7 +483,7 @@ function drawBlock(col, row, which, x, y, z, color)
 		return false;
 }
 
-var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
+var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete2.jpg" );
 
 function drawBlockHex(col, row, x, y, z, color, extrusion_multiple)
 {

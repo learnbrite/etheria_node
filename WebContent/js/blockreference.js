@@ -341,7 +341,7 @@ function drawBlock(coordx, coordy, which, x, y, z, color)
 	}
 }
 
-var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
+var	texture1 = THREE.ImageUtils.loadTexture( "images/concrete2.jpg" );
 
 function drawBlockHex(coordx, coordy, x, y, z, color)
 {
