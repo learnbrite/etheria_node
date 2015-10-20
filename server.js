@@ -342,9 +342,11 @@ function combineTileAndElevationInfoIntoSingleMapObject()
 			jo.row = row;
 			jo.elevation = elevations[col][row] * 1;
 			jo.owner = owners[col][row];
-			jo.blocks = blocks[col][row];
 			jo.status = statuses[col][row];
 			jo.name = names[col][row];
+			jo.offerers = offerers[col][row];
+			jo.offers = offers[col][row];
+			jo.blocks = blocks[col][row];
 			map_ja[col][row] = jo;
 		}
 	}	

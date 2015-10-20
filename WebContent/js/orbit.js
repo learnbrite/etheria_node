@@ -272,12 +272,24 @@ function render() {
 	{
 //		if(intersects[ 0 ].object.userData.p > 0)
 //			forsale = "yes";
+//		jo.col = col; // these are reversed on purpose. I don't fully understand, but fuck it. I had a rough night.
+//		jo.row = row;
+//		jo.elevation = elevations[col][row] * 1;
+//		jo.owner = owners[col][row];
+//		jo.status = statuses[col][row];
+//		jo.name = names[col][row];
+//		jo.offerers = offerers[col][row];
+//		jo.offers = offers[col][row];
+//		jo.blocks = blocks[col][row];
 		$("#hexinfobodydiv").html(
 				"<b>col:</b> " + intersects[ 0 ].object.userData.col + " " +
 				"<b>row:</b> " + intersects[ 0 ].object.userData.row + "<br>" +
 				"<b>type:</b> " + intersects[ 0 ].object.userData.tiletype + "<br>" + 
 				"<b>elevation:</b> " + intersects[ 0 ].object.userData.elevation + "<br>" +
 				"<b>owner:</b> " + intersects[ 0 ].object.userData.owner + "<br>" +
+				"<b>name:</b> " + intersects[ 0 ].object.userData.name + "<br>" +
+				"<b>status:</b> " + intersects[ 0 ].object.userData.name + "<br>" +
+				"<b>offers:</b> " + JSON.stringify(intersects[ 0 ].object.userData.offers) + "<br>" + // offerers/offers will be combined soon.
 				"<b>blocks:</b> " + JSON.stringify(intersects[ 0 ].object.userData.blocks)
 //				"for sale? " + forsale + "<br>" + 
 //				"price: " + intersects[ 0 ].object.userData.p
@@ -437,14 +449,26 @@ function drawMapHex(col, row)
 
 	var mesh = new THREE.Mesh( hexGeom, material );
 	
+//	jo.col = col; // these are reversed on purpose. I don't fully understand, but fuck it. I had a rough night.
+//	jo.row = row;
+//	jo.elevation = elevations[col][row] * 1;
+//	jo.owner = owners[col][row];
+//	jo.status = statuses[col][row];
+//	jo.name = names[col][row];
+//	jo.offerers = offerers[col][row];
+//	jo.offers = offers[col][row];
+//	jo.blocks = blocks[col][row];
+	
 	mesh.userData.elevation = map[col][row].elevation;
-	mesh.userData.owner = map[col][row].owner;
-	mesh.userData.blocks = map[col][row].blocks;
 	mesh.userData.tiletype = tiletype;
+	
 	mesh.userData.col = col;
 	mesh.userData.row = row;
-//	mesh.userData.name = map[col][row].name;
-//	mesh.userData.status = map[col][row].status;
+	mesh.userData.owner = map[col][row].owner;
+	mesh.userData.name = map[col][row].name;
+	mesh.userData.status = map[col][row].status;
+	mesh.userData.offers = map[col][row].offers; // offerers will be combined soon
+	mesh.userData.blocks = map[col][row].blocks;
 
 	scene.add( mesh );
 	
