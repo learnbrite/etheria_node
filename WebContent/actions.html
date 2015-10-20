@@ -52,6 +52,21 @@
         p {
         	line-height:22px;
         }
+        
+        pre {
+        font-size:12px;
+        	margin:20px;
+        	color:black;
+        	width:100%;
+        	padding:20px;
+        	border-radius:5px;
+        	 height: auto;
+    overflow: auto;
+    background-color: #eeeeee;
+    word-break: normal !important;
+    word-wrap: normal !important;
+    white-space: pre !important;
+        }
     </style>
 </head>
 
@@ -75,7 +90,7 @@
 	<div> 
 	<h1>So you want to play? Here are the prerequisites.</h1>
 	<p>
-		At the moment and until Mist is released, the only way to interact with Ethereum contracts and Etheria is through the command-line. If you're not very technical, you might want to wait. Otherwise, follow these general instructions:
+		Until the Mist browser is released, the only way to interact with Ethereum contracts and Etheria is through the command-line. If you're not very technical, you might want to wait. Otherwise, follow these general instructions:
 		<ol>
 			<li><span class="list_item_emphasis">Install an Ethereum command line interface.</span> I use "geth" on Linux and all instructions below follow my setup.</li>
 			<li><span class="list_item_emphasis">Open a geth console. ("geth" in one terminal window, "geth attach" in a second window does the trick)</span>
@@ -87,15 +102,12 @@
 	<h1>Set up your interface to Etheria</h1>
 	<p>
 		Inside geth:
-		<div class="code">
-			var abi = [{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_b32","type":"bytes32"},{"name":"byteindex","type":"uint8"}],"name":"getUint8FromByte32","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"makeOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOfferers","outputs":[{"name":"","type":"address[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"deleteOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"acceptOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"isLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOffers","outputs":[{"name":"","type":"uint256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[],"name":"lock","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}]
-			<br>var etheria = web3.eth.contract(abi).at('0x429e434f0de48b2a75b7147105582d61bb4ea8ec');
-		</div>
+		<pre>var abi = [{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_b32","type":"bytes32"},{"name":"byteindex","type":"uint8"}],"name":"getUint8FromByte32","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"makeOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOfferers","outputs":[{"name":"","type":"address[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"deleteOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"acceptOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"isLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOffers","outputs":[{"name":"","type":"uint256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[],"name":"lock","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}]<br>var etheria = web3.eth.contract(abi).at('0x429e434f0de48b2a75b7147105582d61bb4ea8ec');</pre>
 	</p>
 	<h1>Buying an unowned (or month-inactive) tile</h1>
 	<p>
 		Take a look at the Etheria map and decide which tile you want to buy. If it's unowned (or hasn't been farmed in a month), then obtaining it is easy. Just pay 1 ETH for it.
-		<div class="code">etheria.makeOffer.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</div>
+		<pre>etheria.makeOffer.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
 			<li>Money is automatically refunded if the purchase fails.</li>
@@ -106,7 +118,7 @@
 	<h1>Farming your tile for blocks</h1>
 	<p>
 		Now that you have a tile, you'll want to get some blocks for it so you can build that dream home you always wanted. Or a giant penis. Either way:
-		<div class="code">etheria.farmTile.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</div>
+		<pre>etheria.farmTile.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
 			<li>Farming gives you 10 blocks of random types. See "Blocks" for information.</li>
@@ -114,13 +126,13 @@
 			<li>Farming a tile can only be performed once every 4320 Ethereum blocks (roughly once per day).</li>
 		</ul>
 		To view the blocks you farmed:
-		<div class="code">etheria.getBlocks(5,9);</div>
+		<pre>etheria.getBlocks(col,row);</pre>
 	</p>
 	<h1>Editing blocks</h1>
 	<p>
 		Blocks have simple x,y,z coordinates on your tile. The very center at ground level is 0,0,0. The top hex is 0,66. The bottom is 0,66. The middle rectangle is, clockwise, 49,33; 49,-33; -49,-33; -49,33 with the exception that odd rows can go leftwards to x=-50. All new blocks start HIDDEN with x,y,z = 0,0,-1. 
 		To select which block you want to edit, you'll need to know its index. Consult the map explorer. Then,  
-		<div class="code">etheria.editBlock.sendTransaction(col,row,index,[ignore,x,y,z,color],{from:eth.coinbase,gas:2000000,value:web3.toWei(1,'ether')});</div>
+		<pre>etheria.editBlock.sendTransaction(col,row,index,[ignore,x,y,z,color],{from:eth.coinbase,gas:2000000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
 			<li>Every block has a "key hex" which is its first x,y,z hex (out of 8). The x,y,z coords of the key hex are the same as the x,y,z coords of the block.</li>
@@ -130,22 +142,11 @@
 			<li>Valid color values are -128 to 127.</li>
 			<li>Blocks cannot be rehidden after being shown</li>
 		</ul>
-		
-		Etherians can take the following actions:
-		<ol>
-			<li class="list_item_emphasis">Move and stack their blocks on their tile</li>
-			<li class="list_item_emphasis">Change the color of their blocks</li>
-			<li class="list_item_emphasis">Name their tile or group of tiles</li>
-			<li class="list_item_emphasis">Set a "status" of each tile. This status will go out on the @ethereum_feed Twitter account. (To prevent spam, this costs 0.1 ETH.)</li> 
-			<li class="list_item_emphasis">Place/withdraw offers on already-owned land tiles</li>
-			<li class="list_item_emphasis">Accept incoming offers on land they own</li>
-		</ol>
-		For more information, see the Actions page.
 	</p>
 	<h1>A note on troubleshooting</h1>
 	<p>
 		Etheria contains a "whathappened" value that can <i>maybe</i> be used to figure out where you've gone wrong if something doesn't work the way you expected.
-		<div class="code">etheria.getWhatHappened();</div>
+		<pre>etheria.getWhatHappened();</pre>
 		This value is shared amongst all Etheria players, so if you're the the only person interacting with Etheria for a minute or two, it should give you good information. That's why I said "maybe."
 	</p>
 	<h1>whathappened codes</h1>
@@ -201,7 +202,7 @@
     <div>
     	<table style="margin-right:auto;margin-left:auto">
     		<tr>
-    			<td><a href="http://www.twitter.com/fivedogit"><img src="images/twitter.png"></a></td>
+    			<td><a href="http://www.twitter.com/etheria_feed"><img src="images/twitter.png"></a></td>
     			<td><a href="http://www.github.com/fivedogit/etheria"><img src="images/github.png"></a></td>
     		</tr>
     	</table>
