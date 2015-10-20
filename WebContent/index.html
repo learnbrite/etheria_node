@@ -7,10 +7,12 @@
     <script>
     $(document).ready(function(){
     	 $("#explore_link").click(function(){
-    		 confirm('You\'ll need a decent graphics card and modern browser to visit Etheria. Continue?');
+    		 if(!confirm('You\'ll need a decent graphics card and modern browser to visit Etheria. Continue?'))
+    			 return false;
     	    });
     	 $("#blocks_link").click(function(){
-    		 confirm('You\'ll need a decent graphics card and modern browser to view the block reference. Continue?');
+    		 if(!confirm('You\'ll need a decent graphics card and modern browser to view the block reference. Continue?'))
+    			 return false;
     	    });
     });
    
