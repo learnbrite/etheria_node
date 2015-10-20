@@ -1,0 +1,211 @@
+<meta charset="utf-8" /> 
+<!DOCTYPE html>
+<head>
+	<title>Ξtheria</title>
+    <link rel="icon" type="image/png" href="images/h_16.png" />
+    <script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
+    <script>
+    $(document).ready(function(){
+    	 $("#explore_link").click(function(){
+    		 if(!confirm('You\'ll need a decent graphics card and modern browser to visit Etheria. Continue?'))
+    			 return false;
+    	    });
+    	 $("#blocks_link").click(function(){
+    		 if(!confirm('You\'ll need a decent graphics card and modern browser to view the block reference. Continue?'))
+    			 return false;
+    	    });
+    });
+   
+    </script>
+    <style>
+        body {
+            color: white;
+            font-size:16px
+        }
+        a:link {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        a:visited {
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+        h1 {
+        	text-align:center
+        }
+        div {
+        	width:1080px;
+        	margin-right:auto;
+        	margin-left:auto;
+        	text-align:left;
+        	padding-top:25px
+        }
+        li {
+        	line-height:30px;
+        }
+        .list_item_emphasis {
+        	font-weight:bold
+        }
+        p {
+        	line-height:22px;
+        }
+    </style>
+</head>
+
+<body style="margin:0; text-align:center; font-family: arial, helvetica;background: url('images/footer_lodyas.png')">
+	<div style="font-weight:bold;font-size:40px;text-align:center"> 
+    	<a href="index.html" id="home_link">Ξtheria</a>
+	</div>
+	<div>
+		<table style="width:100%">
+	 	<tr>
+	 		<td><a href="whatis.html" id="whatis_link">Overview</a></td>
+	 		<td><a href="orbit.html" id="explore_link">Explore</a></td>
+	 		<td><a href="actions.html" id="actions_link">Actions</a></td>
+	 		<td><a href="blocks.html" id="blocks_link">Blocks</a></td>
+	 		<td><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
+	 	</table> 
+	</div>
+	<div> 
+   		<img src="images/frontpage_map_shorter.jpg"></img>
+	</div>
+	<div> 
+	<h1>So you want to play? Here are the prerequisites.</h1>
+	<p>
+		At the moment and until Mist is released, the only way to interact with Ethereum contracts and Etheria is through the command-line. If you're not very technical, you might want to wait. Otherwise, follow these general instructions:
+		<ol>
+			<li><span class="list_item_emphasis">Install an Ethereum command line interface.</span> I use "geth" on Linux and all instructions below follow my setup.</li>
+			<li><span class="list_item_emphasis">Open a geth console. ("geth" in one terminal window, "geth attach" in a second window does the trick)</span>
+			<li><span class="list_item_emphasis">Create an Ethereum account.</span></li>
+			<li><span class="list_item_emphasis">Get some Ether.</span> You can either buy BTC, then exchange it for ETH, or I'll sell you some at the Poloniex market rate. Email me.</li>
+		</ol>
+		Detailed instructions for accomplishing these prerequisites can be found at <a href="https://docs.google.com/document/d/14EIe984_86Y-uuNm-a4EsVeD3eI4qAAlz_MZof1qkqM/edit">Fivedogit's Ethereum 101 FAQ</a>.
+	</p>
+	<h1>Set up your interface to Etheria</h1>
+	<p>
+		Inside geth:
+		<div class="code">
+			var abi = [{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_b32","type":"bytes32"},{"name":"byteindex","type":"uint8"}],"name":"getUint8FromByte32","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"makeOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOfferers","outputs":[{"name":"","type":"address[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"deleteOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"acceptOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"isLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOffers","outputs":[{"name":"","type":"uint256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[],"name":"lock","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}]
+			<br>var etheria = web3.eth.contract(abi).at('0x429e434f0de48b2a75b7147105582d61bb4ea8ec');
+		</div>
+	</p>
+	<h1>Buying an unowned (or month-inactive) tile</h1>
+	<p>
+		Take a look at the Etheria map and decide which tile you want to buy. If it's unowned (or hasn't been farmed in a month), then obtaining it is easy. Just pay 1 ETH for it.
+		<div class="code">etheria.makeOffer.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</div>
+		Notes:
+		<ul>
+			<li>Money is automatically refunded if the purchase fails.</li>
+			<li>You can't buy water tiles.</li>
+			<li>Excluding water, there is no practical difference in land types or elevation.</li> 
+		</ul>
+	</p>
+	<h1>Farming your tile for blocks</h1>
+	<p>
+		Now that you have a tile, you'll want to get some blocks for it so you can build that dream home you always wanted. Or a giant penis. Either way:
+		<div class="code">etheria.farmTile.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</div>
+		Notes:
+		<ul>
+			<li>Farming gives you 10 blocks of random types. See "Blocks" for information.</li>
+			<li>Blocks are hidden to begin with. You must edit/move them to get them to appear.</li>
+			<li>Farming a tile can only be performed once every 4320 Ethereum blocks (roughly once per day).</li>
+		</ul>
+		To view the blocks you farmed:
+		<div class="code">etheria.getBlocks(5,9);</div>
+	</p>
+	<h1>Editing blocks</h1>
+	<p>
+		Blocks have simple x,y,z coordinates on your tile. The very center at ground level is 0,0,0. The top hex is 0,66. The bottom is 0,66. The middle rectangle is, clockwise, 49,33; 49,-33; -49,-33; -49,33 with the exception that odd rows can go leftwards to x=-50. All new blocks start HIDDEN with x,y,z = 0,0,-1. 
+		To select which block you want to edit, you'll need to know its index. Consult the map explorer. Then,  
+		<div class="code">etheria.editBlock.sendTransaction(col,row,index,[ignore,x,y,z,color],{from:eth.coinbase,gas:2000000,value:web3.toWei(1,'ether')});</div>
+		Notes:
+		<ul>
+			<li>Every block has a "key hex" which is its first x,y,z hex (out of 8). The x,y,z coords of the key hex are the same as the x,y,z coords of the block.</li>
+			<li>Blocks must fall entirely inside your tile.</li>
+			<li>Blocks cannot conflict with other blocks. NOTE: Due to computational constraints, the block you're moving counts as an "other block" until it has successfully moved. This means if where you want to move it conflicts with where it is now, you'll have to move it out of the way first, then, with another edit, put it back where you want it.</li>
+			<li>Blocks must be placed on the ground OR on other blocks (in the same way as standard LEGOs).</li>
+			<li>Valid color values are -128 to 127.</li>
+			<li>Blocks cannot be rehidden after being shown</li>
+		</ul>
+		
+		Etherians can take the following actions:
+		<ol>
+			<li class="list_item_emphasis">Move and stack their blocks on their tile</li>
+			<li class="list_item_emphasis">Change the color of their blocks</li>
+			<li class="list_item_emphasis">Name their tile or group of tiles</li>
+			<li class="list_item_emphasis">Set a "status" of each tile. This status will go out on the @ethereum_feed Twitter account. (To prevent spam, this costs 0.1 ETH.)</li> 
+			<li class="list_item_emphasis">Place/withdraw offers on already-owned land tiles</li>
+			<li class="list_item_emphasis">Accept incoming offers on land they own</li>
+		</ol>
+		For more information, see the Actions page.
+	</p>
+	<h1>A note on troubleshooting</h1>
+	<p>
+		Etheria contains a "whathappened" value that can <i>maybe</i> be used to figure out where you've gone wrong if something doesn't work the way you expected.
+		<div class="code">etheria.getWhatHappened();</div>
+		This value is shared amongst all Etheria players, so if you're the the only person interacting with Etheria for a minute or two, it should give you good information. That's why I said "maybe."
+	</p>
+	<h1>whathappened codes</h1>
+	<p>
+		<ul>
+			<li>1 - makeOffer - ERROR value was 0</li>
+			<li>2 - makeOffer - ERROR col,row out of bounds</li>
+			<li>3 - makeOffer - ERROR wrong value for unowned tile OR attempt to purchase water tile</li>
+			<li>4 - makeOffer - SUCCESS purchase of unowned tile completed</li>
+			<li>5 - makeOffer - ERROR re: owned tiles, self-owned, value to low/high, or this tile already has 10 (max) offers</li>
+			<li>6 - makeOffer - SUCCESS existing offer on owned tile updated</li>
+			<li>7 - makeOffer - SUCCESS new offer on owned tile recorded</li>
+			<li>30 - farmTile - ERROR col,row out of bounds</li>
+			<li>31 - farmTile - ERROR msg.sender != tile owner</li>
+			<li>32 - farmTile - ERROR attempt to farm tile too soon after last farm</li>
+			<li>33 - farmTile - SUCCESS</li>
+			<li>20 - editBlock - ERROR col, row out of bounds</li>
+			<li>21 - editBlock - ERROR msg.sender != tile owner</li>
+			<li>22 - editBlock - ERROR the specified z was less than 0 (blocks cannot be re-hidden after being shown)</li>
+			<li>10 - editBlock - ERROR Invalid location. At least one hex was out of bounds.</li>
+			<li>11 - editBlock - ERROR Invalid location. Conflict with existing block. (Note: The block you're editing counts as an existing block.)</li>
+			<li>12 - editBlock - SUCCESS Block was stacked on another.</li>
+			<li>13 - editBlock - ERROR Block doesn't touch the ground.</li>
+			<li>14 - editBlock - SUCCESS Block was placed on the ground.</li>
+			<li>40 - setStatus - ERROR value was 0</li>
+			<li>41 - setStatus - ERROR value was not .1 ETH (required)</li>
+			<li>42 - setStatus - ERROR col,row out of bounds</li>
+			<li>43 - setStatus - ERROR msg.sender != owner</li>
+			<li>44 - setStatus - SUCCESS</li>
+			<li>50 - setName - ERROR col,row out of bounds</li>
+			<li>51 - setName - ERROR msg.sender != owner</li>
+			<li>52 - setName - SUCCESS</li>
+			<li>70 - deleteOffer - ERROR col, row out of bounds</li>
+			<li>71 - deleteOffer - ERROR msg.sender != owner && msg.sender != offerer</li>
+			<li>72 - deleteOffer - ERROR index out of bounds</li>
+			<li>73 - deleteOffer - SUCCESS</li>
+			<li>74 - deleteOffer - ERROR wrong amount specified</li>
+			<li>80 - acceptOffer - ERROR col, row out of bounds</li>
+			<li>81 - acceptOffer - ERROR msg.sender != owner</li>
+			<li>82 - acceptOffer - ERROR index out of bounds</li>
+			<li>83 - acceptOffer - SUCCESS</li>
+			<li>84 - acceptOffer - ERROR wrong amount specified</li>
+		</ul>
+		
+	</p>
+	</div>
+	<div>
+		<hr>
+	</div>
+   <div style="text-align:center;font-style:italic;"> 
+    	Etheria was created by Cyrus Adkisson. You can email him at c@mailcyr at the USA TLD.
+    </div>
+    <div>
+    	<table style="margin-right:auto;margin-left:auto">
+    		<tr>
+    			<td><a href="http://www.twitter.com/fivedogit"><img src="images/twitter.png"></a></td>
+    			<td><a href="http://www.github.com/fivedogit/etheria"><img src="images/github.png"></a></td>
+    		</tr>
+    	</table>
+    </div>
+</body>
+
+</html>
