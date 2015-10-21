@@ -440,7 +440,9 @@ function drawMapHex(col, row)
 	
 	var extrudeamount;
 	
-	if(map[col][row].elevation < SEA_LEVEL)
+	if(map.length === 1) // special case of the single island hex on the blockref (otherwise, it woudl be ice)
+		extrudeamount = 1;
+	else if(map[col][row].elevation < SEA_LEVEL)
 		extrudeamount = SEA_LEVEL * EXTRUSION_FACTOR;
 	else
 		extrudeamount = map[col][row].elevation * EXTRUSION_FACTOR;
@@ -687,7 +689,10 @@ function drawBlock(col, row, which, x, y, z, color)
 			if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
 			{ occupiesx = occupiesx + 1; }
 			//console.log('drawing ' + (occupiesx+x) + " " + (occupiesy+y) + " " + occupiesz+z);
-			drawBlockHex(col, row, occupiesx+x, occupiesy+y, occupiesz+z, color,1);
+			if(b === 0 && (highlightkeyhex !== "undefined" && highlightkeyhex !== null && highlightkeyhex === true))
+				drawBlockHex(col, row, which, occupiesx+x, occupiesy+y, occupiesz+z, 0xFFFFFF,1, b);
+			else
+				drawBlockHex(col, row, which, occupiesx+x, occupiesy+y, occupiesz+z, color,1, b);
 			occupado[col][row].push([occupiesx+x, occupiesy+y, occupiesz+z]);
 		}
 		return true;
@@ -696,9 +701,16 @@ function drawBlock(col, row, which, x, y, z, color)
 		return false;
 }
 
-var	hextex = THREE.ImageUtils.loadTexture( "images/concrete3.jpg" );
+var	hextexprime = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
+var hextexes = [];
+var tex;
+for(var h = 0; h < 32; h++)
+{
+	tex = THREE.ImageUtils.loadTexture( "images/concrete"+ h + ".jpg");
+	hextexes.push(tex);
+}	
 
-function drawBlockHex(col, row, x, y, z, color, extrusion_multiple)
+function drawBlockHex(col, row, which, x, y, z, color, extrusion_multiple, sequencenum)
 {
 	//console.log('drawBlockHex ' + col + ", "+ row + " " + x + ", "+ y + ", "+ z + ", " + color);
 	if(extrusion_multiple === null || extrusion_multiple === 0)
@@ -723,6 +735,11 @@ function drawBlockHex(col, row, x, y, z, color, extrusion_multiple)
 			bevelEnabled	: false,
 		};
 	
+	var hextex;
+	if(typeof useblocknumbertextures !== "undefined" && useblocknumbertextures !== null)
+		hextex = hextexes[which];
+	else
+		hextex = hextexprime;
 	var	material = new THREE.MeshPhongMaterial( { color: color, map: hextex } );
 	hextex.wrapS = hextex.wrapT = THREE.RepeatWrapping;
 	hextex.repeat.set( 3,3 );
@@ -758,6 +775,19 @@ function drawBlockHex(col, row, x, y, z, color, extrusion_multiple)
 		tileextrusion = map[col][row].elevation * EXTRUSION_FACTOR;
 	}	
 	//console.log("LOWER " + coordx + "," + coordy + " extrudeamount=" + tileextrusion  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
-	mesh.position.set( 0, 0, tileextrusion + z * blockextrude);
+	if(map.length === 1) // special case of the single island hex on the blockref (otherwise, it woudl be ice)
+		mesh.position.set( 0, 0, 1 + z * blockextrude);
+	else
+		mesh.position.set( 0, 0, tileextrusion + z * blockextrude);
+	
+	mesh.userData.which = which;
+	mesh.userData.x = blockdefs[which].occupies[sequencenum][0];
+	mesh.userData.y = blockdefs[which].occupies[sequencenum][1];
+	mesh.userData.z = blockdefs[which].occupies[sequencenum][2];
+	mesh.userData.color = color;
+	mesh.userData.sequencenum = sequencenum;
+	mesh.userData.description = blockdefs[which].description;
+	mesh.userData.occupies = blockdefs[which].occupies;
+	
 	scene.add( mesh );
 }
