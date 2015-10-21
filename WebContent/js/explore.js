@@ -16,16 +16,29 @@
 
 var container;
 
-var GENERATE_NEW_MAP = false;
+var GENERATE_NEW_MAP = true;
 var camera, controls, scene, renderer;
 var mesh;
 
 var mapsize = 33;
-var map;
-map = new Array(mapsize);
-for (i = 0; i < mapsize; i++) {
-	  map[i] = new Array(mapsize);
+var tiles;
+tiles = new Array(mapsize);
+for (var i = 0; i < mapsize; i++) {
+	  tiles[i] = new Array(mapsize);
+	  for(var j = 0; j < mapsize; j++)
+	  {
+		  tiles[i][j] = {};
+		  tiles[i][j].owner = '0x0000000000000000000000000000000000000000';
+		  tiles[i][j].name = "Not set";
+		  tiles[i][j].status = "Not set";
+		  tiles[i][j].offerers = [];
+		  tiles[i][j].offers = [];
+		  tiles[i][j].blocks = [[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20]]; // will contain arrays of 5
+		  tiles[i][j].lastfarm = 0;
+		  tiles[i][j].occupado = []; // will contain arrays of 3
+	  }  
 }	
+console.log("after tiles declaration " + JSON.stringify(tiles[16][16]));
 
 var LEVELS =  Math.cbrt(mapsize - 1) + 1;
 
@@ -33,6 +46,7 @@ var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
 document.addEventListener("DOMContentLoaded", function(event) {
+	console.log("after dom loaded " + JSON.stringify(tiles[16][16]));
 	init();
 	animate();
 });
@@ -58,8 +72,26 @@ function init() {
 	
 	if(GENERATE_NEW_MAP)
 	{	
+		console.log("inside init generate before " + JSON.stringify(tiles[16][16]));
 		generateMap(mapsize, mapsize);
 		
+		// TESTS // DO NOT DELETE
+		console.log("inside init generate new map = true " + JSON.stringify(tiles[16][16]));
+		console.log('drawing 7 columns 0,0');
+		drawBlock(16,16,0,[0,0,0,0, getRandomIntInclusive(0,16777214)]); // succeed
+		console.log('drawing 7 columns 0,66');
+		drawBlock(16,16,1,[0,0,66,0, getRandomIntInclusive(0,16777214)]); // succeed
+		console.log('drawing 7 columns 49,33');
+		drawBlock(16,16,2,[0,49,33,0, getRandomIntInclusive(0,16777214)]); // succeed
+		console.log('drawing 7 columns 49,-33');
+		drawBlock(16,16,3,[0,49,-33,0, getRandomIntInclusive(0,16777214)]); // succeed
+		console.log('drawing 7 columns 0,-66');
+		drawBlock(16,16,4,[0,0,-66,0, getRandomIntInclusive(0,16777214)]); // succeed
+		console.log('drawing 7 columns -50,-33');
+		drawBlock(16,16,5,[0,-50,-33,0, getRandomIntInclusive(0,16777214)]); // succeed
+		console.log('drawing 7 columns -50,33');
+		drawBlock(16,16,6,[0,-50,33,0, getRandomIntInclusive(0,16777214)]); // succeed
+
 //		var c = 0;
 //		var r = 0;
 //		var t = 0;
@@ -67,32 +99,25 @@ function init() {
 //		var created = 0;
 //		var drewblock = false;
 //		
-//		while(created < 30)
+//		while(created < 300)
 //		{
 //			t = getRandomIntInclusive(0,31);
-//			c = getRandomIntInclusive(-50,50);
+//			c = getRandomIntInclusive(0,55);
 //			r = getRandomIntInclusive(-66,66);
 //			z = getRandomIntInclusive(0,0);
 //			drewblock = false;
 //			while(drewblock == false)
 //			{
 //				t = getRandomIntInclusive(0,31);
-//				c = getRandomIntInclusive(-50,50);
+//				c = getRandomIntInclusive(0,55);
 //				r = getRandomIntInclusive(-66,66);
 //				z =  getRandomIntInclusive(0,0);
-//				drewblock = drawBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
+//				drewblock = drawBlock(16,16,[t,c,r,z, getRandomIntInclusive(0,16777214)]);
 //			}	
 //			created++;
 //		}	
-//		
-		// TESTS // DO NOT DELETE
-		drawBlock(16,16,0,0,0,0, getRandomIntInclusive(0,16777214)); // succeed
-		drawBlock(16,16,0,0,66,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(16,16,0,49,33,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(16,16,0,49,-33,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(16,16,0,0,-66,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(16,16,0,-50,33,0, getRandomIntInclusive(0,16777214)); // succeed
-//		drawBlock(16,16,0,-50,-33,0, getRandomIntInclusive(0,16777214)); // succeed
+		
+	
 //		drawBlock(8,8,0,0,67,0, getRandomIntInclusive(0,16777214)); // fail
 //		drawBlock(8,8,0,1,66,0, getRandomIntInclusive(0,16777214)); // fail
 //		drawBlock(8,8,0,-1,66,0, getRandomIntInclusive(0,16777214)); // fail
@@ -139,7 +164,7 @@ function init() {
 	        success: function (data, status) {
 	        	//console.log('back from /map');
 	        	//console.log(JSON.stringify(data));
-	        	map = data;
+	        	tiles = data;
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
 	        	console.log("elevations ajax error");
@@ -154,23 +179,23 @@ function init() {
 		{
 		
 //			if(NORMALIZE_ELEVATIONS)
-//				map[x][y].elevation = (map[x][y].elevation - min) * map[x][y].normalization_factor;
+//				tiles[x][y].elevation = (tiles[x][y].elevation - min) * tiles[x][y].normalization_factor;
 			drawMapHex(col,row);
 			
-			if(map[col][row].blocks)
+			if(tiles[col][row].blocks)
 			{
-				for(var b = 0; b < map[col][row].blocks.length; b++)
+				for(var b = 0; b < tiles[col][row].blocks.length; b++)
 				{
-					if(map[col][row].blocks[b][3] >= 0) // z below 0 doesn't get drawn
+					if(tiles[col][row].blocks[b][3] >= 0) // z below 0 doesn't get drawn
 					{	
-						console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(map[col][row].blocks[b]));
+						console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(tiles[col][row].blocks[b]));
 						//drawBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
 						drawBlock(col,row,
-								map[col][row].blocks[b][0], // which
-								map[col][row].blocks[b][1], // x
-								map[col][row].blocks[b][2],  // y
-								map[col][row].blocks[b][3],  // z
-								(map[col][row].blocks[b][4]+128) * 65536 // 256 color possibilities (0-255) each times 65536 will produce numbers in the range hex color range 0-16777216
+								[tiles[col][row].blocks[b][0], // which
+								tiles[col][row].blocks[b][1], // x
+								tiles[col][row].blocks[b][2],  // y
+								tiles[col][row].blocks[b][3],  // z
+								(tiles[col][row].blocks[b][4]+128) * 65536] // 256 color possibilities (0-255) each times 65536 will produce numbers in the range hex color range 0-16777216
 								);
 					}
 				}	

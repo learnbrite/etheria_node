@@ -27,292 +27,197 @@ var ICE_PERCENTAGE = 0.04;
 
 var offset = 0;
 
-var occupado; // occupado[coordx][coordy] contains the set of occupied x,y,z spaces in this tile
-
-occupado = new Array(mapsize);
-for (i = 0; i < mapsize; i++) {
-	occupado[i] = new Array(mapsize);
-	for(j = 0; j < mapsize; j++)
-		occupado[i][j] = [];  // each x,y is also an array of [x,y,z] values, so occupado[0][1] might contain [[2,3,4],[5,6,7]...]
-}
-
-//initialize occupado with the floor (all the z=-1 for the tile) 
-
-for (row = 0; row < mapsize; row++) {
-	for(col = 0; col < mapsize; col++) {
-		for(var y = -66; y <= 66; y++)
-		{
-			if(y % 2 !== 0 ) // odd
-				x = -50;
-			else
-				x = -49;
-			
-			if(y >= -33 && y <= 33)
-			{
-				for(x; x <= 49; x++)
-				{
-					occupado[col][row].push([x,y,-1]);
-				}
-			}	
-			else
-			{	
-				for(x; x <= 49; x++)
-				{
-					if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
-					{
-						if(y % 2 !== 0 ) // odd
-						{
-							if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
-								occupado[col][row].push([x,y,-1]);
-						}	
-						else	// even
-						{
-							if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
-								occupado[col][row].push([x,y,-1]);
-						}
-					}
-					else
-					{	
-						if(y % 2 === 0 ) // even
-						{
-							if (((Math.abs(x)/3) + (Math.abs(y)/2)) <= 33)
-								occupado[col][row].push([x,y,-1]);
-						}	
-						else	// odd
-						{
-							if ((((Math.abs(x)+1)/3) + ((Math.abs(y)-1)/2)) <= 33)
-								occupado[col][row].push([x,y,-1]);
-						}
-					}
-				}
-			}
-		}	
-	}
-}
-
-
 var blockdefs = [{
 	'which':0,
 	'description': 'column',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[0,0,5],[0,0,6],[0,0,7]],
-	'attachesto':  [[0,0,-1],[0,0,8]]
+	'occupies': [0,0,0,0,0,1,0,0,2,0,0,3,0,0,4,0,0,5,0,0,6,0,0,7],
+	'attachesto':  [0,0,-1,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':1,
 	'description': 'SW-NE diagonal beam',
-	'occupies': [[0,0,0],[0,1,0],[1,2,0],[1,3,0],[2,4,0],[2,5,0],[3,6,0],[3,7,0]],
-	'attachesto':  [[0,0,-1],[0,1,-1],[1,2,-1],[1,3,-1],[2,4,-1],[2,5,-1],[3,6,-1],[3,7,-1],
-	                  [0,0,1],[0,1,1],[1,2,1],[1,3,1],[2,4,1],[2,5,1],[3,6,1],[3,7,1]]
+	'occupies': [0,0,0,0,1,0,1,2,0,1,3,0,2,4,0,2,5,0,3,6,0,3,7,0],
+	'attachesto':  [0,0,-1,0,1,-1,1,2,-1,1,3,-1,2,4,-1,2,5,-1,3,6,-1,3,7,-1,0,0,1,0,1,1,1,2,1,1,3,1,2,4,1,2,5,1,3,6,1,3,7,1]
 },
 {
 	'which':2,
 	'description': 'W-E horizontal beam',
-	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0],[7,0,0]],
-	'attachesto':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],[4,0,-1],[5,0,-1],[6,0,-1],[7,0,-1],
-	                  [0,0,1],[1,0,1],[2,0,1],[3,0,1],[4,0,1],[5,0,1],[6,0,1],[7,0,1]],
+	'occupies': [0,0,0,1,0,0,2,0,0,3,0,0,4,0,0,5,0,0,6,0,0,7,0,0],
+	'attachesto':  [0,0,-1,1,0,-1,2,0,-1,3,0,-1,4,0,-1,5,0,-1,6,0,-1,7,0,-1,0,0,1,1,0,1,2,0,1,3,0,1,4,0,1,5,0,1,6,0,1,7,0,1],
 },
 {
 	'which':3,
 	'description': 'SE-NW diagonal beam',
-	'occupies': [[0,0,0],[-1,1,0],[-1,2,0],[-2,3,0],[-2,4,0],[-3,5,0],[-3,6,0],[-4,7,0]],
-	'attachesto':  [[0,0,-1],[-1,1,-1],[-1,2,-1],[-2,3,-1],[-2,4,-1],[-3,5,-1],[-3,6,-1],[-4,7,-1],
-	                  [0,0,1],[-1,1,1],[-1,2,1],[-2,3,1],[-2,4,1],[-3,5,1],[-3,6,1],[-4,7,1]]
+	'occupies': [0,0,0,-1,1,0,-1,2,0,-2,3,0,-2,4,0,-3,5,0,-3,6,0,-4,7,0],
+	'attachesto':  [0,0,-1,-1,1,-1,-1,2,-1,-2,3,-1,-2,4,-1,-3,5,-1,-3,6,-1,-4,7,-1,0,0,1,-1,1,1,-1,2,1,-2,3,1,-2,4,1,-3,5,1,-3,6,1,-4,7,1]
 },
 {
 	'which':4,
 	'description': 'SW-NE diagonal snake',
-	'occupies': [[0,0,0],[1,0,0],[1,1,0],[2,1,0],[3,2,0],[4,2,0],[4,3,0],[5,3,0]],
-	'attachesto':  [[0,0,-1],[1,0,-1],[1,1,-1],[2,1,-1],[3,2,-1],[4,2,-1],[4,3,-1],[5,3,-1],
-	                  [0,0,1],[1,0,1],[1,1,1],[2,1,1],[3,2,1],[4,2,1],[4,3,1],[5,3,1]]
+	'occupies': [0,0,0,1,0,0,1,1,0,2,1,0,3,2,0,4,2,0,4,3,0,5,3,0],
+	'attachesto':  [0,0,-1,1,0,-1,1,1,-1,2,1,-1,3,2,-1,4,2,-1,4,3,-1,5,3,-1,0,0,1,1,0,1,1,1,1,2,1,1,3,2,1,4,2,1,4,3,1,5,3,1]
 },
 {
 	'which':5,
 	'description': 'SE-NW diagonal snake',
-	'occupies': [[0,0,0],[-1,0,0],[-2,1,0],[-3,1,0],[-3,2,0],[-4,2,0],[-5,3,0],[-6,3,0]],
-	'attachesto':  [[0,0,-1],[-1,0,-1],[-2,1,-1],[-3,1,-1],[-3,2,-1],[-4,2,-1],[-5,3,-1],[-6,3,-1],
-	                  [0,0,1],[-1,0,1],[-2,1,1],[-3,1,1],[-3,2,1],[-4,2,1],[-5,3,1],[-6,3,1]]
+	'occupies': [0,0,0,-1,0,0,-2,1,0,-3,1,0,-3,2,0,-4,2,0,-5,3,0,-6,3,0],
+	'attachesto':  [0,0,-1,-1,0,-1,-2,1,-1,-3,1,-1,-3,2,-1,-4,2,-1,-5,3,-1,-6,3,-1,0,0,1,-1,0,1,-2,1,1,-3,1,1,-3,2,1,-4,2,1,-5,3,1,-6,3,1]
 },
 {
 	'which':6,
 	'description': 'W-E quadruple-decker',
-	'occupies': [[0,0,0],[1,0,0],[0,0,1],[1,0,1],[0,0,2],[1,0,2],[0,0,3],[1,0,3]],
-	'attachesto':  [[0,0,-1],[1,0,-1],
-	                  [0,0,4],[1,0,4]]
+	'occupies': [0,0,0,1,0,0,0,0,1,1,0,1,0,0,2,1,0,2,0,0,3,1,0,3],
+	'attachesto':  [0,0,-1,1,0,-1,0,0,4,1,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':7,
 	'description': 'SW-NE quadruple-decker',
-	'occupies': [[0,0,0],[0,1,0],[0,0,1],[0,1,1],[0,0,2],[0,1,2],[0,0,3],[0,1,3]],
-	'attachesto':  [[0,0,-1],[0,1,-1],
-	                  [0,0,4],[0,1,4]]
+	'occupies': [0,0,0,0,1,0,0,0,1,0,1,1,0,0,2,0,1,2,0,0,3,0,1,3],
+	'attachesto':  [0,0,-1,0,1,-1,0,0,4,0,1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':8,
 	'description': 'SE-NW quadruple-decker',
-	'occupies': [[0,0,0],[-1,1,0],[0,0,1],[-1,1,1],[0,0,2],[-1,1,2],[0,0,3],[-1,1,3]],
-	'attachesto':  [[0,0,-1],[-1,1,-1],
-	                  [0,0,4],[-1,1,4]]
+	'occupies': [0,0,0,-1,1,0,0,0,1,-1,1,1,0,0,2,-1,1,2,0,0,3,-1,1,3],
+	'attachesto':  [0,0,-1,-1,1,-1,0,0,4,-1,1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':9,
 	'description': 'SW-NE double-decker',
-	'occupies': [[0,0,0],[0,1,0],[1,2,0],[1,3,0],[0,0,1],[0,1,1],[1,2,1],[1,3,1]],
-	'attachesto':  [[0,0,-1],[0,1,-1],[1,2,-1],[1,3,-1],
-	                  [0,0,2],[0,1,2],[1,2,2],[1,3,2]]
+	'occupies': [0,0,0,0,1,0,1,2,0,1,3,0,0,0,1,0,1,1,1,2,1,1,3,1],
+	'attachesto':  [0,0,-1,0,1,-1,1,2,-1,1,3,-1,0,0,2,0,1,2,1,2,2,1,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':10,
 	'description': 'W-E double-decker',
-	'occupies': [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[0,0,1],[1,0,1],[2,0,1],[3,0,1]],
-	'attachesto':  [[0,0,-1],[1,0,-1],[2,0,-1],[3,0,-1],
-	                  [0,0,2],[1,0,2],[2,0,2],[3,0,2]]
+	'occupies': [0,0,0,1,0,0,2,0,0,3,0,0,0,0,1,1,0,1,2,0,1,3,0,1],
+	'attachesto':  [0,0,-1,1,0,-1,2,0,-1,3,0,-1,0,0,2,1,0,2,2,0,2,3,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':11,
 	'description': 'SE-NW double-decker',
-	'occupies': [[0,0,0],[-1,1,0],[-1,2,0],[-2,3,0],[0,0,1],[-1,1,1],[-1,2,1],[-2,3,1]],
-	'attachesto':  [[0,0,-1],[-1,1,-1],[-1,2,-1],[-2,3,-1],
-	                  [0,0,2],[-1,1,2],[-1,2,2],[-2,3,2]]
+	'occupies': [0,0,0,-1,1,0,-1,2,0,-2,3,0,0,0,1,-1,1,1,-1,2,1,-2,3,1],
+	'attachesto':  [0,0,-1,-1,1,-1,-1,2,-1,-2,3,-1,0,0,2,-1,1,2,-1,2,2,-2,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':12,
 	'description': 'SW-NE double-decker diagonal snake',
-	'occupies': [[0,0,0],[1,0,0],[1,1,0],[2,1,0],[0,0,1],[1,0,1],[1,1,1],[2,1,1]],
-	'attachesto':  [[0,0,-1],[1,0,-1],[1,1,-1],[2,1,-1],
-	                  [0,0,2],[1,0,2],[1,1,2],[2,1,2]]
+	'occupies': [0,0,0,1,0,0,1,1,0,2,1,0,0,0,1,1,0,1,1,1,1,2,1,1],
+	'attachesto':  [0,0,-1,1,0,-1,1,1,-1,2,1,-1,0,0,2,1,0,2,1,1,2,2,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':13,
 	'description': 'SE-NW double-decker diagonal snake',
-	'occupies': [[0,0,0],[-1,0,0],[-2,1,0],[-3,1,0],[0,0,1],[-1,0,1],[-2,1,1],[-3,1,1]],
-	'attachesto':  [[0,0,-1],[-1,0,-1],[-2,1,-1],[-3,1,-1],
-	                  [0,0,2],[-1,0,2],[-2,1,2],[-3,1,2]]
+	'occupies': [0,0,0,-1,0,0,-2,1,0,-3,1,0,0,0,1,-1,0,1,-2,1,1,-3,1,1],
+	'attachesto':  [0,0,-1,-1,0,-1,-2,1,-1,-3,1,-1,0,0,2,-1,0,2,-2,1,2,-3,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':14,
 	'description': 'S-N snake',
-	'occupies': [[0,0,0],[0,1,0],[0,2,0],[0,3,0],[0,4,0],[0,5,0],[0,6,0],[0,7,0]],
-	'attachesto':  [[0,0,-1],[0,1,-1],[0,2,-1],[0,3,-1],[0,4,-1],[0,5,-1],[0,6,-1],[0,7,-1],
-	                  [0,0,1],[0,1,1],[0,2,1],[0,3,1],[0,4,1],[0,5,1],[0,6,1],[0,7,1]]
+	'occupies': [0,0,0,0,1,0,0,2,0,0,3,0,0,4,0,0,5,0,0,6,0,0,7,0],
+	'attachesto':  [0,0,-1,0,1,-1,0,2,-1,0,3,-1,0,4,-1,0,5,-1,0,6,-1,0,7,-1,0,0,1,0,1,1,0,2,1,0,3,1,0,4,1,0,5,1,0,6,1,0,7,1]
 },
 {
 	'which':15,
 	'description': 'S-N snake flipped',
-	'occupies': [[0,0,0],[-1,1,0],[0,2,0],[-1,3,0],[0,4,0],[-1,5,0],[0,6,0],[-1,7,0]],
-	'attachesto':  [[0,0,-1],[-1,1,-1],[0,2,-1],[-1,3,-1],[0,4,-1],[-1,5,-1],[0,6,-1],[-1,7,-1],
-	                  [0,0,1],[-1,1,1],[0,2,1],[-1,3,1],[0,4,1],[-1,5,1],[0,6,1],[-1,7,1]]
+	'occupies': [0,0,0,-1,1,0,0,2,0,-1,3,0,0,4,0,-1,5,0,0,6,0,-1,7,0],
+	'attachesto':  [0,0,-1,-1,1,-1,0,2,-1,-1,3,-1,0,4,-1,-1,5,-1,0,6,-1,-1,7,-1,0,0,1,-1,1,1,0,2,1,-1,3,1,0,4,1,-1,5,1,0,6,1,-1,7,1]
 },
 {
 	'which':16,
 	'description': 'S-N double-decker snake',
-	'occupies': [[0,0,0],[0,1,0],[0,2,0],[0,3,0],[0,0,1],[0,1,1],[0,2,1],[0,3,1]],
-	'attachesto':  [[0,0,-1],[0,1,-1],[0,2,-1],[0,3,-1],
-	                  [0,0,2],[0,1,2],[0,2,2],[0,3,2]]
+	'occupies': [0,0,0,0,1,0,0,2,0,0,3,0,0,0,1,0,1,1,0,2,1,0,3,1],
+	'attachesto':  [0,0,-1,0,1,-1,0,2,-1,0,3,-1,0,0,2,0,1,2,0,2,2,0,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':17,
 	'description': 'S-N double-decker snake flipped',
-	'occupies': [[0,0,0],[-1,1,0],[0,2,0],[-1,3,0],[0,0,1],[-1,1,1],[0,2,1],[-1,3,1]],
-	'attachesto':  [[0,0,-1],[-1,1,-1],[0,2,-1],[-1,3,-1],
-	                  [0,0,2],[-1,1,2],[0,2,2],[-1,3,1]]
+	'occupies': [0,0,0,-1,1,0,0,2,0,-1,3,0,0,0,1,-1,1,1,0,2,1,-1,3,1],
+	'attachesto':  [0,0,-1,-1,1,-1,0,2,-1,-1,3,-1,0,0,2,-1,1,2,0,2,2,-1,3,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':18,
 	'description': 'SW-NE stairstep',
-	'occupies': [[0,0,0],[0,1,0],[0,1,1],[1,2,1],[1,2,2],[1,3,2],[1,3,3],[2,4,3]],
-	'attachesto': [[0,0,-1],[0,1,-1],[1,2,0],[1,3,1],[2,4,2],
-	                 [0,0,1] ,[0,1,2],[1,2,3],[1,3,4],[2,4,4]]
+	'occupies': [0,0,0,0,1,0,0,1,1,1,2,1,1,2,2,1,3,2,1,3,3,2,4,3],
+	'attachesto': [0,0,-1,0,1,-1,1,2,0,1,3,1,2,4,2,0,0,1,0,1,2,1,2,3,1,3,4,2,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':19,
 	'description': 'W-E stairstep',
-	'occupies': [[0,0,0],[1,0,0],[1,0,1],[2,0,1],[2,0,2],[3,0,2],[3,0,3],[4,0,3]],
-	'attachesto': [[0,0,-1],[1,0,-1],[2,0,0],[3,0,1],[4,0,2],
-	                 [0,0,1] ,[1,0,2],[2,0,3],[3,0,4],[4,0,4]]
+	'occupies': [0,0,0,1,0,0,1,0,1,2,0,1,2,0,2,3,0,2,3,0,3,4,0,3],
+	'attachesto': [0,0,-1,1,0,-1,2,0,0,3,0,1,4,0,2,0,0,1,1,0,2,2,0,3,3,0,4,4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':20,
 	'description': 'NW-SE stairstep',
-	'occupies': [[0,0,0],[0,-1,0],[0,-1,1],[1,-2,1],[1,-2,2],[1,-3,2],[1,-3,3],[2,-4,3]],
-	'attachesto': [[0,0,-1],[0,-1,-1],[1,-2,0],[1,-3,1],[2,-4,2],
-	                 [0,0,1] ,[0,-1,2],[1,-2,3],[1,-3,4],[2,-4,4]]
+	'occupies': [0,0,0,0,-1,0,0,-1,1,1,-2,1,1,-2,2,1,-3,2,1,-3,3,2,-4,3],
+	'attachesto': [0,0,-1,0,-1,-1,1,-2,0,1,-3,1,2,-4,2,0,0,1,0,-1,2,1,-2,3,1,-3,4,2,-4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':21,
 	'description': 'NE-SW stairstep',
-	'occupies': [[0,0,0],[-1,-1,0],[-1,-1,1],[-1,-2,1],[-1,-2,2],[-2,-3,2],[-2,-3,3],[-2,-4,3]],
-	'attachesto': [[0,0,-1],[-1,-1,-1],[-1,-2,0],[-2,-3,1],[-2,-4,2],
-	                 [0,0,1] ,[-1,-1,2],[-1,-2,3],[-2,-3,4],[-2,-4,4]]
+	'occupies': [0,0,0,-1,-1,0,-1,-1,1,-1,-2,1,-1,-2,2,-2,-3,2,-2,-3,3,-2,-4,3],
+	'attachesto': [0,0,-1,-1,-1,-1,-1,-2,0,-2,-3,1,-2,-4,2,0,0,1,-1,-1,2,-1,-2,3,-2,-3,4,-2,-4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':22,
 	'description': 'E-W stairstep',
-	'occupies': [[0,0,0],[-1,0,0],[-1,0,1],[-2,0,1],[-2,0,2],[-3,0,2],[-3,0,3],[-4,0,3]],
-	'attachesto': [[0,0,-1],[-1,0,-1],[-2,0,0],[-3,0,1],[-4,0,2],
-	                 [0,0,1] ,[-1,0,2],[-2,0,3],[-3,0,4],[-4,0,4]]
+	'occupies': [0,0,0,-1,0,0,-1,0,1,-2,0,1,-2,0,2,-3,0,2,-3,0,3,-4,0,3],
+	'attachesto': [0,0,-1,-1,0,-1,-2,0,0,-3,0,1,-4,0,2,0,0,1,-1,0,2,-2,0,3,-3,0,4,-4,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':23,
 	'description': 'SE-NW stairstep',
-	'occupies': [[0,0,0],[-1,1,0],[-1,1,1],[-1,2,1],[-1,2,2],[-2,3,2],[-2,3,3],[-2,4,3]],
-	'attachesto': [[0,0,-1],[-1,1,-1],[-1,2,0],[-2,3,1],[-2,4,2],
-	                 [0,0,1] ,[-1,1,2],[-1,2,3],[-2,3,4],[-2,4,4]]
+	'occupies': [0,0,0,-1,1,0,-1,1,1,-1,2,1,-1,2,2,-2,3,2,-2,3,3,-2,4,3],
+	'attachesto': [0,0,-1,-1,1,-1,-1,2,0,-2,3,1,-2,4,2,0,0,1,-1,1,2,-1,2,3,-2,3,4,-2,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':24,
 	'description': 'SW-NE arch',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,1,2],[1,2,2],[1,3,2],[1,3,1],[1,3,0]],
-	'attachesto': [[0,0,-1],[0,1,1],[1,2,1],[1,3,-1],
-	                 [0,0,3] ,[0,1,3],[1,2,3],[1,3,3]]
+	'occupies': [0,0,0,0,0,1,0,0,2,0,1,2,1,2,2,1,3,2,1,3,1,1,3,0],
+	'attachesto': [0,0,-1,0,1,1,1,2,1,1,3,-1,0,0,3,0,1,3,1,2,3,1,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':25,
 	'description': 'W-E arch',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[1,0,2],[2,0,2],[3,0,2],[3,0,1],[3,0,0]],
-	'attachesto': [[0,0,-1],[1,0,1],[2,0,1],[3,0,-1],
-	                 [0,0,3] ,[1,0,3],[2,0,3],[3,0,3]]
+	'occupies': [0,0,0,0,0,1,0,0,2,1,0,2,2,0,2,3,0,2,3,0,1,3,0,0],
+	'attachesto': [0,0,-1,1,0,1,2,0,1,3,0,-1,0,0,3,1,0,3,2,0,3,3,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':26,
 	'description': 'NW-SE arch',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,-1,2],[1,-2,2],[1,-3,2],[1,-3,1],[1,-3,0]],
-	'attachesto': [[0,0,-1],[0,-1,1],[1,-2,1],[1,-3,-1],
-	                 [0,0,3] ,[0,-1,3],[1,-2,3],[1,-3,3]]
+	'occupies': [0,0,0,0,0,1,0,0,2,0,-1,2,1,-2,2,1,-3,2,1,-3,1,1,-3,0],
+	'attachesto': [0,0,-1,0,-1,1,1,-2,1,1,-3,-1,0,0,3,0,-1,3,1,-2,3,1,-3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':27,
 	'description': 'SW-NE curved arch',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[1,0,2],[1,1,2],[1,2,2],[1,2,1],[1,2,0]],
-	'attachesto': [[0,0,-1],[1,0,1],[1,1,1],[1,2,-1],
-	                 [0,0,3] ,[1,0,3],[1,1,3],[1,2,3]]
+	'occupies': [0,0,0,0,0,1,0,0,2,1,0,2,1,1,2,1,2,2,1,2,1,1,2,0],
+	'attachesto': [0,0,-1,1,0,1,1,1,1,1,2,-1,0,0,3,1,0,3,1,1,3,1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':28,
 	'description': 'NW-SE curved arch',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[-1,-1,2],[0,-2,2],[1,-2,2],[1,-2,1],[1,-2,0]],
-	'attachesto': [[0,0,-1],[-1,-1,1],[0,-2,1],[1,-2,-1],
-	                 [0,0,3] ,[-1,-1,3],[0,-2,3],[1,-2,3]]
+	'occupies': [0,0,0,0,0,1,0,0,2,-1,-1,2,0,-2,2,1,-2,2,1,-2,1,1,-2,0],
+	'attachesto': [0,0,-1,-1,-1,1,0,-2,1,1,-2,-1,0,0,3,-1,-1,3,0,-2,3,1,-2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':29,
 	'description': 'NE-SW curved arch',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[-1,0,2],[-2,-1,2],[-1,-2,2],[-1,-2,1],[-1,-2,0]],
-	'attachesto': [[0,0,-1],[-1,0,1],[-2,-1,1],[-1,-2,-1],
-	                 [0,0,3] ,[-1,0,3],[-2,-1,3],[-1,-2,3]]
+	'occupies': [0,0,0,0,0,1,0,0,2,-1,0,2,-2,-1,2,-1,-2,2,-1,-2,1,-1,-2,0],
+	'attachesto': [0,0,-1,-1,0,1,-2,-1,1,-1,-2,-1,0,0,3,-1,0,3,-2,-1,3,-1,-2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':30,
 	'description': 'SE-NW curved arch',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,1,2],[0,2,2],[-1,2,2],[-1,2,1],[-1,2,0]],
-	'attachesto': [[0,0,-1],[0,1,1],[0,2,1],[-1,2,-1],
-	                 [0,0,3] ,[0,1,3],[0,2,3],[-1,2,3]]
+	'occupies': [0,0,0,0,0,1,0,0,2,0,1,2,0,2,2,-1,2,2,-1,2,1,-1,2,0],
+	'attachesto': [0,0,-1,0,1,1,0,2,1,-1,2,-1,0,0,3,0,1,3,0,2,3,-1,2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 },
 {
 	'which':31,
 	'description': 'stand',
-	'occupies': [[0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,0,4],[-1,1,0],[-1,-1,0],[1,0,0]],
-	'attachesto': [[0,0,-1],[-1,1,-1],[-1,-1,-1],[1,0,-1],
-	                 [0,0,5],[-1,1,1],[-1,-1,1],[1,0,1]]
+	'occupies': [0,0,0,0,0,1,0,0,2,0,0,3,0,0,4,-1,1,0,-1,-1,0,1,0,0],
+	'attachesto': [0,0,-1,-1,1,-1,-1,-1,-1,1,0,-1,0,0,5,-1,1,1,-1,-1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 }
 ]
 
@@ -355,13 +260,13 @@ function drawMapHex(col, row)
 	var texturefile = "";
 	var log_color_choice = false;
 	var tiletype = "";
-	if(map.length === 1) // special case of the single island hex on the blockref (otherwise, it woudl be ice)
+	if(tiles.length === 1) // special case of the single island hex on the blockref (otherwise, it woudl be ice)
 	{
 		color = GRASSLAND_COLOR;
 		texture = grasslandtexture;
 		tiletype = "grassland";
 	}
-	else if(map[col][row].elevation >= SEA_LEVEL && 						// higher than ocean level AND
+	else if(tiles[col][row].elevation >= SEA_LEVEL && 						// higher than ocean level AND
 			(row < (TUNDRA_PERCENTAGE * mapsize) || 			// (south of tundra threshold OR
 					row > ((1-TUNDRA_PERCENTAGE) * (mapsize-1)))) //  north of tundra threshold)
 	{
@@ -375,35 +280,35 @@ function drawMapHex(col, row)
 			tiletype = "ice";
 		}
 	}
-	else if(map[col][row].elevation < SEA_LEVEL)
+	else if(tiles[col][row].elevation < SEA_LEVEL)
 	{
 		color = WATER_COLOR;
 		texture = watertexture;
 		tiletype = "water";
 	}
-	else if(map[col][row].elevation < SAND_LEVEL)
+	else if(tiles[col][row].elevation < SAND_LEVEL)
 	{
 		color = SAND_COLOR;
 		texture = sandtexture;
 		tiletype = "sand";
 	}
-	else if(map[col][row].elevation < GRASSLAND_LEVEL)
+	else if(tiles[col][row].elevation < GRASSLAND_LEVEL)
 	{
 		color = GRASSLAND_COLOR;
 		texture = grasslandtexture;
 		tiletype = "grassland";
 	}
-	else if(map[col][row].elevation < HILLS_LEVEL)
+	else if(tiles[col][row].elevation < HILLS_LEVEL)
 	{
 		color = HILLS_COLOR;
 		texture = hillstexture;
 		tiletype = "hills";
 	}
-	else if(map[col][row].elevation <= 256)
+	else if(tiles[col][row].elevation <= 256)
 	{
-		if(map[col][row].elevation > 255)
+		if(tiles[col][row].elevation > 255)
 		{
-			//map[col][row].elevation = 255; // sometimes multiplicative factors put the very top over 255, if so, chop it off
+			//tiles[col][row].elevation = 255; // sometimes multiplicative factors put the very top over 255, if so, chop it off
 			console.log('WARNING elevationg greater than 255');
 		}
 		color = MOUNTAINS_COLOR;
@@ -421,8 +326,8 @@ function drawMapHex(col, row)
 			// convert hex to hsl, set the lightness to elevation / 255, convert back to hex.
 			var color_hsv = RGBtoHSV(components.r, components.g, components.b);
 			var color_hsl = HSVtoHSL(color_hsv.h, color_hsv.s, color_hsv.v);
-			//color_hsl.l = color_hsl.l * map[col][row].elevation / 255; 											// this is the original, but the light/dark was too drastic.
-			color_hsl.l = color_hsl.l * ((255 - map[col][row].elevation)*2/5 + map[col][row].elevation) / 255;  // this version softens. 128/255 = ~.5 becomes (((255-128)*2/3) + 128) / 255 = .8333 (repeating, of course)
+			//color_hsl.l = color_hsl.l * tiles[col][row].elevation / 255; 											// this is the original, but the light/dark was too drastic.
+			color_hsl.l = color_hsl.l * ((255 - tiles[col][row].elevation)*2/5 + tiles[col][row].elevation) / 255;  // this version softens. 128/255 = ~.5 becomes (((255-128)*2/3) + 128) / 255 = .8333 (repeating, of course)
 			if(color_hsl.l === 0) // when lightness is all the way zero, it draws a white hex for some reason (maybe the hue is set to something that can't be brightness zero?). w/e This shouldn't happen. Force a black hex.
 				color = 0x000000;
 			else
@@ -440,12 +345,12 @@ function drawMapHex(col, row)
 	
 	var extrudeamount;
 	
-	if(map.length === 1) // special case of the single island hex on the blockref (otherwise, it woudl be ice)
+	if(tiles.length === 1) // special case of the single island hex on the blockref (otherwise, it woudl be ice)
 		extrudeamount = 1;
-	else if(map[col][row].elevation < SEA_LEVEL)
+	else if(tiles[col][row].elevation < SEA_LEVEL)
 		extrudeamount = SEA_LEVEL * EXTRUSION_FACTOR;
 	else
-		extrudeamount = map[col][row].elevation * EXTRUSION_FACTOR;
+		extrudeamount = tiles[col][row].elevation * EXTRUSION_FACTOR;
 	
 	var extrudeSettings = {
 			amount			: extrudeamount,
@@ -503,16 +408,16 @@ function drawMapHex(col, row)
 //	jo.offers = offers[col][row];
 //	jo.blocks = blocks[col][row];
 	
-	mesh.userData.elevation = map[col][row].elevation;
+	mesh.userData.elevation = tiles[col][row].elevation;
 	mesh.userData.tiletype = tiletype;
 	
 	mesh.userData.col = col;
 	mesh.userData.row = row;
-	mesh.userData.owner = map[col][row].owner;
-	mesh.userData.name = map[col][row].name;
-	mesh.userData.status = map[col][row].status;
-	mesh.userData.offers = map[col][row].offers; // offerers will be combined soon
-	mesh.userData.blocks = map[col][row].blocks;
+	mesh.userData.owner = tiles[col][row].owner;
+	mesh.userData.name = tiles[col][row].name;
+	mesh.userData.status = tiles[col][row].status;
+	mesh.userData.offers = tiles[col][row].offers; // offerers will be combined soon
+	mesh.userData.blocks = tiles[col][row].blocks;
 
 	scene.add( mesh );
 	
@@ -530,64 +435,35 @@ function hex_corner(center, size, i){
 
 function blockHexCoordsValid(x, y)
 {
-	if(-33 <= y && y <= 33)
+	var absx = Math.abs(x);
+	var absy = Math.abs(y);
+	
+	if(absy <= 33) // middle rectangle
 	{
-		if(y % 2 !== 0 ) // odd
+		if(y % 2 != 0 ) // odd
 		{
 			if(-50 <= x && x <= 49)
 				return true;
-			else
-			{
-				//console.log('returning false! ' + x + ',' + y);
-				return false;
-			}	
 		}
 		else // even
 		{
-			if(-49 <= x && x <= 49)
+			if(absx <= 49)
 				return true;
-			else
-			{
-				//console.log('returning false! ' + x + ',' + y);
-				return false;
-			}	
 		}	
 	}	
 	else
 	{	
-		var absx;
-		var absy;
-		if(x < 0)
-			absx = (x*-1);
-		else
-			absx = (x);
-		if(y < 0)
-			absy = (y*-1);
-		else
-			absy = (y);
 		if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
 		{
 			if(y % 2 != 0 ) // odd
 			{
 				if (((absx*2) + (absy*3)) <= 198)
 					return true;
-				else
-				{
-					//console.log('returning false! ' + x + ',' + y);
-					return false;
-				}	
 			}	
 			else	// even
 			{
 				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
-				{
 					return true;
-				}
-				else
-				{
-					//console.log('returning false! ' + x + ',' + y);
-					return false;
-				}	
 			}
 		}
 		else
@@ -596,109 +472,142 @@ function blockHexCoordsValid(x, y)
 			{
 				if (((absx*2) + (absy*3)) <= 198)
 					return true;
-				else
-				{
-					//console.log('returning false! ' + x + ',' + y);
-					return false;
-				}	
 			}	
 			else	// odd
 			{
 				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
 					return true;
-				else
-				{
-					//console.log('returning false! ' + x + ',' + y);
-					return false;
-				}	
 			}
 		}
 	}
-	//console.log('END returning false! ' + x + ',' + y);
-	return false;
 }
 
-function isValidLocation(col, row, which, x, y, z)
+function drawBlock(col, row, index, _block)
 {
-	// var uint8[3][8] wouldoccupy;
-	var wouldoccupy = []; 
-	wouldoccupy = new Array(8);
-	for (i = 0; i < 8; i++) {
-		wouldoccupy[i] = new Array(3);
-	}
-	
-	for(var j = 0; j < 8; j++)
+	var wouldoccupy = new Array(24);
+	var didoccupy = new Array(24);
+	for(var b = 0; b < 24; b++) // gotta create a new object and move all the values over. Otherwise, we'd be writing into blockdefs.
+    {	
+		wouldoccupy[b] = blockdefs[_block[0]].occupies[b];
+		didoccupy[b] = blockdefs[_block[0]].occupies[b];
+    }
+
+	var tile = tiles[col][row];
+	console.log("inside drawblock " + JSON.stringify(tile));
+	for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the didoccupy
+    {	
+    	wouldoccupy[b] = wouldoccupy[b]+_block[1];
+    	wouldoccupy[b+1] = wouldoccupy[b+1]+_block[2];
+    	if(wouldoccupy[1] % 2 != 0 && wouldoccupy[b+1] % 2 == 0) // if anchor y is odd and this hex y is even, (SW NE beam goes 11,`2`2,23,`3`4,35,`4`6,47,`5`8  ` = x value incremented by 1. Same applies to SW NE beam from 01,12,13,24,25,36,37,48)
+    		wouldoccupy[b] = wouldoccupy[b]+1;  			     // then offset x by +1
+    	wouldoccupy[b+2] = wouldoccupy[b+2]+_block[3];
+		//console.log("before " + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
+//    	didoccupy[b] = didoccupy[b]+tile.blocks[index][1];
+//    	didoccupy[b+1] = didoccupy[b+1]+tile.blocks[index][2];
+//    	if(didoccupy[1] % 2 != 0 && didoccupy[b+1] % 2 == 0) // if anchor y and this hex y are both odd,
+//    		didoccupy[b] = didoccupy[b]+1; 					 // then offset x by +1
+//    	didoccupy[b+2] = didoccupy[b+2]+tile.blocks[index][3];
+    }
+	if(!isValidLocation(col, row, _block, wouldoccupy)) // have not sent offset to these functions. Must take care of inside them.
 	{
-		for(var k = 0; k < 8; k++)
-		{
-			wouldoccupy[k][j] = blockdefs[which].occupies[k][j];
-		}
-	}	
-	
-	var touches = false;
-	for(var b = 0; b < 8; b++) // always 8 hexes
-	{
-		console.log('checking ' +wouldoccupy[b][0] + "," + wouldoccupy[b][1] + "," + wouldoccupy[b][2]);
-		wouldoccupy[b][0] = wouldoccupy[b][0]+x;
-		wouldoccupy[b][1] = wouldoccupy[b][1]+y;
-		if(y % 2 != 0 && wouldoccupy[b][1]%2 != 0)
-			wouldoccupy[b][0] = wouldoccupy[b][0]+1; // anchor y and this hex y are both odd, offset by +1
-		wouldoccupy[b][2] = wouldoccupy[b][2]+z;
-		console.log('now ' +wouldoccupy[b][0] + "," + wouldoccupy[b][1] + "," + wouldoccupy[b][2]);
-		if(!blockHexCoordsValid(wouldoccupy[b][0], wouldoccupy[b][1])) // this is the out-of-bounds check
-		{
-			console.log('returning false. blockHexCoordsInvalid for ' +  wouldoccupy[b][0] + ", " +  wouldoccupy[b][1]);
-			return false;
-		}
-//		for(var o = 0; o < tiles[col][row].occupado.length; o++)
-//    	{
-//			if(wouldoccupy[b][0] == tiles[col][row].occupado[o][0] && wouldoccupy[b][1] == tiles[col][row].occupado[o][1] && wouldoccupy[b][2] == tiles[col][row].occupado[o][2]) // are the arrays equal?
-//			{
-//				whathappened = 2;
-//				return false; // this hex conflicts. The proposed block does not avoid overlap. Return false immediately.
-//			}
-//    	}
-//		if(touches == false && wouldoccupy[b][2] == 0) // if on the ground, touches is always true, only check if touches is not yet true
-//		{
-//			touches = true;
-//		}	
+		return;
 	}
-	return true;
+	for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the didoccupy
+    {
+		if(b === 0 && (typeof highlightkeyhex !== "undefined" && highlightkeyhex !== null && highlightkeyhex === true))
+			drawBlockHex(col, row, _block[0], wouldoccupy[b], wouldoccupy[b+1], wouldoccupy[b+2], 0xFFFFFF, 1, b);
+		else
+			drawBlockHex(col, row, _block[0], wouldoccupy[b], wouldoccupy[b+1], wouldoccupy[b+2], _block[4], 1, b);
+    }
+	
+	if(tile.blocks[index][3] >= 0) // If the previous z was greater than 0 (i.e. not hidden) ...
+ 	{
+     	for(var l = 0; l < 24; l+=3) // loop 8 times,find the previous occupado entries and overwrite them
+     	{
+     		for(var o = 0; o < tile.occupado.length; o++)
+     		{
+     			if(didoccupy[l] == tile.occupado[o][0] && didoccupy[l+1] == tile.occupado[o][1] && didoccupy[l+2] == tile.occupado[o][2]) // x,y,z equal?
+     			{
+     				tile.occupado[o][0] = wouldoccupy[l]; // found it. Overwrite it
+     				tile.occupado[o][1] = wouldoccupy[l+1];
+     				tile.occupado[o][2] = wouldoccupy[l+2];
+     			}
+     		}
+     	}
+ 	}
+ 	else // previous block was hidden
+ 	{
+ 		for(var ll = 0; ll < 24; ll+=3) // add the 8 new hexes to occupado
+     	{
+ 			tile.occupado.push(wouldoccupy[ll]);
+ 			tile.occupado.push(wouldoccupy[ll]+1);
+ 			tile.occupado.push(wouldoccupy[ll]+2);
+     	}
+ 	}
 }
 
-function drawBlock(col, row, which, x, y, z, color)
+var whathappened = 0;
+
+function isValidLocation(col, row, _block, wouldoccupy)
 {
-	// This seems more complicated than it should be, but I don't think it is. 
-	// The issue is that a block of a certain configuration,
-	// is actually a different configuration depending on whether its rows are odd or even
-	// e.g. a straight line to the NE, starting at 0,0 the other 3 blocks are 0,1, 1,2 and 1,3 (x,y+1, x+1,y+2 and x+1,y+3)
-	// but starting at 0,1 the other 3 blocks are 1,2, 1,3 and 1, 3 (x+1,y+1, x+1,y+2 and x+2,y+3)
-	// See? Kinda weird.
-	//console.log("drawblock(" + coordx + ", "+ coordy + ", " + which + "," + x + ", "+ y + ", "+ z + ", " + color);
-	var occupiesx = 0;
-	var occupiesy = 0;
-	var occupiesz = 0;
-	
-	if(isValidLocation(col, row, which, x, y, z)) // have not sent offset to these functions. Must take care of inside them.
-	{
-		for(var b = 0; b < 8; b++)
-		{
-			occupiesx = blockdefs[which].occupies[b][0];
-			occupiesy = blockdefs[which].occupies[b][1];
-			occupiesz = blockdefs[which].occupies[b][2];
-			if(y % 2 !== 0 && occupiesy%2 !== 0) // if y is odd, offset the x by 1
-			{ occupiesx = occupiesx + 1; }
-			//console.log('drawing ' + (occupiesx+x) + " " + (occupiesy+y) + " " + occupiesz+z);
-			if(b === 0 && (highlightkeyhex !== "undefined" && highlightkeyhex !== null && highlightkeyhex === true))
-				drawBlockHex(col, row, which, occupiesx+x, occupiesy+y, occupiesz+z, 0xFFFFFF,1, b);
-			else
-				drawBlockHex(col, row, which, occupiesx+x, occupiesy+y, occupiesz+z, color,1, b);
-			occupado[col][row].push([occupiesx+x, occupiesy+y, occupiesz+z]);
-		}
-		return true;
-	}
-	else
-		return false;
+    	var touches;
+    	var tile = tiles[col][row];
+    	console.log("inside isValidLoc " + JSON.stringify(tile));
+        for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the wouldoccupy and the didoccupy
+       	{
+       		if(!blockHexCoordsValid(wouldoccupy[b], wouldoccupy[b+1])) // 3. DO ANY OF THE PROPOSED HEXES FALL OUTSIDE OF THE TILE? 
+      		{
+       			whathappened = 10; console.log('OOB for ' + wouldoccupy[b] + "," + wouldoccupy[b+1]);
+      			return false;
+      		}
+       		for(var o = 0; o < tile.occupado.length; o++)  // 4. DO ANY OF THE PROPOSED HEXES CONFLICT WITH ENTRIES IN OCCUPADO? 
+          	{
+       			if(wouldoccupy[b] == tile.occupado[o][0] && wouldoccupy[b+1] == tile.occupado[o][1] && wouldoccupy[b+2] == tile.occupado[o][2]) // do the x,y,z entries of each match?
+      			{
+      				whathappened = 11; console.log('conflict');
+      				return false; // this hex conflicts. The proposed block does not avoid overlap. Return false immediately.
+      			}
+          	}
+      		if(touches == false && wouldoccupy[b+2] == 0)  // 5. DO ANY OF THE BLOCKS TOUCH ANOTHER? (GROUND ONLY FOR NOW)
+      		{
+      			touches = true; // once true, always true til the end of this method. We must keep looping to check all the hexes for conflicts and tile boundaries, though, so we can't return true here.
+      		}	
+       	}
+        
+        // now if we're out of the loop and here, there were no conflicts and the block was found to be in the tile boundary.
+        // touches may be true or false, so we need to check 
+          
+        if(touches == false)  // 6. NONE OF THE OCCUPY BLOCKS TOUCHED THE GROUND. BUT MAYBE THEY TOUCH ANOTHER BLOCK?
+  		{
+          	var attachesto = blockdefs[_block[0]].attachesto; //int8[48]  attachesto = bds.getAttachesto(uint8(_block[0]));
+          	if(attachesto.length !== 48)
+          		console.log("bloody murder!");
+          	for(var a = 0; a < 48 && !touches; a+=3) // always 8 hexes, calculate the wouldoccupy and the didoccupy
+          	{
+          		if(attachesto[a] == 0 && attachesto[a+1] == 0 && attachesto[a+2] == 0) // there are no more attachestos available, break (0,0,0 signifies end)
+          			break;
+          		//attachesto[a] = attachesto[a]+_block[1];
+          		attachesto[a+1] = attachesto[a+1]+_block[2];
+          		if(attachesto[1] % 2 != 0 && attachesto[a+1] % 2 == 0) //  (for attachesto, anchory is the same as for occupies, but the z is different. Nothing to worry about)
+           			attachesto[a] = attachesto[a]+1;  			       // then offset x by +1
+           		//attachesto[a+2] = attachesto[a+2]+_block[3];
+           		for(o = 0; o < tile.occupado.length && !touches; o++)
+           		{
+           			if((attachesto[a]+_block[1]) == tile.occupado[o][0] && attachesto[a+1] == tile.occupado[o][1] && (attachesto[a+2]+_block[3]) == tile.occupado[o][2]) // a valid attachesto found in occupado?
+           			{
+           				whathappened = 12; console.log('touches');
+           				return true; // in bounds, didn't conflict and now touches is true. All good. Return.
+           			}
+           		}
+          	}
+          	whathappened = 13; console.log('no touch');
+          	return false; 
+  		}
+        else // touches was true by virtue of a z = 0 above (touching the ground). Return true;
+        {
+        	whathappened = 14; console.log('touches ground');
+        	return true;
+        }	
 }
 
 var	hextexprime = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
@@ -766,16 +675,16 @@ function drawBlockHex(col, row, which, x, y, z, color, extrusion_multiple, seque
 
 	var mesh = new THREE.Mesh( hexGeom, material );
 	var tileextrusion;
-	if(map[col][row].elevation < SEA_LEVEL)
+	if(tiles[col][row].elevation < SEA_LEVEL)
 	{
 		tileextrusion = SEA_LEVEL * EXTRUSION_FACTOR;
 	}	
 	else
 	{
-		tileextrusion = map[col][row].elevation * EXTRUSION_FACTOR;
+		tileextrusion = tiles[col][row].elevation * EXTRUSION_FACTOR;
 	}	
-	//console.log("LOWER " + coordx + "," + coordy + " extrudeamount=" + tileextrusion  + " map[coordx][coordy].elevation=" + map[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
-	if(map.length === 1) // special case of the single island hex on the blockref (otherwise, it woudl be ice)
+	//console.log("LOWER " + coordx + "," + coordy + " extrudeamount=" + tileextrusion  + " tiles[coordx][coordy].elevation=" + tiles[coordx][coordy].elevation + " EXTRUSION_FACTOR=" + EXTRUSION_FACTOR);
+	if(tiles.length === 1) // special case of the single island hex on the blockref (otherwise, it woudl be ice)
 		mesh.position.set( 0, 0, 1 + z * blockextrude);
 	else
 		mesh.position.set( 0, 0, tileextrusion + z * blockextrude);

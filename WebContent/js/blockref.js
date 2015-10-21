@@ -4,10 +4,10 @@ var camera, controls, scene, renderer;
 var mesh;
 
 var mapsize = 1;
-var map;
-map = new Array(mapsize);
+var tiles;
+tiles = new Array(mapsize);
 for (i = 0; i < mapsize; i++) {
-	  map[i] = new Array(mapsize);
+	  tiles[i] = new Array(mapsize);
 }	
 
 var LEVELS =  Math.cbrt(mapsize - 1) + 1;
@@ -28,9 +28,9 @@ function getRandomIntInclusive(min, max) {
 }
 
 function init() {
-	map[0][0] ={};
-	map[0][0].elevation = 195;
-	map[0][0].owner = 'nobody';
+	tiles[0][0] ={};
+	tiles[0][0].elevation = 195;
+	tiles[0][0].owner = 'nobody';
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
 	camera.position.z = 18;
 
@@ -47,41 +47,41 @@ function init() {
 	// -50 && y odd == OK
 	//drawBlock(0,0,0,0,0,0, 0xFFCC00); // 8 high column
 	
-	drawBlock(0,0,0,-40,-28,0, 0xFFFF00); 
-	drawBlock(0,0,1,-28,-28,0, 0xFFFF00); 
-	drawBlock(0,0,2,-16,-28,0, 0xFFFF00); 
-	drawBlock(0,0,3,-4,-28,0, 0xFFFF00); 
-	drawBlock(0,0,4,7,-28,0, 0xFFFF00); 
-	drawBlock(0,0,5,21,-28,0, 0xFFFF00); // CYAN double tower horizontal
-	drawBlock(0,0,6,32,-28,0, 0xFFFF00);
-	drawBlock(0,0,7,44,-28,0, 0xFFFF00);
+	drawBlock(0,0,[0,-40,-28,0, 0xFFFF00]); 
+	drawBlock(0,0,[1,-28,-28,0, 0xFFFF00]); 
+	drawBlock(0,0,[2,-16,-28,0, 0xFFFF00]); 
+	drawBlock(0,0,[3,-4,-28,0, 0xFFFF00]); 
+	drawBlock(0,0,[4,7,-28,0, 0xFFFF00]); 
+	drawBlock(0,0,[5,21,-28,0, 0xFFFF00]); // CYAN double tower horizontal
+	drawBlock(0,0,[6,32,-28,0, 0xFFFF00]);
+	drawBlock(0,0,[7,44,-28,0, 0xFFFF00]);
 
-	drawBlock(0,0,8,-40,-10,0, 0xFFFF00); 
-	drawBlock(0,0,9,-28,-10,0, 0xFFFF00); 
-	drawBlock(0,0,10,-16,-10,0, 0xFFFF00); 
-	drawBlock(0,0,11,-4,-10,0, 0xFFFF00); 
-	drawBlock(0,0,12,8,-10,0, 0xFFFF00); 
-	drawBlock(0,0,13,20,-10,0, 0xFFFF00); // CYAN double tower horizontal
-	drawBlock(0,0,14,32,-10,0, 0xFFFF00);
-	drawBlock(0,0,15,44,-10,0, 0xFFFF00);
+	drawBlock(0,0,[8,-40,-10,0, 0xFFFF00]); 
+	drawBlock(0,0,[9,-28,-10,0, 0xFFFF00]); 
+	drawBlock(0,0,[10,-16,-10,0, 0xFFFF00]); 
+	drawBlock(0,0,[11,-4,-10,0, 0xFFFF00]); 
+	drawBlock(0,0,[12,8,-10,0, 0xFFFF00]); 
+	drawBlock(0,0,[13,20,-10,0, 0xFFFF00]); // CYAN double tower horizontal
+	drawBlock(0,0,[14,32,-10,0, 0xFFFF00]);
+	drawBlock(0,0,[15,44,-10,0, 0xFFFF00]);
 	
-	drawBlock(0,0,16,-40,10,0, 0xFFFF00); 
-	drawBlock(0,0,17,-28,10,0, 0xFFFF00); 
-	drawBlock(0,0,18,-16,10,0, 0xFFFF00); 
-	drawBlock(0,0,19,-4,10,0, 0xFFFF00); 
-	drawBlock(0,0,20,8,10,0, 0xFFFF00); 
-	drawBlock(0,0,21,20,10,0, 0xFFFF00); // CYAN double tower horizontal
-	drawBlock(0,0,22,32,10,0, 0xFFFF00);
-	drawBlock(0,0,23,44,10,0, 0xFFFF00);
+	drawBlock(0,0,[16,-40,10,0, 0xFFFF00]); 
+	drawBlock(0,0,[17,-28,10,0, 0xFFFF00]); 
+	drawBlock(0,0,[18,-16,10,0, 0xFFFF00]); 
+	drawBlock(0,0,[19,-4,10,0, 0xFFFF00]); 
+	drawBlock(0,0,[20,8,10,0, 0xFFFF00]); 
+	drawBlock(0,0,[21,20,10,0, 0xFFFF00]); // CYAN double tower horizontal
+	drawBlock(0,0,[22,32,10,0, 0xFFFF00]);
+	drawBlock(0,0,[23,44,10,0, 0xFFFF00]);
 	
-	drawBlock(0,0,24,-40,28,0, 0xFFFF00); 
-	drawBlock(0,0,25,-28,28,0, 0xFFFF00); 
-	drawBlock(0,0,26,-16,28,0, 0xFFFF00); 
-	drawBlock(0,0,27,-4,28,0, 0xFFFF00); 
-	drawBlock(0,0,28,8,28,0, 0xFFFF00); 
-	drawBlock(0,0,29,20,28,0, 0xFFFF00); // CYAN double tower horizontal
-	drawBlock(0,0,30,32,28,0, 0xFFFF00);
-	drawBlock(0,0,31,44,28,0, 0xFFFF00);
+	drawBlock(0,0,[24,-40,28,0, 0xFFFF00]); 
+	drawBlock(0,0,[25,-28,28,0, 0xFFFF00]); 
+	drawBlock(0,0,[26,-16,28,0, 0xFFFF00]); 
+	drawBlock(0,0,[27,-4,28,0, 0xFFFF00]); 
+	drawBlock(0,0,[28,8,28,0, 0xFFFF00]); 
+	drawBlock(0,0,[29,20,28,0, 0xFFFF00]); // CYAN double tower horizontal
+	drawBlock(0,0,[30,32,28,0, 0xFFFF00]);
+	drawBlock(0,0,[31,44,28,0, 0xFFFF00]);
 	
 	// lights
 	light = new THREE.DirectionalLight(0xaaaaaa);
