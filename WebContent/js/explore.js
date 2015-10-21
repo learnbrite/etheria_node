@@ -240,17 +240,49 @@ function render() {
 
 	if(intersects.length > 0)
 	{
-		$("#hexinfobodydiv").html(
-				"<b>col:</b> " + intersects[ 0 ].object.userData.col + " " +
-				"<b>row:</b> " + intersects[ 0 ].object.userData.row + "<br>" +
-				"<b>type:</b> " + intersects[ 0 ].object.userData.tiletype + "<br>" + 
-				"<b>elevation:</b> " + intersects[ 0 ].object.userData.elevation + "<br>" +
-				"<b>owner:</b> " + intersects[ 0 ].object.userData.owner + "<br>" +
-				"<b>name:</b> " + intersects[ 0 ].object.userData.name + "<br>" +
-				"<b>status:</b> " + intersects[ 0 ].object.userData.name + "<br>" +
-				"<b>offers:</b> " + JSON.stringify(intersects[ 0 ].object.userData.offers) + "<br>" + // offerers/offers will be combined soon.
-				"<b>blocks:</b> " + JSON.stringify(intersects[ 0 ].object.userData.blocks)
-		);
+		if(typeof intersects[ 0 ].object.userData.col !== "undefined")
+		{
+			$("#tileinfobodydiv").html(
+					"<b>col:</b> " + intersects[ 0 ].object.userData.col + " " +
+					"<b>row:</b> " + intersects[ 0 ].object.userData.row + "<br>" +
+					"<b>type:</b> " + intersects[ 0 ].object.userData.tiletype + "<br>" + 
+					"<b>elevation:</b> " + intersects[ 0 ].object.userData.elevation + "<br>" +
+					"<b>owner:</b> " + intersects[ 0 ].object.userData.owner + "<br>" +
+					"<b>name:</b> " + intersects[ 0 ].object.userData.name + "<br>" +
+					"<b>status:</b> " + intersects[ 0 ].object.userData.name + "<br>" +
+					"<b>offers:</b> " + JSON.stringify(intersects[ 0 ].object.userData.offers) + "<br>" + // offerers/offers will be combined soon.
+					"<b>blocks:</b> " + JSON.stringify(intersects[ 0 ].object.userData.blocks)
+			);
+		}
+		else
+			$("#tileinfobodydiv").html("Mouse over a tile to see more info.");
+		
+		if(typeof intersects[ 0 ].object.userData.which !== "undefined")
+		{
+			$("#blockinfobodydiv").html(
+					"<b>block type:</b> " + intersects[ 0 ].object.userData.which + "<br>" +
+					"<b>block description:</b> " + intersects[ 0 ].object.userData.description + "<br>" +
+					"<b>block occupies:</b> " + JSON.stringify(intersects[ 0 ].object.userData.occupies)
+					);
+		}
+		else
+			$("#blockinfobodydiv").html("Mouse over a block to see more info.");
+		
+		if(typeof intersects[ 0 ].object.userData.x !== "undefined")
+		{	
+			$("#hexinfobodydiv").html(
+					"<b>x:</b> " + intersects[ 0 ].object.userData.x + "<br>" +
+					"<b>y:</b> " + intersects[ 0 ].object.userData.y + "<br>" + 
+					"<b>z:</b> " + intersects[ 0 ].object.userData.z + "<br>" +
+					"<b>color:</b> " + intersects[ 0 ].object.userData.color.toString(16) + "<br>" +
+					"<b>sequencenum:</b> " + intersects[ 0 ].object.userData.sequencenum + "<br><br>" + 
+					"<span style='font-size:11px;font-style:italic'>Note: If a key hex is on an odd row, then other hexes in the same block on odd rows will be offset by x+1.</span>"
+			);
+		}
+		else
+		{
+			$("#hexinfobodydiv").html("Mouse over a hex to see more info.")
+		}	
 	}	
 	renderer.render(scene, camera);
 }

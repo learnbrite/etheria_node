@@ -140,17 +140,19 @@ function render() {
 
 	if(intersects.length > 0)
 	{
-		if(typeof intersects[ 0 ].object.userData.which === "undefined")
+		if(typeof intersects[ 0 ].object.userData.which !== "undefined")
 		{
-			$("#hexinfobodydiv").html("Mouse over a hex to see more info. (Key hexes are white.)")
-		}	
-		else
-		{	
 			$("#blockinfobodydiv").html(
 					"<b>block type:</b> " + intersects[ 0 ].object.userData.which + "<br>" +
 					"<b>block description:</b> " + intersects[ 0 ].object.userData.description + "<br>" +
 					"<b>block occupies:</b> " + JSON.stringify(intersects[ 0 ].object.userData.occupies)
 					);
+		}
+		else
+			$("#blockinfobodydiv").html("Mouse over a block to see more info.");
+		
+		if(typeof intersects[ 0 ].object.userData.x !== "undefined")
+		{	
 			$("#hexinfobodydiv").html(
 					"<b>x:</b> " + intersects[ 0 ].object.userData.x + "<br>" +
 					"<b>y:</b> " + intersects[ 0 ].object.userData.y + "<br>" + 
@@ -160,6 +162,10 @@ function render() {
 					"<span style='font-size:11px;font-style:italic'>Note: If a key hex is on an odd row, then other hexes in the same block on odd rows will be offset by x+1.</span>"
 			);
 		}
+		else
+		{
+			$("#hexinfobodydiv").html("Mouse over a hex to see more info. (Key hexes are white.)")
+		}	
 	}	
 	renderer.render(scene, camera);
 }
