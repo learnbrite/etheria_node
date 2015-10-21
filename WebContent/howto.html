@@ -17,94 +17,43 @@
     });
    
     </script>
-    <style>
-        body {
-            color: white;
-            font-size:16px
-        }
-        a:link {
-            color: #FFFFFF;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        a:visited {
-            color: #FFFFFF;
-            text-decoration: none;
-        }
-        h1 {
-        	text-align:center
-        }
-        div {
-        	width:1080px;
-        	margin-right:auto;
-        	margin-left:auto;
-        	text-align:left;
-        	padding-top:25px
-        }
-        li {
-        	line-height:30px;
-        }
-        .list_item_emphasis {
-        	font-weight:bold
-        }
-        p {
-        	line-height:22px;
-        }
-        
-        pre {
-        font-size:12px;
-        	margin:20px;
-        	color:black;
-        	width:100%;
-        	padding:20px;
-        	border-radius:5px;
-        	 height: auto;
-    overflow: auto;
-    background-color: #eeeeee;
-    word-break: normal !important;
-    word-wrap: normal !important;
-    white-space: pre !important;
-        }
-    </style>
+   <link rel="stylesheet" type="text/css" href="css/common.css">
 </head>
 
 <body style="margin:0; text-align:center; font-family: arial, helvetica;background: url('images/footer_lodyas.png')">
-	<div style="font-weight:bold;font-size:40px;text-align:center"> 
+	<div class="titleheader"> 
     	<a href="index.html" id="home_link">Ξtheria</a>
 	</div>
-	<div>
+	<div class="navbuttoncontainer">
 		<table style="width:100%">
 	 	<tr>
-	 		<td><a href="whatis.html" id="whatis_link">Overview</a></td>
-	 		<td><a href="explore.html" id="explore_link">Explore</a></td>
-	 		<td><a href="actions.html" id="actions_link">Actions</a></td>
-	 		<td><a href="blockref.html" id="blocks_link">Blocks</a></td>
-	 		<td><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
+	 		<td class="navbutton"><a href="whatis.html" id="whatis_link">Overview</a></td>
+	 		<td class="navbutton"><a href="explore.html" id="explore_link">Explore</a></td>
+	 		<td class="navbutton"><a href="howto.html" id="howto_link">How To Play</a></td>
+	 		<td class="navbutton"><a href="blockref.html" id="blocks_link">Blocks</a></td>
+	 		<td class="navbutton"><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
 	 	</table> 
 	</div>
-	<div> 
+	<div class="frontpagemap"> 
    		<img src="images/frontpage_map_shorter.jpg"></img>
 	</div>
-	<div> 
-	<h1>So you want to play? Here are the prerequisites.</h1>
+	<div class="content"> 
+	<div class="contentheader">So you want to play?</div>
 	<p>
-		Until the Mist browser is released, the only way to interact with Ethereum contracts and Etheria is through the command-line. If you're not very technical, you might want to wait. Otherwise, follow these general instructions:
+		Prerequisites:
 		<ol>
-			<li><span class="list_item_emphasis">Install an Ethereum command line interface.</span> I use "geth" on Linux and all instructions below follow my setup.</li>
-			<li><span class="list_item_emphasis">Open a geth console. ("geth" in one terminal window, "geth attach" in a second window does the trick)</span>
-			<li><span class="list_item_emphasis">Create an Ethereum account.</span></li>
-			<li><span class="list_item_emphasis">Get some Ether.</span> You can either buy BTC, then exchange it for ETH, or I'll sell you some at the Poloniex market rate. Email me.</li>
+			<li><span class="list_item_emphasis"><a href="https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum#installation-instructions">Install an Ethereum command line interface.</a></span></li>
+			<li><span class="list_item_emphasis">Open a console geth console. (Terminal 1: "geth", Terminal 2: "geth attach")</span>
+			<li><span class="list_item_emphasis"><a href="https://docs.google.com/document/d/14EIe984_86Y-uuNm-a4EsVeD3eI4qAAlz_MZof1qkqM/edit#bookmark=id.j73m3062mrz8">Create an Ethereum account.</a></span></li>
+			<li><span class="list_item_emphasis"><a href="https://docs.google.com/document/d/14EIe984_86Y-uuNm-a4EsVeD3eI4qAAlz_MZof1qkqM/edit#bookmark=id.93e8lr5mmrlr">Get some Ether.</a></span></li>
 		</ol>
-		Detailed instructions for accomplishing these prerequisites can be found at <a href="https://docs.google.com/document/d/14EIe984_86Y-uuNm-a4EsVeD3eI4qAAlz_MZof1qkqM/edit">Fivedogit's Ethereum 101 FAQ</a>.
 	</p>
-	<h1>Set up your interface to Etheria</h1>
+	<div class="contentheader nontop">Set up your interface to Etheria</div>
 	<p>
 		Inside geth:
 		<pre>var abi = [{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_b32","type":"bytes32"},{"name":"byteindex","type":"uint8"}],"name":"getUint8FromByte32","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"makeOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOfferers","outputs":[{"name":"","type":"address[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"deleteOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"acceptOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"isLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOffers","outputs":[{"name":"","type":"uint256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[],"name":"lock","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}]<br>var etheria = web3.eth.contract(abi).at('0x429e434f0de48b2a75b7147105582d61bb4ea8ec');</pre>
 	</p>
-	<h1>Buying an unowned (or month-inactive) tile</h1>
+	<div class="contentheader nontop">Buy an unowned tile</div>
 	<p>
 		Take a look at the Etheria map and decide which tile you want to buy. If it's unowned (or hasn't been farmed in a month), then obtaining it is easy. Just pay 1 ETH for it.
 		<pre>etheria.makeOffer.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
@@ -113,9 +62,10 @@
 			<li>Money is automatically refunded if the purchase fails.</li>
 			<li>You can't buy water tiles.</li>
 			<li>Excluding water, there is no practical difference in land types or elevation.</li> 
+			<li>Inactive tiles that haven't been farmed in a month can also be purchased this way.</li>
 		</ul>
 	</p>
-	<h1>Farming your tile for blocks</h1>
+	<div class="contentheader nontop">Farm your tile for blocks</div>
 	<p>
 		Now that you have a tile, you'll want to get some blocks for it so you can build that dream home you always wanted. Or a giant penis. Either way:
 		<pre>etheria.farmTile.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
@@ -128,7 +78,7 @@
 		To view the blocks you farmed:
 		<pre>etheria.getBlocks(col,row);</pre>
 	</p>
-	<h1>Editing blocks</h1>
+	<div class="contentheader nontop">Edit a block</div>
 	<p>
 		Blocks have simple x,y,z coordinates on your tile. The very center at ground level is 0,0,0. The top hex is 0,66. The bottom is 0,66. The middle rectangle is, clockwise, 49,33; 49,-33; -49,-33; -49,33 with the exception that odd rows can go leftwards to x=-50. All new blocks start HIDDEN with x,y,z = 0,0,-1. 
 		To select which block you want to edit, you'll need to know its index. Consult the map explorer. Then,  
@@ -143,13 +93,13 @@
 			<li>Blocks cannot be rehidden after being shown</li>
 		</ul>
 	</p>
-	<h1>A note on troubleshooting</h1>
+	<div class="contentheader nontop">A note on troubleshooting</div>
 	<p>
 		Etheria contains a "whathappened" value that can <i>maybe</i> be used to figure out where you've gone wrong if something doesn't work the way you expected.
 		<pre>etheria.getWhatHappened();</pre>
 		This value is shared amongst all Etheria players, so if you're the the only person interacting with Etheria for a minute or two, it should give you good information. That's why I said "maybe."
 	</p>
-	<h1>whathappened codes</h1>
+	<div class="contentheader nontop">whathappened codes</div>
 	<p>
 		<ul>
 			<li>1 - makeOffer - ERROR value was 0</li>
@@ -193,13 +143,8 @@
 		
 	</p>
 	</div>
-	<div>
-		<hr>
-	</div>
-   <div style="text-align:center;font-style:italic;"> 
-    	Etheria was created by Cyrus Adkisson. You can email him at c@mailcyr at the USA TLD.
-    </div>
-    <div>
+    <div class="footer">
+   		Etheria was created by Cyrus Adkisson. You can email him at c@mailcyr at the USA TLD.
     	<table style="margin-right:auto;margin-left:auto">
     		<tr>
     			<td><a href="http://www.twitter.com/etheria_feed"><img src="images/twitter.png"></a></td>
