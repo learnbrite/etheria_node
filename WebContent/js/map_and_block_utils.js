@@ -580,14 +580,17 @@ function editBlock(col, row, index, _block)
  	{
      	for(var l = 0; l < 24; l+=3) // loop 8 times,find the previous occupado entries and overwrite them
      	{
-     		for(var o = 0; o < tile.occupado.length; o++)
-     		{
-     			if(didoccupy[l] == tile.occupado[o][0] && didoccupy[l+1] == tile.occupado[o][1] && didoccupy[l+2] == tile.occupado[o][2]) // x,y,z equal?
-     			{
-     				tile.occupado[o][0] = wouldoccupy[l]; // found it. Overwrite it
-     				tile.occupado[o][1] = wouldoccupy[l+1];
-     				tile.occupado[o][2] = wouldoccupy[l+2];
-     			}
+     		if(tile.occupado)
+     		{	
+     			for(var o = 0; o < tile.occupado.length; o++)
+         		{
+         			if(didoccupy[l] == tile.occupado[o][0] && didoccupy[l+1] == tile.occupado[o][1] && didoccupy[l+2] == tile.occupado[o][2]) // x,y,z equal?
+         			{
+         				tile.occupado[o][0] = wouldoccupy[l]; // found it. Overwrite it
+         				tile.occupado[o][1] = wouldoccupy[l+1];
+         				tile.occupado[o][2] = wouldoccupy[l+2];
+         			}
+         		}
      		}
      	}
  	}
@@ -671,17 +674,21 @@ function isValidLocation(col, row, _block, wouldoccupy)
        			//console.log('OOB for ' + wouldoccupy[b] + "," + wouldoccupy[b+1]);
       			return false;
       		}
-//       		console.log('checking wouldoccupy x,y,z against tile.occupado for ' + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
-       		for(var o = 0; o < tile.occupado.length; o++)  // 4. DO ANY OF THE PROPOSED HEXES CONFLICT WITH ENTRIES IN OCCUPADO? 
-          	{
-//       			console.log("occupado " + o + " " + tile.occupado[o][0] + "," + tile.occupado[o][1] + "," + tile.occupado[o][2]);
-       			if(wouldoccupy[b] == tile.occupado[o][0] && wouldoccupy[b+1] == tile.occupado[o][1] && wouldoccupy[b+2] == tile.occupado[o][2]) // do the x,y,z entries of each match?
-      			{
-      				whathappened = 11;
-//      				console.log('conflict at ' + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
-      				return false; // this hex conflicts. The proposed block does not avoid overlap. Return false immediately.
-      			}
-          	}
+       		console.log('checking wouldoccupy x,y,z against tile.occupado for ' + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
+       		console.log(JSON.stringify(tile.occupado));
+       		if(tile.occupado)
+     		{	
+	       		for(var o = 0; o < tile.occupado.length; o++)  // 4. DO ANY OF THE PROPOSED HEXES CONFLICT WITH ENTRIES IN OCCUPADO? 
+	          	{
+	//       			console.log("occupado " + o + " " + tile.occupado[o][0] + "," + tile.occupado[o][1] + "," + tile.occupado[o][2]);
+	       			if(wouldoccupy[b] == tile.occupado[o][0] && wouldoccupy[b+1] == tile.occupado[o][1] && wouldoccupy[b+2] == tile.occupado[o][2]) // do the x,y,z entries of each match?
+	      			{
+	      				whathappened = 11;
+	//      				console.log('conflict at ' + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
+	      				return false; // this hex conflicts. The proposed block does not avoid overlap. Return false immediately.
+	      			}
+	          	}
+     		}
       		if(touches == false && wouldoccupy[b+2] == 0)  // 5. DO ANY OF THE BLOCKS TOUCH ANOTHER? (GROUND ONLY FOR NOW)
       		{
       			touches = true; // once true, always true til the end of this method. We must keep looping to check all the hexes for conflicts and tile boundaries, though, so we can't return true here.

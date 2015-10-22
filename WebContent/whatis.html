@@ -17,60 +17,32 @@
     });
    
     </script>
-    <style>
-        body {
-            color: white;
-            font-size:18px
-        }
-        a:link {
-            color: #FFFFFF;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        a:visited {
-            color: #FFFFFF;
-            text-decoration: none;
-        }
-        td {
-        	font-size:26px;
-        	font-weight:bold;
-        	text-align:center
-        }
-        div {
-        	width:1080px;
-        	margin-right:auto;
-        	margin-left:auto;
-        	text-align:left;
-        	padding-top:25px
-        }
-    </style>
+   <link rel="stylesheet" type="text/css" href="css/common.css">
 </head>
 
 <body style="margin:0; text-align:center; font-family: arial, helvetica;background: url('images/footer_lodyas.png')">
-	<div style="font-weight:bold;font-size:40px;text-align:center"> 
+	<div class="titleheader"> 
     	<a href="index.html" id="home_link">Ξtheria</a>
 	</div>
-	<div>
+	<div class="navbuttoncontainer">
 		<table style="width:100%">
 	 	<tr>
-	 		<td><a href="whatis.html" id="whatis_link">Overview</a></td>
-	 		<td><a href="explore.html" id="explore_link">Explore</a></td>
-	 		<td><a href="howto.html" id="howto_link">How To Play</a></td>
-	 		<td><a href="blockref.html" id="blocks_link">Blocks</a></td>
-	 		<td><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
+	 		<td class="navbutton"><a href="whatis.html" id="whatis_link">Overview</a></td>
+	 		<td class="navbutton"><a href="explore.html" id="explore_link">Explore</a></td>
+	 		<td class="navbutton"><a href="howto.html" id="howto_link">How To Play</a></td>
+	 		<td class="navbutton"><a href="blockref.html" id="blocks_link">Blocks</a></td>
+	 		<td class="navbutton"><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
 	 	</table> 
 	</div>
-	<div> 
+	<div class="frontpagemap"> 
    		<img src="images/frontpage_map_shorter.jpg"></img>
 	</div>
-	<div> 
-	<div><table><tr><td>The First-ever Decentralized Virtual World & Crypto-Real Estate</td></tr></table></div>
+	<div class="content"> 
+	<div class="contentheader">The First Decentralized Virtual World & Crypto-Real Estate</div>
 	<p>
 		Etheria is a virtual world where players can own tiles, farm them for blocks (think LEGO bricks), and build things with them. The entire state of the world is held in and all player actions are made through the decentralized, trustless Ethereum blockchain.  
 	</p>
-	<div><table><tr><td>Why does decentralization matter?</td></tr></table></div>
+	<div class="contentheader nontop">Why does decentralization matter?</div>
 	<p>
 		Every virtual world you've ever visited is ultimately controlled by a single entity. The state of Etheria, on the other hand, is "agreed to" by the participants of the Ethereum network. This has several important ramifications:
 		<ol>
@@ -80,7 +52,7 @@
 			<li><span class="list_item_emphasis">One world, many interfaces.</span> The "explore" feature of this website is only one of many possible graphical representations of Etheria. Anyone can build their own and I hope they do!</li>
 		</ol>
 	</p>
-	<div><table><tr><td>How do I play?</td></tr></table></div>
+	<div class="contentheader nontop">How do I play?</div>
 	<p>
 		Etherians can take the following actions:
 		<ol>
@@ -93,12 +65,12 @@
 			<li class="list_item_emphasis">Place/withdraw offers on already-owned land tiles</li>
 			<li class="list_item_emphasis">Accept incoming offers on land they own</li>
 		</ol>
-		For more information, see the Actions page.
+		For more information, see the <a href='howto.html'>HowTo</a> page.
 	</p>
-	<div><table><tr><td>Motivation, Background and Future</td></tr></table></div>
+	<div class="contentheader nontop">Motivation, Background and Future</div>
 	<p>
 		The "awesomeness" (for lack of a better term) of the real world is static. By contrast, the "awesomeness" of virtual worlds is steadily increasing, maybe even exponentially. 
-		I believe that, eventually, virtual worlds will become so much better (safer, more efficient, more amazing, less expensive, etc) than the real world, humans will spend most of their lives in them. In fact, many already do. Just ask a WoW addict.
+		I believe that, eventually, virtual worlds will become so much better (safer, more efficient, more amazing, less expensive, etc) than the real world, humans will spend most of their lives in them. Many already do. Just ask a WoW addict.
 	</p>
 	<p>
 		In fact, one of the possible solutions to the Fermi Paradox states that maybe alien civilzations are engrossed in virtual worlds and no longer pay much attention to the real one.
@@ -112,17 +84,13 @@
 	<p> 
 		Obviously, Etheria is a very primitive first step and I don't expect it to become this "dominant virtuosocial network", but I believe it is an important milestone in offering an alternative to whatever Facebook and Google come up with in the next few years.
 	</p> 
+	
 	</div>
-	<div>
-		<hr>
-	</div>
-   <div style="text-align:center;font-style:italic;"> 
-    	Etheria was created by Cyrus Adkisson. You can email him at c@mailcyr at the USA TLD.
-    </div>
-    <div>
+    <div class="footer">
+   		Etheria was created by Cyrus Adkisson. You can email him at c@mailcyr at the USA TLD.
     	<table style="margin-right:auto;margin-left:auto">
     		<tr>
-    			<td><a href="http://www.twitter.com/fivedogit"><img src="images/twitter.png"></a></td>
+    			<td><a href="http://www.twitter.com/etheria_feed"><img src="images/twitter.png"></a></td>
     			<td><a href="http://www.github.com/fivedogit/etheria"><img src="images/github.png"></a></td>
     		</tr>
     	</table>

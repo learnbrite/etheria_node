@@ -93,7 +93,7 @@
 			<li>"col","row" = the coords of your tile</li>
 			<li>"ignore" = any number between -128 and 127. It doesn't matter and changes nothing.</li>
 			<li>x, y, z are the coordinates WITHIN the tile</li>
-			<li>color is any value from -128 to 127. It is converted to a hex color. <a href="colors.html">Color reference</a></li>
+			<li>color is any value from -128 to 86. See the chart below.</li>
 			<li>Every block has a "key hex" which is its first x,y,z hex (out of 8). The x,y,z coords of the key hex are the same as the x,y,z coords of the block.</li>
 			<li>Each subsequent hex is placed based on the key hex location. Ex: The West-to-East horizontal beam [[0,0,0], [1,0,0] ... [7,0,0]] placed at key hex 0,4 would result in [[0,4,0], [1,4,0] ... [7,4,0]]</li>
 			<li>Blocks must fall entirely inside your tile.</li>
@@ -102,7 +102,7 @@
 			<li>Blocks cannot be rehidden after being shown. (Any z value < 0 will be rejected.)</li>
 		</ul>
 		
-		<table class="w3-table-all notranslate">
+		<table style="padding:30px">
     <tr>
       <td style="text-align:center;color:#ffffff;background-color:#000000">-128</td>
       <td style="text-align:center;color:#ffffff;background-color:#000033">-127</td>
@@ -240,12 +240,12 @@
       <td style="text-align:center;background-color:#66ccff">-28</td>
     </tr>
     <tr>
-      <td style="text-align:center;background-color:#66ff00">-27</td>
-      <td style="text-align:center;background-color:#66ff33">-26</td>
-      <td style="text-align:center;background-color:#66ff66">-25</td>
-      <td style="text-align:center;background-color:#66ff99">-24</td>
-      <td style="text-align:center;background-color:#66ffcc">-23</td>
-      <td style="text-align:center;background-color:#66ffff">-22</td>
+      <td style="text-align:center;background-color:#66ff00;color:black">-27</td>
+      <td style="text-align:center;background-color:#66ff33;color:black">-26</td>
+      <td style="text-align:center;background-color:#66ff66;color:black">-25</td>
+      <td style="text-align:center;background-color:#66ff99;color:black">-24</td>
+      <td style="text-align:center;background-color:#66ffcc;color:black">-23</td>
+      <td style="text-align:center;background-color:#66ffff;color:black">-22</td>
     </tr>
     <tr>
       <td style="text-align:center;color:#ffffff;background-color:#990000">-21</td>
@@ -288,12 +288,12 @@
       <td style="text-align:center;background-color:#99ccff">8</td>
     </tr>
     <tr>
-      <td style="text-align:center;background-color:#99ff00">9</td>
-      <td style="text-align:center;background-color:#99ff33">10</td>
-      <td style="text-align:center;background-color:#99ff66">11</td>
-      <td style="text-align:center;background-color:#99ff99">12</td>
-      <td style="text-align:center;background-color:#99ffcc">13</td>
-      <td style="text-align:center;background-color:#99ffff">14</td>
+      <td style="text-align:center;background-color:#99ff00;color:black">9</td>
+      <td style="text-align:center;background-color:#99ff33;color:black">10</td>
+      <td style="text-align:center;background-color:#99ff66;color:black">11</td>
+      <td style="text-align:center;background-color:#99ff99;color:black">12</td>
+      <td style="text-align:center;background-color:#99ffcc;color:black">13</td>
+      <td style="text-align:center;background-color:#99ffff;color:black">14</td>
     </tr>
     <tr>
       <td style="text-align:center;color:#ffffff;background-color:#cc0000">15</td>
@@ -336,12 +336,12 @@
       <td style="text-align:center;background-color:#ccccff">44</td>
     </tr>
     <tr>
-      <td style="text-align:center;background-color:#ccff00">45</td>
-      <td style="text-align:center;background-color:#ccff33">46</td>
-      <td style="text-align:center;background-color:#ccff66">47</td>
-      <td style="text-align:center;background-color:#ccff99">48</td>
-      <td style="text-align:center;background-color:#ccffcc">49</td>
-      <td style="text-align:center;background-color:#ccffff">50</td>
+      <td style="text-align:center;background-color:#ccff00;color:black">45</td>
+      <td style="text-align:center;background-color:#ccff33;color:black">46</td>
+      <td style="text-align:center;background-color:#ccff66;color:black">47</td>
+      <td style="text-align:center;background-color:#ccff99;color:black">48</td>
+      <td style="text-align:center;background-color:#ccffcc;color:black">49</td>
+      <td style="text-align:center;background-color:#ccffff;color:black">50</td>
     </tr>
     <tr>
       <td style="text-align:center;color:#ffffff;background-color:#ff0000">51</td>
@@ -384,12 +384,12 @@
       <td style="text-align:center;background-color:#ffccff">80</td>
     </tr>
     <tr>
-      <td style="text-align:center;background-color:#ffff00">81</td>
-      <td style="text-align:center;background-color:#ffff33">82</td>
-      <td style="text-align:center;background-color:#ffff66">83</td>
-      <td style="text-align:center;background-color:#ffff99">84</td>
-      <td style="text-align:center;background-color:#ffffcc">85</td>
-      <td style="text-align:center;background-color:#ffffff">86</td>
+      <td style="text-align:center;background-color:#ffff00;color:black">81</td>
+      <td style="text-align:center;background-color:#ffff33;color:black">82</td>
+      <td style="text-align:center;background-color:#ffff66;color:black">83</td>
+      <td style="text-align:center;background-color:#ffff99;color:black">84</td>
+      <td style="text-align:center;background-color:#ffffcc;color:black">85</td>
+      <td style="text-align:center;background-color:#ffffff;color:black">86</td>
     </tr>
 </table>
 		
@@ -427,7 +427,7 @@
 		<ul>
 			<li>"col","row" = the coords of the tile on which the offer was placed</li>
 			<li>"offerindex" is 0-10, the index (in the offers array) of the offer you'd like to withdraw</li>
-			<li>"some_amount_in_wei" is the amount of the offer you want to withdraw. This is a necessary safety mechanism since "deleteOffer" can be used by the owner OR the offerer. See above.</li>
+			<li>"some_amount_in_wei" is the amount of the offer you want to withdraw. This is a necessary safety mechanism since "deleteOffer" can be used by the owner OR the offerer, possibly at the same time. See above.</li>
 			<li>Your offer will be refunded to you, in full, immediately.</li>
 		</ul>
 	</p>
