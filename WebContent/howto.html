@@ -38,7 +38,7 @@
    		<img src="images/frontpage_map_shorter.jpg"></img>
 	</div>
 	<div class="content"> 
-	<div class="contentheader">So you want to play?</div>
+	<div class="contentheader">How to play</div>
 	<p>
 		Prerequisites:
 		<ol>
@@ -71,26 +71,82 @@
 		<pre>etheria.farmTile.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
-			<li>Farming gives you 10 blocks of random types. See "Blocks" for information.</li>
-			<li>Blocks are hidden to begin with. You must edit/move them to get them to appear.</li>
-			<li>Farming a tile can only be performed once every 4320 Ethereum blocks (roughly once per day).</li>
+			<li>Farming gives you 20 blocks of the 32 random types. One exception...</li>
+			<li>The first block everyone farms (at index 0) is a type 0, 8-block-high column.</li>
+			<li><span class='list_item_emphasis'>Blocks are hidden to begin with.</span> You must edit/move them to get them to appear.</li>
+			<li>Farming a tile can only be performed once every 2500 Ethereum blocks (roughly once every 12 hours).</li>
+			<li>You can farm more often for 1 ETH per farm. If you're not sure if your cooldown has expired, you can send 1 ETH regardless and it'll get refunded if your free farm is ready.</li>
 		</ul>
 		To view the blocks you farmed:
 		<pre>etheria.getBlocks(col,row);</pre>
 	</p>
 	<div class="contentheader nontop">Edit a block</div>
-	<p>
-		Blocks have simple x,y,z coordinates on your tile. The very center at ground level is 0,0,0. The top hex is 0,66. The bottom is 0,66. The middle rectangle is, clockwise, 49,33; 49,-33; -49,-33; -49,33 with the exception that odd rows can go leftwards to x=-50. All new blocks start HIDDEN with x,y,z = 0,0,-1. 
-		To select which block you want to edit, you'll need to know its index. Consult the map explorer. Then,  
+		
+				<p>
+		Blocks have simple x,y,z coordinates on your tile. New blocks begin life HIDDEN with x,y,z set to 0,0,-1.
+		To select which block you want to edit, you'll need to know its index in your list of blocks. Consult the explorer to view your list of blocks.
+		<div style="width:550px;margin-right:auto;margin-left:auto;padding:10px"><img src="images/boundaries.png" style="width:550px;height:303px;"></div> 
+		Once you've selected the block you want to edit (i.e. found its index), do this: 
 		<pre>etheria.editBlock.sendTransaction(col,row,index,[ignore,x,y,z,color],{from:eth.coinbase,gas:2000000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
+			<li>"col","row" = the coords of your tile</li>
+			<li>"ignore" = any number between -128 and 127. It doesn't matter and changes nothing.</li>
+			<li>x, y, z are the coordinates WITHIN the tile</li>
+			<li>color is any value from -128 to 127. It is converted to a hex color. <a href="colors.html">Color reference</a></li>
 			<li>Every block has a "key hex" which is its first x,y,z hex (out of 8). The x,y,z coords of the key hex are the same as the x,y,z coords of the block.</li>
+			<li>Each subsequent hex is placed based on the key hex location. Ex: The West-to-East horizontal beam [[0,0,0], [1,0,0] ... [7,0,0]] placed at key hex 0,4 would result in [[0,4,0], [1,4,0] ... [7,4,0]]</li>
 			<li>Blocks must fall entirely inside your tile.</li>
-			<li>Blocks cannot conflict with other blocks. NOTE: Due to computational constraints, the block you're moving counts as an "other block" until it has successfully moved. This means if where you want to move it conflicts with where it is now, you'll have to move it out of the way first, then, with another edit, put it back where you want it.</li>
+			<li>Blocks cannot conflict with other blocks. NOTE: Due to computational constraints, the block you're moving counts as an "other block" until it has successfully moved. This means if where you want to move it conflicts with where it is now, you'll have to move it out of the way first, then, with another edit, put it back where you want it. (Sorry.)</li>
 			<li>Blocks must be placed on the ground OR on other blocks (in the same way as standard LEGOs).</li>
-			<li>Valid color values are -128 to 127.</li>
-			<li>Blocks cannot be rehidden after being shown</li>
+			<li>Blocks cannot be rehidden after being shown. (Any z value < 0 will be rejected.)</li>
+		</ul>
+	</p>
+	<div class="contentheader nontop">Make an offer on an owned tile</div>
+		<p>
+			Tile trading works like this: Someone owns a tile. People can make offers on the tile. If the owner likes an offer, he/she can accept it.
+			<pre>etheria.makeOffer(col,row,{from:eth.coinbase,gas:1000000, value:web3.toWei(1,"ether")});</pre>
+		Notes:
+		<ul>
+			<li>"col","row" = the coords of the tile you'd like to purchase</li>
+			<li>.01 ETH - 1,000,000 ETH is the valid range (lol)</li>
+			<li>You can only make one offer per tile. You can update (makeOffer again) or retract (deleteOffer) your offer, though.</li>
+			<li>There is a 10% fee on all sales. Seller gets 90% of the offer value.</li>
+			<li>All other offers are refunded at the time an offer is accepted.</li>
+			<li>Otherwise, all properties of the tile stay in tact, including blocks (incl placement + colors) name and status.</li>
+		</ul>
+	</p>
+	<div class="contentheader nontop">Reject an offer on your tile</div>
+		<p>
+			<pre>etheria.deleteOffer(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
+		Notes:
+		<ul>
+			<li>"col","row" = the coords of your tile on which the offer was placed</li>
+			<li>"offerindex" is 0-10, the index (in the offers array) of the offer you'd like to reject</li>
+			<li>"some_amount_in_wei" is the amount of the offer you want to reject. Including this value ensures that you don't accidentally reject a different offer, in case your offer array changes unexpectedly.</li>
+			<li>The rejected offerer's money will be refunded in full.</li>
+		</ul>
+	</p>
+	<div class="contentheader nontop">Retract an offer you've made</div>
+		<p>
+			<pre>etheria.deleteOffer(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
+		Notes:
+		<ul>
+			<li>"col","row" = the coords of the tile on which the offer was placed</li>
+			<li>"offerindex" is 0-10, the index (in the offers array) of the offer you'd like to withdraw</li>
+			<li>"some_amount_in_wei" is the amount of the offer you want to withdraw. This is a necessary safety mechanism since "deleteOffer" can be used by the owner OR the offerer. See above.</li>
+			<li>Your offer will be refunded to you, in full, immediately.</li>
+		</ul>
+	</p>
+	<div class="contentheader nontop">Accept an offer on your tile</div>
+		<p>
+			<pre>etheria.acceptOffer(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
+		Notes:
+		<ul>
+			<li>"col","row" = the coords of your tile on which the offer was placed</li>
+			<li>"offerindex" is 0-10, the index (in the offers array) of the offer you'd like to withdraw</li>
+			<li>"some_amount_in_wei" is the amount of the offer you want to accept. This is a necessary safety mechanism to ensure you're accepting the correct offer, esp if the offers array changes unexpectedly.</li>
+			<li>You will receive 90% of the offer amount immediately. There is a 10% house fee.</li>
 		</ul>
 	</p>
 	<div class="contentheader nontop">A note on troubleshooting</div>

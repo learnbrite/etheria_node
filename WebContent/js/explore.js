@@ -16,11 +16,13 @@
 
 var container;
 
-var GENERATE_NEW_MAP = true;
+var GENERATE_NEW_MAP = false;
 var camera, controls, scene, renderer;
 var mesh;
 
 var mapsize = 33;
+
+// this tiles setup won't be used if getting map from blockchain
 var tiles;
 tiles = new Array(mapsize);
 for (var i = 0; i < mapsize; i++) {
@@ -33,12 +35,44 @@ for (var i = 0; i < mapsize; i++) {
 		  tiles[i][j].status = "Not set";
 		  tiles[i][j].offerers = [];
 		  tiles[i][j].offers = [];
-		  tiles[i][j].blocks = [[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20]]; // will contain arrays of 5
+		  tiles[i][j].blocks = [
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],
+		                        [0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20],[0,0,0,-1,20]
+		                        
+		                       
+		                        ]; 
 		  tiles[i][j].lastfarm = 0;
 		  tiles[i][j].occupado = []; // will contain arrays of 3
 	  }  
 }	
-console.log("after tiles declaration " + JSON.stringify(tiles[16][16]));
 
 var LEVELS =  Math.cbrt(mapsize - 1) + 1;
 
@@ -46,7 +80,6 @@ var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
 document.addEventListener("DOMContentLoaded", function(event) {
-	console.log("after dom loaded " + JSON.stringify(tiles[16][16]));
 	init();
 	animate();
 });
@@ -72,84 +105,102 @@ function init() {
 	
 	if(GENERATE_NEW_MAP)
 	{	
-		console.log("inside init generate before " + JSON.stringify(tiles[16][16]));
 		generateMap(mapsize, mapsize);
 		
+		for(var col = 0; col < mapsize; col++)
+		{
+			for(var row = 0; row < mapsize; row++)
+			{
+			
+//				if(NORMALIZE_ELEVATIONS)
+//					tiles[x][y].elevation = (tiles[x][y].elevation - min) * tiles[x][y].normalization_factor;
+				drawMapHex(col,row);
+				
+				if(col === 16 && row === 16)
+				{	
+					var c = 0;
+					var r = 0;
+					var t = 0;
+					var z = 0;
+					var created = 0;
+					var editedblock = false;
+					
+					while(created < 300)
+					{
+						t = getRandomIntInclusive(0,31);
+						c = getRandomIntInclusive(0,7);
+						r = getRandomIntInclusive(0,7);
+						z = getRandomIntInclusive(0,100);
+						editedblock = false;
+						while(editedblock == false)
+						{
+							t = getRandomIntInclusive(0,31);
+							c = getRandomIntInclusive(0,7);
+							r = getRandomIntInclusive(0,7);
+							z = getRandomIntInclusive(0,100);
+							editedblock = editBlock(16,16,created,[t,c,r,z, getRandomIntInclusive(0,16777214)]);
+						}	
+						created++;
+					}	
+				}
+			}
+		}
+		
 		// TESTS // DO NOT DELETE
-		console.log("inside init generate new map = true " + JSON.stringify(tiles[16][16]));
-		console.log('drawing 7 columns 0,0');
-		drawBlock(16,16,0,[0,0,0,0, getRandomIntInclusive(0,16777214)]); // succeed
-		console.log('drawing 7 columns 0,66');
-		drawBlock(16,16,1,[0,0,66,0, getRandomIntInclusive(0,16777214)]); // succeed
-		console.log('drawing 7 columns 49,33');
-		drawBlock(16,16,2,[0,49,33,0, getRandomIntInclusive(0,16777214)]); // succeed
-		console.log('drawing 7 columns 49,-33');
-		drawBlock(16,16,3,[0,49,-33,0, getRandomIntInclusive(0,16777214)]); // succeed
-		console.log('drawing 7 columns 0,-66');
-		drawBlock(16,16,4,[0,0,-66,0, getRandomIntInclusive(0,16777214)]); // succeed
-		console.log('drawing 7 columns -50,-33');
-		drawBlock(16,16,5,[0,-50,-33,0, getRandomIntInclusive(0,16777214)]); // succeed
-		console.log('drawing 7 columns -50,33');
-		drawBlock(16,16,6,[0,-50,33,0, getRandomIntInclusive(0,16777214)]); // succeed
+//		console.log('drawing 7 columns 0,0');
+//		editBlock(16,16,0,[0,0,0,0, getRandomIntInclusive(0,16777214)]); // succeed
+//		console.log('drawing 7 columns 0,66');
+//		editBlock(16,16,1,[0,0,66,0, getRandomIntInclusive(0,16777214)]); // succeed
+//		console.log('drawing 7 columns 49,33');
+//		editBlock(16,16,2,[0,49,33,0, getRandomIntInclusive(0,16777214)]); // succeed
+//		console.log('drawing 7 columns 49,-33');
+//		editBlock(16,16,3,[0,49,-33,0, getRandomIntInclusive(0,16777214)]); // succeed
+//		console.log('drawing 7 columns 0,-66');
+//		editBlock(16,16,4,[0,0,-66,0, getRandomIntInclusive(0,16777214)]); // succeed
+//		console.log('drawing 7 columns -50,-33');
+//		editBlock(16,16,5,[0,-50,-33,0, getRandomIntInclusive(0,16777214)]); // succeed
+//		console.log('drawing 7 columns -50,33');
+//		editBlock(16,16,6,[0,-50,33,0, getRandomIntInclusive(0,16777214)]); // succeed
 
-//		var c = 0;
-//		var r = 0;
-//		var t = 0;
-//		var z = 0;
-//		var created = 0;
-//		var drewblock = false;
-//		
-//		while(created < 300)
-//		{
-//			t = getRandomIntInclusive(0,31);
-//			c = getRandomIntInclusive(0,55);
-//			r = getRandomIntInclusive(-66,66);
-//			z = getRandomIntInclusive(0,0);
-//			drewblock = false;
-//			while(drewblock == false)
-//			{
-//				t = getRandomIntInclusive(0,31);
-//				c = getRandomIntInclusive(0,55);
-//				r = getRandomIntInclusive(-66,66);
-//				z =  getRandomIntInclusive(0,0);
-//				drewblock = drawBlock(16,16,[t,c,r,z, getRandomIntInclusive(0,16777214)]);
-//			}	
-//			created++;
-//		}	
+		
+//		editBlock(16,16,0,[1,0,0,0, getRandomIntInclusive(0,16777214)]); // succeed
+//		editBlock(16,16,1,[2,0,3,0, getRandomIntInclusive(0,16777214)]); // conflict
+		
+		
 		
 	
-//		drawBlock(8,8,0,0,67,0, getRandomIntInclusive(0,16777214)); // fail
-//		drawBlock(8,8,0,1,66,0, getRandomIntInclusive(0,16777214)); // fail
-//		drawBlock(8,8,0,-1,66,0, getRandomIntInclusive(0,16777214)); // fail
-//		drawBlock(8,8,0,50,33,0, getRandomIntInclusive(0,16777214)); // fail
-//		drawBlock(8,8,0,50,-33,0, getRandomIntInclusive(0,16777214)); // fail
-//		drawBlock(8,8,0,-67,0,0, getRandomIntInclusive(0,16777214)); // fail
-//		drawBlock(8,8,0,-51,33,0, getRandomIntInclusive(0,16777214)); // fail
-//		drawBlock(8,8,0,-51,-33,0, getRandomIntInclusive(0,16777214)); // fail
-//		drawBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
-//		drawBlock(8,8,0,0,0,-1, getRandomIntInclusive(0,16777214));  // fail
-//		drawBlock(8,8,0,0,0,5, getRandomIntInclusive(0,16777214));	 // fail
-//		drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));	 // succeed
+//		editBlock(8,8,0,0,67,0, getRandomIntInclusive(0,16777214)); // fail
+//		editBlock(8,8,0,1,66,0, getRandomIntInclusive(0,16777214)); // fail
+//		editBlock(8,8,0,-1,66,0, getRandomIntInclusive(0,16777214)); // fail
+//		editBlock(8,8,0,50,33,0, getRandomIntInclusive(0,16777214)); // fail
+//		editBlock(8,8,0,50,-33,0, getRandomIntInclusive(0,16777214)); // fail
+//		editBlock(8,8,0,-67,0,0, getRandomIntInclusive(0,16777214)); // fail
+//		editBlock(8,8,0,-51,33,0, getRandomIntInclusive(0,16777214)); // fail
+//		editBlock(8,8,0,-51,-33,0, getRandomIntInclusive(0,16777214)); // fail
+//		editBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
+//		editBlock(8,8,0,0,0,-1, getRandomIntInclusive(0,16777214));  // fail
+//		editBlock(8,8,0,0,0,5, getRandomIntInclusive(0,16777214));	 // fail
+//		editBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));	 // succeed
 //		
-//		drawBlock(8,8,1,0,2,0, getRandomIntInclusive(0,16777214));	// succeed (flat on ground)
-//		drawBlock(8,8,1,4,2,1, getRandomIntInclusive(0,16777214));  // fail (doesn't rest on anything)
-//		drawBlock(8,8,1,0,3,0, getRandomIntInclusive(0,16777214));	// fail (overlaps)
-//		drawBlock(8,8,1,0,3,1, getRandomIntInclusive(0,16777214));	// succeeds (rests on first, offset by 1)
-//		drawBlock(8,8,1,4,10,2, getRandomIntInclusive(0,16777214));	// succeeds (rests on previous, at the very end)
+//		editBlock(8,8,1,0,2,0, getRandomIntInclusive(0,16777214));	// succeed (flat on ground)
+//		editBlock(8,8,1,4,2,1, getRandomIntInclusive(0,16777214));  // fail (doesn't rest on anything)
+//		editBlock(8,8,1,0,3,0, getRandomIntInclusive(0,16777214));	// fail (overlaps)
+//		editBlock(8,8,1,0,3,1, getRandomIntInclusive(0,16777214));	// succeeds (rests on first, offset by 1)
+//		editBlock(8,8,1,4,10,2, getRandomIntInclusive(0,16777214));	// succeeds (rests on previous, at the very end)
 		
-//		drawBlock(8,8,1,-4,-4,0, getRandomIntInclusive(0,16777214));
-//		drawBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
-//		drawBlock(8,8,2,15,15,10, getRandomIntInclusive(0,16777214));
-//		drawBlock(8,8,3,25,25,10, getRandomIntInclusive(0,16777214));
-		//drawBlock(8,8,0,5,5,0, getRandomIntInclusive(0,16777214));
+//		editBlock(8,8,1,-4,-4,0, getRandomIntInclusive(0,16777214));
+//		editBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
+//		editBlock(8,8,2,15,15,10, getRandomIntInclusive(0,16777214));
+//		editBlock(8,8,3,25,25,10, getRandomIntInclusive(0,16777214));
+		//editBlock(8,8,0,5,5,0, getRandomIntInclusive(0,16777214));
 		
-		//drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
-//		drawBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
-//		drawBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
+		//editBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
+//		editBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
+//		editBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
 //		
-//		drawBlock(8,8,2,6,5,0, getRandomIntInclusive(0,16777214));
+//		editBlock(8,8,2,6,5,0, getRandomIntInclusive(0,16777214));
 //		
-//		drawBlock(8,8,3,-5,-5,0, getRandomIntInclusive(0,16777214));
+//		editBlock(8,8,3,-5,-5,0, getRandomIntInclusive(0,16777214));
 
 //		console.log(JSON.stringify(map));
 	}
@@ -170,38 +221,40 @@ function init() {
 	        	console.log("elevations ajax error");
 	        }
 		});
-	}
-	
-	
-	for(var col = 0; col < mapsize; col++)
-	{
-		for(var row = 0; row < mapsize; row++)
-		{
 		
-//			if(NORMALIZE_ELEVATIONS)
-//				tiles[x][y].elevation = (tiles[x][y].elevation - min) * tiles[x][y].normalization_factor;
-			drawMapHex(col,row);
-			
-			if(tiles[col][row].blocks)
+		for(var col = 0; col < mapsize; col++)
+		{
+			for(var row = 0; row < mapsize; row++)
 			{
-				for(var b = 0; b < tiles[col][row].blocks.length; b++)
+			
+//				if(NORMALIZE_ELEVATIONS)
+//					tiles[x][y].elevation = (tiles[x][y].elevation - min) * tiles[x][y].normalization_factor;
+				drawMapHex(col,row);
+				
+				if(tiles[col][row].blocks)
 				{
-					if(tiles[col][row].blocks[b][3] >= 0) // z below 0 doesn't get drawn
-					{	
-						console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(tiles[col][row].blocks[b]));
-						//drawBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
-						drawBlock(col,row,
-								[tiles[col][row].blocks[b][0], // which
-								tiles[col][row].blocks[b][1], // x
-								tiles[col][row].blocks[b][2],  // y
-								tiles[col][row].blocks[b][3],  // z
-								(tiles[col][row].blocks[b][4]+128) * 65536] // 256 color possibilities (0-255) each times 65536 will produce numbers in the range hex color range 0-16777216
-								);
-					}
-				}	
+					for(var b = 0; b < tiles[col][row].blocks.length; b++)
+					{
+						if(tiles[col][row].blocks[b][3] >= 0) // z below 0 doesn't get drawn
+						{	
+							//console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(tiles[col][row].blocks[b]));
+							//editBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
+							editBlock(col,row,b,
+									[tiles[col][row].blocks[b][0], // which
+									tiles[col][row].blocks[b][1], // x
+									tiles[col][row].blocks[b][2],  // y
+									tiles[col][row].blocks[b][3],  // z
+									(tiles[col][row].blocks[b][4]+128) * 65536] // 256 color possibilities (0-255) each times 65536 will produce numbers in the range hex color range 0-16777216
+									);
+						}
+					}	
+				}
 			}
 		}
 	}
+	
+	
+	
 	
 	
 	

@@ -432,184 +432,6 @@ function hex_corner(center, size, i){
 } 
 
 
-
-function blockHexCoordsValid(x, y)
-{
-	var absx = Math.abs(x);
-	var absy = Math.abs(y);
-	
-	if(absy <= 33) // middle rectangle
-	{
-		if(y % 2 != 0 ) // odd
-		{
-			if(-50 <= x && x <= 49)
-				return true;
-		}
-		else // even
-		{
-			if(absx <= 49)
-				return true;
-		}	
-	}	
-	else
-	{	
-		if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
-		{
-			if(y % 2 != 0 ) // odd
-			{
-				if (((absx*2) + (absy*3)) <= 198)
-					return true;
-			}	
-			else	// even
-			{
-				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
-					return true;
-			}
-		}
-		else
-		{	
-			if(y % 2 == 0 ) // even
-			{
-				if (((absx*2) + (absy*3)) <= 198)
-					return true;
-			}	
-			else	// odd
-			{
-				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
-					return true;
-			}
-		}
-	}
-}
-
-function drawBlock(col, row, index, _block)
-{
-	var wouldoccupy = new Array(24);
-	var didoccupy = new Array(24);
-	for(var b = 0; b < 24; b++) // gotta create a new object and move all the values over. Otherwise, we'd be writing into blockdefs.
-    {	
-		wouldoccupy[b] = blockdefs[_block[0]].occupies[b];
-		didoccupy[b] = blockdefs[_block[0]].occupies[b];
-    }
-
-	var tile = tiles[col][row];
-	console.log("inside drawblock " + JSON.stringify(tile));
-	for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the didoccupy
-    {	
-    	wouldoccupy[b] = wouldoccupy[b]+_block[1];
-    	wouldoccupy[b+1] = wouldoccupy[b+1]+_block[2];
-    	if(wouldoccupy[1] % 2 != 0 && wouldoccupy[b+1] % 2 == 0) // if anchor y is odd and this hex y is even, (SW NE beam goes 11,`2`2,23,`3`4,35,`4`6,47,`5`8  ` = x value incremented by 1. Same applies to SW NE beam from 01,12,13,24,25,36,37,48)
-    		wouldoccupy[b] = wouldoccupy[b]+1;  			     // then offset x by +1
-    	wouldoccupy[b+2] = wouldoccupy[b+2]+_block[3];
-		//console.log("before " + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
-//    	didoccupy[b] = didoccupy[b]+tile.blocks[index][1];
-//    	didoccupy[b+1] = didoccupy[b+1]+tile.blocks[index][2];
-//    	if(didoccupy[1] % 2 != 0 && didoccupy[b+1] % 2 == 0) // if anchor y and this hex y are both odd,
-//    		didoccupy[b] = didoccupy[b]+1; 					 // then offset x by +1
-//    	didoccupy[b+2] = didoccupy[b+2]+tile.blocks[index][3];
-    }
-	if(!isValidLocation(col, row, _block, wouldoccupy)) // have not sent offset to these functions. Must take care of inside them.
-	{
-		return;
-	}
-	for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the didoccupy
-    {
-		if(b === 0 && (typeof highlightkeyhex !== "undefined" && highlightkeyhex !== null && highlightkeyhex === true))
-			drawBlockHex(col, row, _block[0], wouldoccupy[b], wouldoccupy[b+1], wouldoccupy[b+2], 0xFFFFFF, 1, b);
-		else
-			drawBlockHex(col, row, _block[0], wouldoccupy[b], wouldoccupy[b+1], wouldoccupy[b+2], _block[4], 1, b);
-    }
-	
-	if(tile.blocks[index][3] >= 0) // If the previous z was greater than 0 (i.e. not hidden) ...
- 	{
-     	for(var l = 0; l < 24; l+=3) // loop 8 times,find the previous occupado entries and overwrite them
-     	{
-     		for(var o = 0; o < tile.occupado.length; o++)
-     		{
-     			if(didoccupy[l] == tile.occupado[o][0] && didoccupy[l+1] == tile.occupado[o][1] && didoccupy[l+2] == tile.occupado[o][2]) // x,y,z equal?
-     			{
-     				tile.occupado[o][0] = wouldoccupy[l]; // found it. Overwrite it
-     				tile.occupado[o][1] = wouldoccupy[l+1];
-     				tile.occupado[o][2] = wouldoccupy[l+2];
-     			}
-     		}
-     	}
- 	}
- 	else // previous block was hidden
- 	{
- 		for(var ll = 0; ll < 24; ll+=3) // add the 8 new hexes to occupado
-     	{
- 			tile.occupado.push(wouldoccupy[ll]);
- 			tile.occupado.push(wouldoccupy[ll]+1);
- 			tile.occupado.push(wouldoccupy[ll]+2);
-     	}
- 	}
-}
-
-var whathappened = 0;
-
-function isValidLocation(col, row, _block, wouldoccupy)
-{
-    	var touches;
-    	var tile = tiles[col][row];
-    	console.log("inside isValidLoc " + JSON.stringify(tile));
-        for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the wouldoccupy and the didoccupy
-       	{
-       		if(!blockHexCoordsValid(wouldoccupy[b], wouldoccupy[b+1])) // 3. DO ANY OF THE PROPOSED HEXES FALL OUTSIDE OF THE TILE? 
-      		{
-       			whathappened = 10; console.log('OOB for ' + wouldoccupy[b] + "," + wouldoccupy[b+1]);
-      			return false;
-      		}
-       		for(var o = 0; o < tile.occupado.length; o++)  // 4. DO ANY OF THE PROPOSED HEXES CONFLICT WITH ENTRIES IN OCCUPADO? 
-          	{
-       			if(wouldoccupy[b] == tile.occupado[o][0] && wouldoccupy[b+1] == tile.occupado[o][1] && wouldoccupy[b+2] == tile.occupado[o][2]) // do the x,y,z entries of each match?
-      			{
-      				whathappened = 11; console.log('conflict');
-      				return false; // this hex conflicts. The proposed block does not avoid overlap. Return false immediately.
-      			}
-          	}
-      		if(touches == false && wouldoccupy[b+2] == 0)  // 5. DO ANY OF THE BLOCKS TOUCH ANOTHER? (GROUND ONLY FOR NOW)
-      		{
-      			touches = true; // once true, always true til the end of this method. We must keep looping to check all the hexes for conflicts and tile boundaries, though, so we can't return true here.
-      		}	
-       	}
-        
-        // now if we're out of the loop and here, there were no conflicts and the block was found to be in the tile boundary.
-        // touches may be true or false, so we need to check 
-          
-        if(touches == false)  // 6. NONE OF THE OCCUPY BLOCKS TOUCHED THE GROUND. BUT MAYBE THEY TOUCH ANOTHER BLOCK?
-  		{
-          	var attachesto = blockdefs[_block[0]].attachesto; //int8[48]  attachesto = bds.getAttachesto(uint8(_block[0]));
-          	if(attachesto.length !== 48)
-          		console.log("bloody murder!");
-          	for(var a = 0; a < 48 && !touches; a+=3) // always 8 hexes, calculate the wouldoccupy and the didoccupy
-          	{
-          		if(attachesto[a] == 0 && attachesto[a+1] == 0 && attachesto[a+2] == 0) // there are no more attachestos available, break (0,0,0 signifies end)
-          			break;
-          		//attachesto[a] = attachesto[a]+_block[1];
-          		attachesto[a+1] = attachesto[a+1]+_block[2];
-          		if(attachesto[1] % 2 != 0 && attachesto[a+1] % 2 == 0) //  (for attachesto, anchory is the same as for occupies, but the z is different. Nothing to worry about)
-           			attachesto[a] = attachesto[a]+1;  			       // then offset x by +1
-           		//attachesto[a+2] = attachesto[a+2]+_block[3];
-           		for(o = 0; o < tile.occupado.length && !touches; o++)
-           		{
-           			if((attachesto[a]+_block[1]) == tile.occupado[o][0] && attachesto[a+1] == tile.occupado[o][1] && (attachesto[a+2]+_block[3]) == tile.occupado[o][2]) // a valid attachesto found in occupado?
-           			{
-           				whathappened = 12; console.log('touches');
-           				return true; // in bounds, didn't conflict and now touches is true. All good. Return.
-           			}
-           		}
-          	}
-          	whathappened = 13; console.log('no touch');
-          	return false; 
-  		}
-        else // touches was true by virtue of a z = 0 above (touching the ground). Return true;
-        {
-        	whathappened = 14; console.log('touches ground');
-        	return true;
-        }	
-}
-
 var	hextexprime = THREE.ImageUtils.loadTexture( "images/concrete.jpg" );
 var hextexes = [];
 var tex;
@@ -699,4 +521,211 @@ function drawBlockHex(col, row, which, x, y, z, color, extrusion_multiple, seque
 	mesh.userData.occupies = blockdefs[which].occupies;
 	
 	scene.add( mesh );
+}
+
+
+
+
+
+
+/***
+ *     _____ _____ ___  ______ _____   _____ _____ _   _  ___________ _____  ___    _____  _____ _     
+ *    /  ___|_   _/ _ \ | ___ \_   _| |  ___|_   _| | | ||  ___| ___ \_   _|/ _ \  /  ___||  _  | |    
+ *    \ `--.  | |/ /_\ \| |_/ / | |   | |__   | | | |_| || |__ | |_/ / | | / /_\ \ \ `--. | | | | |    
+ *     `--. \ | ||  _  ||    /  | |   |  __|  | | |  _  ||  __||    /  | | |  _  |  `--. \| | | | |    
+ *    /\__/ / | || | | || |\ \  | |   | |___  | | | | | || |___| |\ \ _| |_| | | |_/\__/ /\ \_/ / |____
+ *    \____/  \_/\_| |_/\_| \_| \_/   \____/  \_/ \_| |_/\____/\_| \_|\___/\_| |_(_)____/  \___/\_____/
+ *                                                                                                     
+ *                                                                                                     
+ */
+
+function editBlock(col, row, index, _block)
+{
+	var wouldoccupy = new Array(24);
+	var didoccupy = new Array(24);
+	for(var b = 0; b < 24; b++) // gotta create a new object and move all the values over. Otherwise, we'd be writing into blockdefs.
+    {	
+		wouldoccupy[b] = blockdefs[_block[0]].occupies[b];
+		didoccupy[b] = blockdefs[_block[0]].occupies[b];
+    }
+
+	var tile = tiles[col][row];
+	for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the didoccupy
+    {	
+    	wouldoccupy[b] = wouldoccupy[b]+_block[1];
+    	wouldoccupy[b+1] = wouldoccupy[b+1]+_block[2];
+    	if(wouldoccupy[1] % 2 != 0 && wouldoccupy[b+1] % 2 == 0) // if anchor y is odd and this hex y is even, (SW NE beam goes 11,`2`2,23,`3`4,35,`4`6,47,`5`8  ` = x value incremented by 1. Same applies to SW NE beam from 01,12,13,24,25,36,37,48)
+    		wouldoccupy[b] = wouldoccupy[b]+1;  			     // then offset x by +1
+    	wouldoccupy[b+2] = wouldoccupy[b+2]+_block[3];
+		//console.log("before " + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
+    	didoccupy[b] = didoccupy[b]+tile.blocks[index][1];
+    	didoccupy[b+1] = didoccupy[b+1]+tile.blocks[index][2];
+    	if(didoccupy[1] % 2 != 0 && didoccupy[b+1] % 2 == 0) // if anchor y and this hex y are both odd,
+    		didoccupy[b] = didoccupy[b]+1; 					 // then offset x by +1
+    	didoccupy[b+2] = didoccupy[b+2]+tile.blocks[index][3];
+    }
+	if(!isValidLocation(col, row, _block, wouldoccupy)) // have not sent offset to these functions. Must take care of inside them.
+	{
+		return false;
+	}
+	for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the didoccupy
+    {
+		if(b === 0 && (typeof highlightkeyhex !== "undefined" && highlightkeyhex !== null && highlightkeyhex === true))
+			drawBlockHex(col, row, _block[0], wouldoccupy[b], wouldoccupy[b+1], wouldoccupy[b+2], 0xFFFFFF, 1, b);
+		else
+			drawBlockHex(col, row, _block[0], wouldoccupy[b], wouldoccupy[b+1], wouldoccupy[b+2], _block[4], 1, b);
+    }
+	
+	if(tile.blocks[index][3] >= 0) // If the previous z was greater than 0 (i.e. not hidden) ...
+ 	{
+     	for(var l = 0; l < 24; l+=3) // loop 8 times,find the previous occupado entries and overwrite them
+     	{
+     		for(var o = 0; o < tile.occupado.length; o++)
+     		{
+     			if(didoccupy[l] == tile.occupado[o][0] && didoccupy[l+1] == tile.occupado[o][1] && didoccupy[l+2] == tile.occupado[o][2]) // x,y,z equal?
+     			{
+     				tile.occupado[o][0] = wouldoccupy[l]; // found it. Overwrite it
+     				tile.occupado[o][1] = wouldoccupy[l+1];
+     				tile.occupado[o][2] = wouldoccupy[l+2];
+     			}
+     		}
+     	}
+ 	}
+ 	else // previous block was hidden
+ 	{
+ 		var newtriplet = [];
+ 		for(var ll = 0; ll < 24; ll+=3) // add the 8 new hexes to occupado
+     	{
+ 			newtriplet = new Array(3);
+ 			newtriplet[0] = wouldoccupy[ll];
+ 			newtriplet[1] = wouldoccupy[ll+1];
+ 			newtriplet[2] = wouldoccupy[ll+2];
+ 			tile.occupado.push(newtriplet);
+     	}
+ 	}
+	tile.blocks[index] = _block;
+}
+
+
+function blockHexCoordsValid(x, y)
+{
+	var absx = Math.abs(x);
+	var absy = Math.abs(y);
+	
+	if(absy <= 33) // middle rectangle
+	{
+		if(y % 2 != 0 ) // odd
+		{
+			if(-50 <= x && x <= 49)
+				return true;
+		}
+		else // even
+		{
+			if(absx <= 49)
+				return true;
+		}	
+	}	
+	else
+	{	
+		if((y >= 0 && x >= 0) || (y < 0 && x > 0)) // first or 4th quadrants
+		{
+			if(y % 2 != 0 ) // odd
+			{
+				if (((absx*2) + (absy*3)) <= 198)
+					return true;
+			}	
+			else	// even
+			{
+				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
+					return true;
+			}
+		}
+		else
+		{	
+			if(y % 2 == 0 ) // even
+			{
+				if (((absx*2) + (absy*3)) <= 198)
+					return true;
+			}	
+			else	// odd
+			{
+				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
+					return true;
+			}
+		}
+	}
+}
+
+var whathappened = 0;
+
+function isValidLocation(col, row, _block, wouldoccupy)
+{
+    	var touches = false;
+    	var tile = tiles[col][row];
+    	//console.log("inside isValidLoc " + JSON.stringify(tile));
+        for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the wouldoccupy and the didoccupy
+       	{
+       		if(!blockHexCoordsValid(wouldoccupy[b], wouldoccupy[b+1])) // 3. DO ANY OF THE PROPOSED HEXES FALL OUTSIDE OF THE TILE? 
+      		{
+       			whathappened = 10; 
+       			//console.log('OOB for ' + wouldoccupy[b] + "," + wouldoccupy[b+1]);
+      			return false;
+      		}
+//       		console.log('checking wouldoccupy x,y,z against tile.occupado for ' + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
+       		for(var o = 0; o < tile.occupado.length; o++)  // 4. DO ANY OF THE PROPOSED HEXES CONFLICT WITH ENTRIES IN OCCUPADO? 
+          	{
+//       			console.log("occupado " + o + " " + tile.occupado[o][0] + "," + tile.occupado[o][1] + "," + tile.occupado[o][2]);
+       			if(wouldoccupy[b] == tile.occupado[o][0] && wouldoccupy[b+1] == tile.occupado[o][1] && wouldoccupy[b+2] == tile.occupado[o][2]) // do the x,y,z entries of each match?
+      			{
+      				whathappened = 11;
+//      				console.log('conflict at ' + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
+      				return false; // this hex conflicts. The proposed block does not avoid overlap. Return false immediately.
+      			}
+          	}
+      		if(touches == false && wouldoccupy[b+2] == 0)  // 5. DO ANY OF THE BLOCKS TOUCH ANOTHER? (GROUND ONLY FOR NOW)
+      		{
+      			touches = true; // once true, always true til the end of this method. We must keep looping to check all the hexes for conflicts and tile boundaries, though, so we can't return true here.
+      		}	
+       	}
+        
+        // now if we're out of the loop and here, there were no conflicts and the block was found to be in the tile boundary.
+        // touches may be true or false, so we need to check 
+          
+        if(touches == false)  // 6. NONE OF THE OCCUPY BLOCKS TOUCHED THE GROUND. BUT MAYBE THEY TOUCH ANOTHER BLOCK?
+  		{
+        	console.log('inside touches==false')
+          	var attachesto = new Array(48);
+        	for(var i = 0; i < 48; i++)
+        	{	
+        		attachesto[i] = blockdefs[_block[0]].attachesto[i];
+        	}
+          	for(var a = 0; a < 48 && !touches; a+=3) // always 8 hexes, calculate the wouldoccupy and the didoccupy
+          	{
+          		if(attachesto[a] == 0 && attachesto[a+1] == 0 && attachesto[a+2] == 0) // there are no more attachestos available, break (0,0,0 signifies end)
+          			break;
+          		//attachesto[a] = attachesto[a]+_block[1];
+          		attachesto[a+1] = attachesto[a+1]+_block[2];
+          		if(attachesto[1] % 2 != 0 && attachesto[a+1] % 2 == 0) //  (for attachesto, anchory is the same as for occupies, but the z is different. Nothing to worry about)
+           			attachesto[a] = attachesto[a]+1;  			       // then offset x by +1
+           		//attachesto[a+2] = attachesto[a+2]+_block[3];
+           		for(o = 0; o < tile.occupado.length && !touches; o++)
+           		{
+           			if((attachesto[a]+_block[1]) == tile.occupado[o][0] && attachesto[a+1] == tile.occupado[o][1] && (attachesto[a+2]+_block[3]) == tile.occupado[o][2]) // a valid attachesto found in occupado?
+           			{
+           				whathappened = 12; 
+           				console.log('touches');
+           				return true; // in bounds, didn't conflict and now touches is true. All good. Return.
+           			}
+           		}
+          	}
+          	whathappened = 13; 
+          	console.log('no touch');
+          	return false; 
+  		}
+        else // touches was true by virtue of a z = 0 above (touching the ground). Return true;
+        {
+        	whathappened = 14; 
+        	console.log('touches ground');
+        	return true;
+        }	
 }
