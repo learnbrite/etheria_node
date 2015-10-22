@@ -219,7 +219,7 @@ function init() {
 	{	
 		$.ajax({ 
 			type: 'GET', 
-			url: 'http://localhost:1337/map', 
+			url: 'http://localhost/map', 
 	        dataType: 'json',
 	        timeout: 100000,
 	        async: false, // same origin, so this is ok 

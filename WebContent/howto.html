@@ -20,22 +20,19 @@
    <link rel="stylesheet" type="text/css" href="css/common.css">
 </head>
 
-<body style="margin:0; text-align:center; font-family: arial, helvetica;background: url('images/footer_lodyas.png')">
-	<div class="titleheader"> 
-    	<a href="index.html" id="home_link">Ξtheria</a>
+<body>
+	<div style="width:100%"> 
+    	<img src='images/etheria_logo_white.png'></img>
 	</div>
 	<div class="navbuttoncontainer">
 		<table style="width:100%">
 	 	<tr>
 	 		<td class="navbutton"><a href="whatis.html" id="whatis_link">Overview</a></td>
-	 		<td class="navbutton"><a href="explore.html" id="explore_link">Explore</a></td>
+	 		<td class="navbutton"><a href="explore.html" id="explore_link">Explore Etheria</a></td>
 	 		<td class="navbutton"><a href="howto.html" id="howto_link">How To Play</a></td>
-	 		<td class="navbutton"><a href="blockref.html" id="blocks_link">Blocks</a></td>
+	 		<td class="navbutton"><a href="blockref.html" id="blocks_link">Block Reference</a></td>
 	 		<td class="navbutton"><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
 	 	</table> 
-	</div>
-	<div class="frontpagemap"> 
-   		<img src="images/frontpage_map_shorter.jpg"></img>
 	</div>
 	<div class="content"> 
 	<div class="contentheader">How to play</div>
@@ -80,7 +77,7 @@
 		To view the blocks you farmed:
 		<pre>etheria.getBlocks(col,row);</pre>
 	</p>
-	<div class="contentheader nontop">Edit a block</div>
+	<div class="contentheader nontop">Edit a block</div> <!--  gas used = 1.27 mil -->
 		
 				<p>
 		Blocks have simple x,y,z coordinates on your tile. New blocks begin life HIDDEN with x,y,z set to 0,0,-1.
@@ -101,8 +98,14 @@
 			<li>Blocks must be placed on the ground OR on other blocks (in the same way as standard LEGOs).</li>
 			<li>Blocks cannot be rehidden after being shown. (Any z value < 0 will be rejected.)</li>
 		</ul>
-		
-		<table style="padding:30px">
+	</p>	
+	<table style="padding:30px">
+	<tr>
+      <td colspan=6 >Note: Upon testing, not sure these are accurate. I'll fix them when I get a chance. My bad.<br>
+      Here are ones I know for sure:<br>
+      43 = gray<br>
+      lol</td>
+    </tr>
     <tr>
       <td style="text-align:center;color:#ffffff;background-color:#000000">-128</td>
       <td style="text-align:center;color:#ffffff;background-color:#000033">-127</td>
@@ -392,13 +395,19 @@
       <td style="text-align:center;background-color:#ffffff;color:black">86</td>
     </tr>
 </table>
-		
-		
+	</p>
+	<div class="contentheader nontop">See existing offers for a tile</div>
+		<p>
+			Tile trading works like this: Someone owns a tile. People can make offers on the tile. If the owner likes an offer, he/she can accept it.
+			<pre>etheria.getOffers(col,row);</pre>
+		Notes:
+		<ul>
+			<li>"col","row" = the coords of the tile</li>
+		</ul>
 	</p>
 	<div class="contentheader nontop">Make an offer on an owned tile</div>
 		<p>
-			Tile trading works like this: Someone owns a tile. People can make offers on the tile. If the owner likes an offer, he/she can accept it.
-			<pre>etheria.makeOffer(col,row,{from:eth.coinbase,gas:1000000, value:web3.toWei(1,"ether")});</pre>
+			<pre>etheria.makeOffer.sendTransaction(col,row,{from:eth.coinbase,gas:1000000, value:web3.toWei(1,"ether")});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of the tile you'd like to purchase</li>
@@ -411,7 +420,7 @@
 	</p>
 	<div class="contentheader nontop">Reject an offer on your tile</div>
 		<p>
-			<pre>etheria.deleteOffer(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
+			<pre>etheria.deleteOffer.sendTransaction(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile on which the offer was placed</li>
@@ -422,7 +431,7 @@
 	</p>
 	<div class="contentheader nontop">Retract an offer you've made</div>
 		<p>
-			<pre>etheria.deleteOffer(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
+			<pre>etheria.deleteOffer.sendTransaction(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of the tile on which the offer was placed</li>
@@ -433,7 +442,7 @@
 	</p>
 	<div class="contentheader nontop">Accept an offer on your tile</div>
 		<p>
-			<pre>etheria.acceptOffer(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
+			<pre>etheria.acceptOffer.sendTransaction(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile on which the offer was placed</li>
@@ -442,14 +451,36 @@
 			<li>You will receive 90% of the offer amount immediately. There is a 10% house fee.</li>
 		</ul>
 	</p>
+	<div class="contentheader nontop">Change the "name" of your tile</div>
+		<p>
+			I'm not even sure if "name" is supposed to be <em>your</em> name or the name of your tile. You decide, I guess. Either way, here's how you change it. 
+			<pre>etheria.setName.sendTransaction(col,row,"Neil Degrasse Tyson",{from:eth.coinbase,gas:1000000});</pre>
+		Notes:
+		<ul>
+			<li>"col","row" = the coords of your tile</li>
+			<li>This value will appear when someone mouses over your tile in the <a href='explore.html'>map explorer</a></li>
+		</ul>
+	</p>
+	<div class="contentheader nontop">Change the "status" of your tile</div>
+		<p>
+			<pre>etheria.setStatus.sendTransaction(col,row,"This thing I built is awesome! Suck it, everyone else.",{from:eth.coinbase,gas:1000000});</pre>
+		Notes:
+		<ul>
+			<li>"col","row" = the coords of your tile</li>
+			<li>This value will appear when someone mouses over your tile in the <a href='explore.html'>map explorer</a></li>
+			<li>Eventually this value will be automatically repeated on the <a href='http://twitter.com/etheria_feed'>@ethereia_feed</a> Twitter account, but I haven't hooked it up yet.</li>
+			<li>To prevent spam, updating your status costs 1 ETH.</li>
+		</ul>
+	</p>
 	<div class="contentheader nontop">A note on troubleshooting</div>
 	<p>
-		Etheria contains a "whathappened" value that can <i>maybe</i> be used to figure out where you've gone wrong if something doesn't work the way you expected.
+		Etheria contains a "whathappened" value that can be used to figure out where you've gone wrong if something doesn't work the way you expected.
 		<pre>etheria.getWhatHappened();</pre>
-		This value is shared amongst all Etheria players, so if you're the the only person interacting with Etheria for a minute or two, it should give you good information. That's why I said "maybe."
+		NOTE: This value is shared amongst all Etheria players, so if you're the the only person interacting with Etheria for a minute or two, it should give you good information. If not, you could get confusing info.
 	</p>
 	<div class="contentheader nontop">whathappened codes</div>
 	<p>
+		These are *really* useful for figuring out what the hell is going on with your transactions. You might want to print this list.
 		<ul>
 			<li>1 - makeOffer - ERROR value was 0</li>
 			<li>2 - makeOffer - ERROR col,row out of bounds</li>

@@ -362,7 +362,7 @@ app.get('/', function (req, res) {
 	    res.end('Hello World\n');
 });
 
-var server = app.listen(1337, function () {
+var server = app.listen(80, function () {
   var host = server.address().address;
   var port = server.address().port;
   map_ja = [];
