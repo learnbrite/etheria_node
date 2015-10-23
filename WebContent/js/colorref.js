@@ -8,3 +8,24 @@ var colors = ["000000","000033","000066","000099","0000CC","0000FF","003300","00
  "CC33CC","CC33FF","CC6600","CC6633","CC6666","CC6699","CC66CC","CC66FF","CC9900","CC9933","CC9966","CC9999","CC99CC","CC99FF","CCCC00","CCCC33","CCCC66","CCCC99","CCCCCC","CCCCFF","CCFF00","CCFF33",
  "CCFF66","CCFF99","CCFFCC","CCFFFF","FF0000","FF0033","FF0066","FF0099","FF00CC","FF00FF","FF3300","FF3333","FF3366","FF3399","FF33CC","FF33FF","FF6600","FF6633","FF6666","FF6699","FF66CC","FF66FF",
  "FF9900","FF9933","FF9966","FF9999","FF99CC","FF99FF","FFCC00","FFCC33","FFCC66","FFCC99","FFCCCC","FFCCFF","FFFF00","FFFF33","FFFF66","FFFF99","FFFFCC","FFFFFF"];
+
+$(document).ready(function(){
+	var infotable = "<table style='width:100%'>";
+	
+	var x = 0;
+	for(var row = 0; x < colors.length; row++)
+	{
+		infotable = infotable + "<tr>";
+		for(var col = 0; col < 6; col++)
+		{
+			infotable = infotable + "	<td style='background-color:#" + colors[x] + ";text-align:center'>";
+			infotable = infotable + "		<span style='color:white;padding-right:10px'>" + (x-128) + "</span> " + "		<span style='color:black'>" + (x-128) + "</span> "
+			infotable = infotable + "	</td>"
+			x++;
+		}	
+		infotable = infotable + "</tr>";
+	}	
+	
+	infotable = infotable + "</table>";
+	$('#colorsfromarraydiv').html(infotable);
+});

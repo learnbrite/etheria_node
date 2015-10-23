@@ -27,6 +27,18 @@ var ICE_PERCENTAGE = 0.04;
 
 var offset = 0;
 
+
+var colors = ["000000","000033","000066","000099","0000CC","0000FF","003300","003333","003366","003399","0033CC","0033FF","006600","006633","006666","006699","0066CC","0066FF","009900","009933","009966","009999",
+              "0099CC","0099FF","00CC00","00CC33","00CC66","00CC99","00CCCC","00CCFF","00FF00","00FF33","00FF66","00FF99","00FFCC","00FFFF","330000","330033","330066","330099","3300CC","3300FF","333300","333333",
+              "333366","333399","3333CC","3333FF","336600","336633","336666","336699","3366CC","3366FF","339900","339933","339966","339999","3399CC","3399FF","33CC00","33CC33","33CC66","33CC99","33CCCC","33CCFF",
+              "33FF00","33FF33","33FF66","33FF99","33FFCC","33FFFF","660000","660033","660066","660099","6600CC","6600FF","663300","663333","663366","663399","6633CC","6633FF","666600","666633","666666","666699",
+              "6666CC","6666FF","669900","669933","669966","669999","6699CC","6699FF","66CC00","66CC33","66CC66","66CC99","66CCCC","66CCFF","66FF00","66FF33","66FF66","66FF99","66FFCC","66FFFF","990000","990033",
+              "990066","990099","9900CC","9900FF","993300","993333","993366","993399","9933CC","9933FF","996600","996633","996666","996699","9966CC","9966FF","999900","999933","999966","999999","9999CC","9999FF",
+              "99CC00","99CC33","99CC66","99CC99","99CCCC","99CCFF","99FF00","99FF33","99FF66","99FF99","99FFCC","99FFFF","CC0000","CC0033","CC0066","CC0099","CC00CC","CC00FF","CC3300","CC3333","CC3366","CC3399",
+              "CC33CC","CC33FF","CC6600","CC6633","CC6666","CC6699","CC66CC","CC66FF","CC9900","CC9933","CC9966","CC9999","CC99CC","CC99FF","CCCC00","CCCC33","CCCC66","CCCC99","CCCCCC","CCCCFF","CCFF00","CCFF33",
+              "CCFF66","CCFF99","CCFFCC","CCFFFF","FF0000","FF0033","FF0066","FF0099","FF00CC","FF00FF","FF3300","FF3333","FF3366","FF3399","FF33CC","FF33FF","FF6600","FF6633","FF6666","FF6699","FF66CC","FF66FF",
+              "FF9900","FF9933","FF9966","FF9999","FF99CC","FF99FF","FFCC00","FFCC33","FFCC66","FFCC99","FFCCCC","FFCCFF","FFFF00","FFFF33","FFFF66","FFFF99","FFFFCC","FFFFFF"];
+
 var blockdefs = [{
 	'which':0,
 	'description': 'column',
@@ -416,8 +428,8 @@ function drawMapHex(col, row)
 	mesh.userData.owner = tiles[col][row].owner;
 	mesh.userData.name = tiles[col][row].name;
 	mesh.userData.status = tiles[col][row].status;
-	mesh.userData.offers = tiles[col][row].offers; // offerers will be combined soon
-	mesh.userData.blocks = tiles[col][row].blocks;
+//	mesh.userData.offers = tiles[col][row].offers; // offerers will be combined soon
+//	mesh.userData.blocks = tiles[col][row].blocks;
 
 	scene.add( mesh );
 	
@@ -441,12 +453,8 @@ for(var h = 0; h < 32; h++)
 	hextexes.push(tex);
 }	
 
-function drawBlockHex(col, row, which, x, y, z, color, extrusion_multiple, sequencenum)
+function drawBlockHex(col, row, which, x, y, z, color, blockindex, sequencenum)
 {
-	//console.log('drawBlockHex ' + col + ", "+ row + " " + x + ", "+ y + ", "+ z + ", " + color);
-	if(extrusion_multiple === null || extrusion_multiple === 0)
-		extrusion_multiple = 1;
-	
 	//console.log("drawBlockHex " + coordx + "," + coordy);
 	var xpoint = (col - (mapsize-1)/2) * tilewidth;
 	if(row%2 !== 0)
@@ -459,7 +467,7 @@ function drawBlockHex(col, row, which, x, y, z, color, extrusion_multiple, seque
 	ypoint = ypoint + y * blockvert;
 	
 	var extrudeSettings = {
-			amount			: blockextrude * extrusion_multiple,
+			amount			: blockextrude,
 			steps			: 1,
 			material		: 1,
 			extrudeMaterial : 0,
@@ -471,7 +479,8 @@ function drawBlockHex(col, row, which, x, y, z, color, extrusion_multiple, seque
 		hextex = hextexes[which];
 	else
 		hextex = hextexprime;
-	var	material = new THREE.MeshPhongMaterial( { color: color, map: hextex } );
+	colorint = parseInt("0x" + colors[color + 128]);
+	var	material = new THREE.MeshPhongMaterial( { color: colorint, map: hextex } );
 	hextex.wrapS = hextex.wrapT = THREE.RepeatWrapping;
 	hextex.repeat.set( 3,3 );
 	var hexShape = new THREE.Shape();
@@ -512,21 +521,27 @@ function drawBlockHex(col, row, which, x, y, z, color, extrusion_multiple, seque
 		mesh.position.set( 0, 0, tileextrusion + z * blockextrude);
 	
 	mesh.userData.which = which;
-	mesh.userData.x = blockdefs[which].occupies[sequencenum][0];
-	mesh.userData.y = blockdefs[which].occupies[sequencenum][1];
-	mesh.userData.z = blockdefs[which].occupies[sequencenum][2];
-	mesh.userData.color = color;
+	mesh.userData.x = x;
+	mesh.userData.y = y;
+	mesh.userData.z = z;
+	mesh.userData.blockindex = blockindex;
 	mesh.userData.sequencenum = sequencenum;
 	mesh.userData.description = blockdefs[which].description;
-	mesh.userData.occupies = blockdefs[which].occupies;
+	mesh.userData.color = color;
+	var outer = [];
+	var inner = [];
+	for(var cy = 0; cy < 24; cy+=3)
+	{
+		inner = [];
+		inner.push(blockdefs[which].occupies[cy]);
+		inner.push(blockdefs[which].occupies[cy+1]);
+		inner.push(blockdefs[which].occupies[cy+2]);
+		outer.push(inner);
+	}	
+	mesh.userData.occupies = outer;
 	
 	scene.add( mesh );
 }
-
-
-
-
-
 
 /***
  *     _____ _____ ___  ______ _____   _____ _____ _   _  ___________ _____  ___    _____  _____ _     
@@ -539,7 +554,7 @@ function drawBlockHex(col, row, which, x, y, z, color, extrusion_multiple, seque
  *                                                                                                     
  */
 
-function editBlock(col, row, index, _block)
+function editBlock(col, row, blockindex, _block)
 {
 	var wouldoccupy = new Array(24);
 	var didoccupy = new Array(24);
@@ -558,25 +573,25 @@ function editBlock(col, row, index, _block)
     		wouldoccupy[b] = wouldoccupy[b]+1;  			     // then offset x by +1
     	wouldoccupy[b+2] = wouldoccupy[b+2]+_block[3];
 		//console.log("before " + wouldoccupy[b] + "," + wouldoccupy[b+1] + "," + wouldoccupy[b+2]);
-    	didoccupy[b] = didoccupy[b]+tile.blocks[index][1];
-    	didoccupy[b+1] = didoccupy[b+1]+tile.blocks[index][2];
+    	didoccupy[b] = didoccupy[b]+tile.blocks[blockindex][1];
+    	didoccupy[b+1] = didoccupy[b+1]+tile.blocks[blockindex][2];
     	if(didoccupy[1] % 2 != 0 && didoccupy[b+1] % 2 == 0) // if anchor y and this hex y are both odd,
     		didoccupy[b] = didoccupy[b]+1; 					 // then offset x by +1
-    	didoccupy[b+2] = didoccupy[b+2]+tile.blocks[index][3];
+    	didoccupy[b+2] = didoccupy[b+2]+tile.blocks[blockindex][3];
     }
-	if(!isValidLocation(col, row, _block, wouldoccupy)) // have not sent offset to these functions. Must take care of inside them.
-	{
-		return false;
-	}
-	for(var b = 0; b < 24; b+=3) // always 8 hexes, calculate the didoccupy
+//	if(!isValidLocation(col, row, _block, wouldoccupy)) // have not sent offset to these functions. Must take care of inside them.
+//	{
+//		return false;
+//	}
+	for(var h = 0; h < 24; h+=3) // always 8 hexes, calculate the didoccupy
     {
-		if(b === 0 && (typeof highlightkeyhex !== "undefined" && highlightkeyhex !== null && highlightkeyhex === true))
-			drawBlockHex(col, row, _block[0], wouldoccupy[b], wouldoccupy[b+1], wouldoccupy[b+2], 0xFFFFFF, 1, b);
+		if(h === 0 && (typeof highlightkeyhex !== "undefined" && highlightkeyhex !== null && highlightkeyhex === true))
+			drawBlockHex(col, row, _block[0], wouldoccupy[h], wouldoccupy[h+1], wouldoccupy[h+2], 0xFFFFFF, blockindex, h);
 		else
-			drawBlockHex(col, row, _block[0], wouldoccupy[b], wouldoccupy[b+1], wouldoccupy[b+2], _block[4], 1, b);
+			drawBlockHex(col, row, _block[0], wouldoccupy[h], wouldoccupy[h+1], wouldoccupy[h+2], _block[4], blockindex, h);
     }
 	
-	if(tile.blocks[index][3] >= 0) // If the previous z was greater than 0 (i.e. not hidden) ...
+	if(tile.blocks[blockindex][3] >= 0) // If the previous z was greater than 0 (i.e. not hidden) ...
  	{
      	for(var l = 0; l < 24; l+=3) // loop 8 times,find the previous occupado entries and overwrite them
      	{
@@ -606,7 +621,7 @@ function editBlock(col, row, index, _block)
  			tile.occupado.push(newtriplet);
      	}
  	}
-	tile.blocks[index] = _block;
+	tile.blocks[blockindex] = _block;
 }
 
 
@@ -715,15 +730,18 @@ function isValidLocation(col, row, _block, wouldoccupy)
           		if(attachesto[1] % 2 != 0 && attachesto[a+1] % 2 == 0) //  (for attachesto, anchory is the same as for occupies, but the z is different. Nothing to worry about)
            			attachesto[a] = attachesto[a]+1;  			       // then offset x by +1
            		//attachesto[a+2] = attachesto[a+2]+_block[3];
-           		for(o = 0; o < tile.occupado.length && !touches; o++)
-           		{
-           			if((attachesto[a]+_block[1]) == tile.occupado[o][0] && attachesto[a+1] == tile.occupado[o][1] && (attachesto[a+2]+_block[3]) == tile.occupado[o][2]) // a valid attachesto found in occupado?
-           			{
-           				whathappened = 12; 
-           				console.log('touches');
-           				return true; // in bounds, didn't conflict and now touches is true. All good. Return.
-           			}
-           		}
+          		if(tile.occupado)
+         		{
+          			for(o = 0; o < tile.occupado.length && !touches; o++)
+               		{
+               			if((attachesto[a]+_block[1]) == tile.occupado[o][0] && attachesto[a+1] == tile.occupado[o][1] && (attachesto[a+2]+_block[3]) == tile.occupado[o][2]) // a valid attachesto found in occupado?
+               			{
+               				whathappened = 12; 
+               				console.log('touches');
+               				return true; // in bounds, didn't conflict and now touches is true. All good. Return.
+               			}
+               		}
+         		}
           	}
           	whathappened = 13; 
           	console.log('no touch');

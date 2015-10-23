@@ -30,7 +30,8 @@
 	 		<td class="navbutton"><a href="whatis.html" id="whatis_link">Overview</a></td>
 	 		<td class="navbutton"><a href="explore.html" id="explore_link">Explore Etheria</a></td>
 	 		<td class="navbutton"><a href="howto.html" id="howto_link">How To Play</a></td>
-	 		<td class="navbutton"><a href="blockref.html" id="blocks_link">Block Reference</a></td>
+	 		<td class="navbutton"><a href="blockref.html" id="blocks_link">Block Ref.</a></td>
+	 		<td class="navbutton"><a href="colorref.html" id="color_link">Color Ref.</a></td>
 	 		<td class="navbutton"><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
 	 	</table> 
 	</div>
@@ -65,7 +66,7 @@
 	<div class="contentheader nontop">Farm your tile for blocks</div>
 	<p>
 		Now that you have a tile, you'll want to get some blocks for it so you can build that dream home you always wanted. Or a giant penis. Either way:
-		<pre>etheria.farmTile.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
+		<pre>etheria.farmTile.sendTransaction(col,row,{from:eth.coinbase,gas:1200000,value:web3.toWei(1,'ether')});</pre> 
 		Notes:
 		<ul>
 			<li>Farming gives you 20 blocks of the 32 random types. One exception...</li>
@@ -73,11 +74,12 @@
 			<li><span class='list_item_emphasis'>Blocks are hidden to begin with.</span> You must edit/move them to get them to appear.</li>
 			<li>Farming a tile can only be performed once every 2500 Ethereum blocks (roughly once every 12 hours).</li>
 			<li>You can farm more often for 1 ETH per farm. If you're not sure if your cooldown has expired, you can send 1 ETH regardless and it'll get refunded if your free farm is ready.</li>
+			<li>Avg gas used: 979,000</li>
 		</ul>
 		To view the blocks you farmed:
 		<pre>etheria.getBlocks(col,row);</pre>
 	</p>
-	<div class="contentheader nontop">Edit a block</div> <!--  gas used = 1.27 mil -->
+	<div class="contentheader nontop">Edit a block</div>
 		
 				<p>
 		Blocks have simple x,y,z coordinates on your tile. New blocks begin life HIDDEN with x,y,z set to 0,0,-1.
@@ -97,14 +99,20 @@
 			<li>Blocks cannot conflict with other blocks. NOTE: Due to computational constraints, the block you're moving counts as an "other block" until it has successfully moved. This means if where you want to move it conflicts with where it is now, you'll have to move it out of the way first, then, with another edit, put it back where you want it. (Sorry.)</li>
 			<li>Blocks must be placed on the ground OR on other blocks (in the same way as standard LEGOs).</li>
 			<li>Blocks cannot be rehidden after being shown. (Any z value < 0 will be rejected.)</li>
+			<li>Avg gas used: 1,500,000</li>
 		</ul>
 	</p>	
-	<table style="padding:30px">
+	<table style="padding:30px; width:100%">
 	<tr>
-      <td colspan=6 >Note: Upon testing, not sure these are accurate. I'll fix them when I get a chance. My bad.<br>
-      Here are ones I know for sure:<br>
+      <td colspan=6 >Note: Upon testing, not sure these are accurate at the moment. I'll fix them when I get a chance. My bad. Here are ones I know for sure:<br>
+      -128 = black<br>
+      -123 = blue<br>
+      -51 = purple<br>
+      -21 = cyan<br>
+      0 = dark gray<br>
+      10 = lime green<br>
       43 = gray<br>
-      lol</td>
+      </td>
     </tr>
     <tr>
       <td style="text-align:center;color:#ffffff;background-color:#000000">-128</td>
@@ -400,9 +408,12 @@
 		<p>
 			Tile trading works like this: Someone owns a tile. People can make offers on the tile. If the owner likes an offer, he/she can accept it.
 			<pre>etheria.getOffers(col,row);</pre>
+			and
+			<pre>etheria.getOfferers(col,row);</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of the tile</li>
+			<li>The indexes match up. The offerer at offerers[0] made the offer found at offers[0] and so on.</li>
 		</ul>
 	</p>
 	<div class="contentheader nontop">Make an offer on an owned tile</div>
@@ -416,17 +427,19 @@
 			<li>There is a 10% fee on all sales. Seller gets 90% of the offer value.</li>
 			<li>All other offers are refunded at the time an offer is accepted.</li>
 			<li>Otherwise, all properties of the tile stay in tact, including blocks (incl placement + colors) name and status.</li>
+			<li>Approx. gas usage: 110,000 units</li>
 		</ul>
 	</p>
 	<div class="contentheader nontop">Reject an offer on your tile</div>
 		<p>
-			<pre>etheria.deleteOffer.sendTransaction(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
+			<pre>etheria.deleteOffer.sendTransaction(col,row,offerindex,offer_amt_in_wei,{from:eth.coinbase,gas:1000000});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile on which the offer was placed</li>
 			<li>"offerindex" is 0-10, the index (in the offers array) of the offer you'd like to reject</li>
-			<li>"some_amount_in_wei" is the amount of the offer you want to reject. Including this value ensures that you don't accidentally reject a different offer, in case your offer array changes unexpectedly.</li>
+			<li>"offer_amt_in_wei" is the amount of the offer you want to reject. Including this value ensures that you don't accidentally reject a different offer, in case your offer array changes unexpectedly.</li>
 			<li>The rejected offerer's money will be refunded in full.</li>
+			<li>Approx. gas usage: 35,000 units</li>
 		</ul>
 	</p>
 	<div class="contentheader nontop">Retract an offer you've made</div>
@@ -459,6 +472,7 @@
 		<ul>
 			<li>"col","row" = the coords of your tile</li>
 			<li>This value will appear when someone mouses over your tile in the <a href='explore.html'>map explorer</a></li>
+			<li>Gas usage to set "fivedogit" was 50,000, results may vary depending on string length</li>
 		</ul>
 	</p>
 	<div class="contentheader nontop">Change the "status" of your tile</div>

@@ -115,12 +115,22 @@ for (i = 0; i < mapsize; i++) {
 	  blocks[i] = new Array(mapsize);
 }
 
-//var map_retrieval_index = 0;
-//
-//retrieveTileInfo(map_retrieval_index);
-//map_retrieval_index++;
-//
-//setInterval(function () { retrieveTileInfo(map_retrieval_index); map_retrieval_index++; if(map_retrieval_index === Math.pow(mapsize,2)) { map_retrieval_index = 0; }}, 500);
+var c = 0;
+var r = 0;
+
+var map_retrieval_index = 0;
+console.log('before setinterval');
+var myTimer = setInterval(function () { 
+	console.log('inside setinterval callback');
+	r = map_retrieval_index % 33;
+	c = (map_retrieval_index - r) / mapsize;
+	retrieveTileInfo(c,r); 
+	map_retrieval_index++; 
+	if(map_retrieval_index >= 1089)
+	{	
+		clearInterval(myTimer);
+	}
+}, 333);
 
 function retrieveTileInfo (col, row) {
 	var batch = web3.createBatch();
