@@ -586,7 +586,7 @@ function editBlock(col, row, blockindex, _block)
 	for(var h = 0; h < 24; h+=3) // always 8 hexes, calculate the didoccupy
     {
 		if(h === 0 && (typeof highlightkeyhex !== "undefined" && highlightkeyhex !== null && highlightkeyhex === true))
-			drawBlockHex(col, row, _block[0], wouldoccupy[h], wouldoccupy[h+1], wouldoccupy[h+2], 0xFFFFFF, blockindex, h);
+			drawBlockHex(col, row, _block[0], wouldoccupy[h], wouldoccupy[h+1], wouldoccupy[h+2], 87, blockindex, h);
 		else
 			drawBlockHex(col, row, _block[0], wouldoccupy[h], wouldoccupy[h+1], wouldoccupy[h+2], _block[4], blockindex, h);
     }

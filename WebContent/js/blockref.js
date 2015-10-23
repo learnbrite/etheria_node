@@ -88,41 +88,41 @@ function init() {
 	// -50 && y odd == OK
 	//editBlock(0,0,0,0,0,0, 0xFFCC00); // 8 high column
 	
-	editBlock(0,0,0,[0,-40,-28,0, 81]); 
-	editBlock(0,0,1,[1,-28,-28,0, 81]); 
-	editBlock(0,0,2,[2,-16,-28,0, 81]); 
-	editBlock(0,0,3,[3,-4,-28,0, 81]); 
-	editBlock(0,0,4,[4,7,-28,0, 81]); 
-	editBlock(0,0,5,[5,21,-28,0, 81]); // CYAN double tower horizontal
-	editBlock(0,0,6,[6,32,-28,0, 81]);
-	editBlock(0,0,7,[7,44,-28,0, 81]);
+	editBlock(0,0,0,[0,-40,-28,0, 82]); 
+	editBlock(0,0,1,[1,-28,-28,0, 82]); 
+	editBlock(0,0,2,[2,-16,-28,0, 82]); 
+	editBlock(0,0,3,[3,-4,-28,0, 82]); 
+	editBlock(0,0,4,[4,7,-28,0, 82]); 
+	editBlock(0,0,5,[5,21,-28,0, 82]); // CYAN double tower horizontal
+	editBlock(0,0,6,[6,32,-28,0, 82]);
+	editBlock(0,0,7,[7,44,-28,0, 82]);
 
-	editBlock(0,0,8,[8,-40,-10,0, 81]); 
-	editBlock(0,0,9,[9,-28,-10,0, 81]); 
-	editBlock(0,0,10,[10,-16,-10,0, 81]); 
-	editBlock(0,0,11,[11,-4,-10,0, 81]); 
-	editBlock(0,0,12,[12,8,-10,0, 81]); 
-	editBlock(0,0,13,[13,20,-10,0, 81]); // CYAN double tower horizontal
-	editBlock(0,0,14,[14,32,-10,0, 81]);
-	editBlock(0,0,15,[15,44,-10,0, 81]);
+	editBlock(0,0,8,[8,-40,-10,0, 82]); 
+	editBlock(0,0,9,[9,-28,-10,0, 82]); 
+	editBlock(0,0,10,[10,-16,-10,0, 82]); 
+	editBlock(0,0,11,[11,-4,-10,0, 82]); 
+	editBlock(0,0,12,[12,8,-10,0, 82]); 
+	editBlock(0,0,13,[13,20,-10,0, 82]); // CYAN double tower horizontal
+	editBlock(0,0,14,[14,32,-10,0, 82]);
+	editBlock(0,0,15,[15,44,-10,0, 82]);
 	
-	editBlock(0,0,16,[16,-40,10,0, 81]); 
-	editBlock(0,0,17,[17,-28,10,0, 81]); 
-	editBlock(0,0,18,[18,-16,10,0, 81]); 
-	editBlock(0,0,19,[19,-4,10,0, 81]); 
-	editBlock(0,0,20,[20,8,10,0, 81]); 
-	editBlock(0,0,21,[21,20,10,0, 81]); // CYAN double tower horizontal
-	editBlock(0,0,22,[22,32,10,0, 81]);
-	editBlock(0,0,23,[23,44,10,0, 81]);
+	editBlock(0,0,16,[16,-40,10,0, 82]); 
+	editBlock(0,0,17,[17,-28,10,0, 82]); 
+	editBlock(0,0,18,[18,-16,10,0, 82]); 
+	editBlock(0,0,19,[19,-4,10,0, 82]); 
+	editBlock(0,0,20,[20,8,10,0, 82]); 
+	editBlock(0,0,21,[21,20,10,0, 82]); // CYAN double tower horizontal
+	editBlock(0,0,22,[22,32,10,0, 82]);
+	editBlock(0,0,23,[23,44,10,0, 82]);
 	
-	editBlock(0,0,24,[24,-40,28,0, 81]); 
-	editBlock(0,0,25,[25,-28,28,0, 81]); 
-	editBlock(0,0,26,[26,-16,28,0, 81]); 
-	editBlock(0,0,27,[27,-4,28,0, 81]); 
-	editBlock(0,0,28,[28,8,28,0, 81]); 
-	editBlock(0,0,29,[29,20,28,0, 81]); // CYAN double tower horizontal
-	editBlock(0,0,30,[30,32,28,0, 81]);
-	editBlock(0,0,31,[31,44,28,0, 81]);
+	editBlock(0,0,24,[24,-40,28,0, 82]); 
+	editBlock(0,0,25,[25,-28,28,0, 82]); 
+	editBlock(0,0,26,[26,-16,28,0, 82]); 
+	editBlock(0,0,27,[27,-4,28,0, 82]); 
+	editBlock(0,0,28,[28,8,28,0, 82]); 
+	editBlock(0,0,29,[29,20,28,0, 82]); // CYAN double tower horizontal
+	editBlock(0,0,30,[30,32,28,0, 82]);
+	editBlock(0,0,31,[31,44,28,0, 82]);
 	
 	// lights
 	light = new THREE.DirectionalLight(0xaaaaaa);

@@ -92,8 +92,8 @@ function getRandomIntInclusive(min, max) {
 function init() {
 
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
-	//camera.position.set(0,-200,150);
-	camera.position.z = 200;
+	camera.position.set(0,-200,150);
+	//camera.position.z = 200;
 
 	controls = new THREE.OrbitControls(camera);
 	controls.damping = 0.2;
