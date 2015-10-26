@@ -1,0 +1,56 @@
+<meta charset="utf-8" /> 
+<!DOCTYPE html>
+<head>
+	<title>Ξtheria - Color Reference</title>
+    <link rel="icon" type="image/png" href="images/h_16.png" />
+    <script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/tile.js"></script>
+    <script>
+    $(document).ready(function(){
+    	 $("#explore_link").click(function(){
+    		 if(!confirm('If you\'re on a phone, this probably won\'t work well. Continue?'))
+    			 return false;
+    	    });
+    	 $("#blocks_link").click(function(){
+    		 if(!confirm('If you\'re on a phone, this probably won\'t work well. Continue?'))
+    			 return false;
+    	    });
+    });
+   
+    </script>
+   <link rel="stylesheet" type="text/css" href="css/common.css">
+</head>
+
+<body>
+	<div style="width:100%"> 
+    	<img src='images/etheria_logo_white.png'></img>
+	</div>
+	<div class="navbuttoncontainer">
+		<table style="width:100%">
+	 	<tr>
+	 		<td class="navbutton"><a href="whatis.html" id="whatis_link">Overview</a></td>
+	 		<td class="navbutton"><a href="explore.html" id="explore_link">Explore Etheria</a></td>
+	 		<td class="navbutton"><a href="howto.html" id="howto_link">How To Play</a></td>
+	 		<td class="navbutton"><a href="blockref.html" id="blocks_link">Block Ref.</a></td>
+	 		<td class="navbutton"><a href="colorref.html" id="color_link">Color Ref.</a></td>
+	 		<td class="navbutton"><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
+	 	</table> 
+	</div>
+	<div class="content"> 
+	<div class="contentheader">Color reference</div>
+	<div id='tile_div' style='padding-top:20px;'>
+		
+	</div>
+	</div>
+    <div class="footer">
+   		Etheria was created by Cyrus Adkisson. You can email him at c@mailcyr at the USA TLD.
+    	<table style="margin-right:auto;margin-left:auto">
+    		<tr>
+    			<td><a href="http://www.twitter.com/etheria_feed"><img src="images/twitter.png"></a></td>
+    			<td><a href="http://www.github.com/fivedogit/etheria"><img src="images/github.png"></a></td>
+    		</tr>
+    	</table>
+    </div>
+</body>
+
+</html>

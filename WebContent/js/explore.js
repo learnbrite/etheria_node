@@ -252,11 +252,6 @@ function init() {
 		}
 	}
 	
-	
-	
-	
-	
-	
 	// lights
 	light = new THREE.DirectionalLight(0xaaaaaa);
 	light.position.set(1, 1, 1);

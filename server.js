@@ -361,6 +361,29 @@ app.get('/map', function (req, res) {
 	res.json(map_ja);  // at this point, we're done answering the request. Now check to see if we need to retrieve the map again.
 });
 
+exports.findById = function(req, res) {
+    console.log(req.params);
+    var id = parseInt(req.params.id);
+    console.log('findById: ' + id);
+    db.collection('employees', function(err, collection) {
+        collection.findOne({'id': id}, function(err, item) {
+            console.log(item);
+            res.jsonp(item);
+        });
+    });
+};
+
+app.get('/tile/:col/:row', function (req, res) {
+	console.log("entering /tile");
+	var col = parseInt(req.params.col);
+	var row = parseInt(req.params.row);
+	var colrow_jo = {};
+	colrow_jo.col = col;
+	colrow_jo.row = row;
+	var map_ja = combineTileAndElevationInfoIntoSingleMapObject();
+	res.json(map_ja[col][row]);  // at this point, we're done answering the request. Now check to see if we need to retrieve the map again.
+});
+
 app.get('/blocks', function (req, res) {
 	console.log("entering /blocks");
 	res.json(blocks);  // at this point, we're done answering the request. Now check to see if we need to retrieve the map again.
