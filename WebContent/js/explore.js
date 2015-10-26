@@ -357,7 +357,8 @@ function render() {
 					"<b>index:</b> " + intersects[ 0 ].object.userData.blockindex + "<br>" +
 					"<b>type:</b> " + intersects[ 0 ].object.userData.which + "<br>" +
 					"<b>description:</b> " + intersects[ 0 ].object.userData.description + "<br>" +
-					"<b>color:</b> " + intersects[ 0 ].object.userData.color
+					"<b>color:</b> " + intersects[ 0 ].object.userData.color + "<br>" + 
+					"<b>key hex:</b> " + intersects[ 0 ].object.userData.keyx + "," + intersects[ 0 ].object.userData.keyy + "," + intersects[ 0 ].object.userData.keyz   
 //					+ "<br>" +
 //					"<b>occupies:</b> " + JSON.stringify(intersects[ 0 ].object.userData.occupies)
 					);

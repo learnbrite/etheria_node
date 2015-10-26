@@ -1,10 +1,11 @@
 <meta charset="utf-8" /> 
 <!DOCTYPE html>
 <head>
-	<title>Ξtheria - Color Reference</title>
+	<title>Ξtheria - Tile blocklist</title>
     <link rel="icon" type="image/png" href="images/h_16.png" />
     <script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="js/tile.js"></script>
+    <script src="js/map_and_block_utils.js"></script>
     <script>
     $(document).ready(function(){
     	 $("#explore_link").click(function(){
@@ -27,18 +28,29 @@
 	</div>
 	<div class="navbuttoncontainer">
 		<table style="width:100%">
-	 	<tr>
-	 		<td class="navbutton"><a href="whatis.html" id="whatis_link">Overview</a></td>
-	 		<td class="navbutton"><a href="explore.html" id="explore_link">Explore Etheria</a></td>
-	 		<td class="navbutton"><a href="howto.html" id="howto_link">How To Play</a></td>
-	 		<td class="navbutton"><a href="blockref.html" id="blocks_link">Block Ref.</a></td>
-	 		<td class="navbutton"><a href="colorref.html" id="color_link">Color Ref.</a></td>
-	 		<td class="navbutton"><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
+		 	<tr>
+		 		<td class="navbutton"><a href="whatis.html" id="whatis_link">Overview</a></td>
+		 		<td class="navbutton"><a href="howto.html" id="howto_link">How To Play</a></td>
+		 		<td class="navbutton"><a href="explore.html" id="explore_link">Map</a></td>
+		 		<td class="navbutton"><a href="blockref.html" id="blocks_link">Blocks</a></td>
+		 		<td class="navbutton"><a href="tile.html" id="color_link">Tile Lookup</a></td>
+		 		<td class="navbutton"><a href="colorref.html" id="color_link">Colors</a></td>
+		 		<td class="navbutton"><a href="http://www.fivedogit.com" id="blog_link">Blog</a></td>
+		 	</tr>
 	 	</table> 
 	</div>
 	<div class="content"> 
-	<div class="contentheader">Color reference</div>
-	<div id='tile_div' style='padding-top:20px;'>
+	<div class="contentheader">Tile blocklist</div>
+	<div id='colrow_entry_div' style='text-align:center;padding-top:10px;'>
+		<form id='colrow_form' action='#' method="get">
+						col:
+						<input type=text size=2 maxlength=2 id='col_input' name='col_input'>
+						row:
+						<input type=text size=2 maxlength=2 id='row_input' name='row_input'>
+						<input type=submit value="Go"></submit>
+		</form>
+	</div>
+	<div id='tile_div' style='padding-top:20px;min-height:250px'>
 		
 	</div>
 	</div>

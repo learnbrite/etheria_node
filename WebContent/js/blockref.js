@@ -73,7 +73,7 @@ function init() {
 	  tiles[0][0].lastfarm = 0;
 	  tiles[0][0].occupado = []; // will contain arrays of 3
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
-	camera.position.z = 18;
+	camera.position.z = 12;
 
 	controls = new THREE.OrbitControls(camera);
 	controls.damping = 0.2;

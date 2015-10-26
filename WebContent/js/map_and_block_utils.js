@@ -453,7 +453,7 @@ for(var h = 0; h < 32; h++)
 	hextexes.push(tex);
 }	
 
-function drawBlockHex(col, row, which, x, y, z, color, blockindex, sequencenum)
+function drawBlockHex(col, row, which, x, y, z, color, blockindex, sequencenum, keyx, keyy, keyz)
 {
 	//console.log("drawBlockHex " + coordx + "," + coordy);
 	var xpoint = (col - (mapsize-1)/2) * tilewidth;
@@ -524,6 +524,9 @@ function drawBlockHex(col, row, which, x, y, z, color, blockindex, sequencenum)
 	mesh.userData.x = x;
 	mesh.userData.y = y;
 	mesh.userData.z = z;
+	mesh.userData.keyx = keyx;
+	mesh.userData.keyy = keyy;
+	mesh.userData.keyz = keyz;
 	mesh.userData.blockindex = blockindex;
 	mesh.userData.sequencenum = sequencenum;
 	mesh.userData.description = blockdefs[which].description;
@@ -583,12 +586,21 @@ function editBlock(col, row, blockindex, _block)
 //	{
 //		return false;
 //	}
+	var keyx = 0;
+	var keyy = 0;
+	var keyz = 0;
 	for(var h = 0; h < 24; h+=3) // always 8 hexes, calculate the didoccupy
     {
+		if(h === 0)
+		{
+			keyx = wouldoccupy[h];
+			keyy = wouldoccupy[h+1];
+			keyz = wouldoccupy[h+2];
+		}	
 		if(h === 0 && (typeof highlightkeyhex !== "undefined" && highlightkeyhex !== null && highlightkeyhex === true))
-			drawBlockHex(col, row, _block[0], wouldoccupy[h], wouldoccupy[h+1], wouldoccupy[h+2], 87, blockindex, h);
+			drawBlockHex(col, row, _block[0], wouldoccupy[h], wouldoccupy[h+1], wouldoccupy[h+2], 87, blockindex, h/3, keyx, keyy, keyz);
 		else
-			drawBlockHex(col, row, _block[0], wouldoccupy[h], wouldoccupy[h+1], wouldoccupy[h+2], _block[4], blockindex, h);
+			drawBlockHex(col, row, _block[0], wouldoccupy[h], wouldoccupy[h+1], wouldoccupy[h+2], _block[4], blockindex, h/3, keyx, keyy, keyz);
     }
 	
 	if(tile.blocks[blockindex][3] >= 0) // If the previous z was greater than 0 (i.e. not hidden) ...
