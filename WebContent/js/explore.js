@@ -161,47 +161,8 @@ function init() {
 //		console.log('drawing 7 columns -50,33');
 //		editBlock(16,16,6,[0,-50,33,0, getRandomIntInclusive(0,16777214)]); // succeed
 
-		
-//		editBlock(16,16,0,[1,0,0,0, getRandomIntInclusive(0,16777214)]); // succeed
-//		editBlock(16,16,1,[2,0,3,0, getRandomIntInclusive(0,16777214)]); // conflict
-		
-		
-		
-	
-//		editBlock(8,8,0,0,67,0, getRandomIntInclusive(0,16777214)); // fail
-//		editBlock(8,8,0,1,66,0, getRandomIntInclusive(0,16777214)); // fail
-//		editBlock(8,8,0,-1,66,0, getRandomIntInclusive(0,16777214)); // fail
-//		editBlock(8,8,0,50,33,0, getRandomIntInclusive(0,16777214)); // fail
-//		editBlock(8,8,0,50,-33,0, getRandomIntInclusive(0,16777214)); // fail
-//		editBlock(8,8,0,-67,0,0, getRandomIntInclusive(0,16777214)); // fail
-//		editBlock(8,8,0,-51,33,0, getRandomIntInclusive(0,16777214)); // fail
-//		editBlock(8,8,0,-51,-33,0, getRandomIntInclusive(0,16777214)); // fail
-//		editBlock(8,8,0,0,0,0, getRandomIntInclusive(0,16777214));
-//		editBlock(8,8,0,0,0,-1, getRandomIntInclusive(0,16777214));  // fail
-//		editBlock(8,8,0,0,0,5, getRandomIntInclusive(0,16777214));	 // fail
-//		editBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));	 // succeed
-//		
-//		editBlock(8,8,1,0,2,0, getRandomIntInclusive(0,16777214));	// succeed (flat on ground)
-//		editBlock(8,8,1,4,2,1, getRandomIntInclusive(0,16777214));  // fail (doesn't rest on anything)
-//		editBlock(8,8,1,0,3,0, getRandomIntInclusive(0,16777214));	// fail (overlaps)
-//		editBlock(8,8,1,0,3,1, getRandomIntInclusive(0,16777214));	// succeeds (rests on first, offset by 1)
-//		editBlock(8,8,1,4,10,2, getRandomIntInclusive(0,16777214));	// succeeds (rests on previous, at the very end)
-		
-//		editBlock(8,8,1,-4,-4,0, getRandomIntInclusive(0,16777214));
-//		editBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
-//		editBlock(8,8,2,15,15,10, getRandomIntInclusive(0,16777214));
-//		editBlock(8,8,3,25,25,10, getRandomIntInclusive(0,16777214));
-		//editBlock(8,8,0,5,5,0, getRandomIntInclusive(0,16777214));
-		
-		//editBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
-//		editBlock(8,8,0,0,0,8, getRandomIntInclusive(0,16777214));
-//		editBlock(8,8,1,5,5,0, getRandomIntInclusive(0,16777214));
-//		
-//		editBlock(8,8,2,6,5,0, getRandomIntInclusive(0,16777214));
-//		
-//		editBlock(8,8,3,-5,-5,0, getRandomIntInclusive(0,16777214));
+		finishInitialRender();
 
-//		console.log(JSON.stringify(map));
 	}
 	else
 	{	
@@ -210,48 +171,51 @@ function init() {
 			url: '/map', 
 	        dataType: 'json',
 	        timeout: 100000,
-	        async: false, // same origin, so this is ok 
+	        async: true, // same origin, so this is ok 
 	        success: function (data, status) {
 	        	//console.log('back from /map');
 	        	//console.log(JSON.stringify(data));
 	        	tiles = data;
+	        	for(var col = 0; col < mapsize; col++)
+	    		{
+	    			for(var row = 0; row < mapsize; row++)
+	    			{
+	    			
+//	    				if(NORMALIZE_ELEVATIONS)
+//	    					tiles[x][y].elevation = (tiles[x][y].elevation - min) * tiles[x][y].normalization_factor;
+	    				drawMapHex(col,row);
+	    				
+	    				if(tiles[col][row].blocks)
+	    				{
+	    					for(var b = 0; b < tiles[col][row].blocks.length; b++)
+	    					{
+	    						if(tiles[col][row].blocks[b][3] >= 0) // z below 0 doesn't get drawn
+	    						{	
+	    							//console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(tiles[col][row].blocks[b]));
+	    							//editBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
+	    							editBlock(col,row,b,
+	    									[tiles[col][row].blocks[b][0], // which
+	    									tiles[col][row].blocks[b][1], // x
+	    									tiles[col][row].blocks[b][2],  // y
+	    									tiles[col][row].blocks[b][3],  // z
+	    									tiles[col][row].blocks[b][4]] // 256 color possibilities (0-255) each times 65536 will produce numbers in the range hex color range 0-16777216
+	    									);
+	    						}
+	    					}	
+	    				}
+	    			}
+	    		}
+	        	finishInitialRender();
 	        },
 	        error: function (XMLHttpRequest, textStatus, errorThrown) {
 	        	console.log("elevations ajax error");
 	        }
 		});
-		
-		for(var col = 0; col < mapsize; col++)
-		{
-			for(var row = 0; row < mapsize; row++)
-			{
-			
-//				if(NORMALIZE_ELEVATIONS)
-//					tiles[x][y].elevation = (tiles[x][y].elevation - min) * tiles[x][y].normalization_factor;
-				drawMapHex(col,row);
-				
-				if(tiles[col][row].blocks)
-				{
-					for(var b = 0; b < tiles[col][row].blocks.length; b++)
-					{
-						if(tiles[col][row].blocks[b][3] >= 0) // z below 0 doesn't get drawn
-						{	
-							//console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(tiles[col][row].blocks[b]));
-							//editBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
-							editBlock(col,row,b,
-									[tiles[col][row].blocks[b][0], // which
-									tiles[col][row].blocks[b][1], // x
-									tiles[col][row].blocks[b][2],  // y
-									tiles[col][row].blocks[b][3],  // z
-									tiles[col][row].blocks[b][4]] // 256 color possibilities (0-255) each times 65536 will produce numbers in the range hex color range 0-16777216
-									);
-						}
-					}	
-				}
-			}
-		}
 	}
-	
+}
+
+function finishInitialRender()
+{
 	// lights
 	light = new THREE.DirectionalLight(0xaaaaaa);
 	light.position.set(1, 1, 1);
@@ -277,7 +241,6 @@ function init() {
 
 	window.addEventListener('resize', onWindowResize, false);
 	window.addEventListener('mousemove', onMouseMove, false );
-
 }
 
 function onMouseMove( event ) {
@@ -327,7 +290,6 @@ function render() {
 			infotable = infotable + "	</td>"
 			infotable = infotable + "	<td>";
 			infotable = infotable + "		<b>elevation:</b> " + intersects[ 0 ].object.userData.elevation
-			infotable = infotable + "	</td>"
 			infotable = infotable + "	</td>"
 			infotable = infotable + "</tr>";
 			infotable = infotable + "<tr>";
