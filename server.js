@@ -130,7 +130,7 @@ var myTimer = setInterval(function () {
 	{	
 		clearInterval(myTimer);
 	}
-}, 333);
+}, 30);
 
 function retrieveTileInfo (col, row) {
 	var batch = web3.createBatch();
