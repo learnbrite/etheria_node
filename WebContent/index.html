@@ -14,14 +14,32 @@
     		 if(!confirm('If you\'re on a phone, this probably won\'t work well. Continue?'))
     			 return false;
     	    });
+    	 $("#noticeclosebutton_link").click(function(){
+    		$("#notice_table").hide();
+    		return false;
+    	 });
     });
    
     </script>
    <link rel="stylesheet" type="text/css" href="css/common.css">
+   <style>
+   	body{ margin:0px}
+   </style>
 </head>
 
 <body>
-	<div style="width:100%"> 
+	<table id="notice_table" style="width:100%;background-color:#dddddd;color:black;margin:0px;padding:5px;font-size:12px">
+		<tr>
+			<td>
+				<a href="#" id="noticeclosebutton_link"><img src='images/closebutton.png' style="width:16px;height:16px"></a>
+			</td>
+			<td>
+			Welcome to Etheria! Please note that, currently, the building process is incredibly painstaking and is not for the faint of heart.<br>
+    			If you want to buy a tile and try to build something, be my guest, but you're probably better off waiting for a new Etheria after DEVCON1.
+			</td>
+		</tr>
+	</table>
+	<div style="width:100%;padding-top:5px"> 
     	<img src='images/etheria_logo_white.png'></img>
 	</div>
 	<div class="navbuttoncontainer">
