@@ -39,7 +39,6 @@
 	</div>
 	<div class="content"> 
 	<div class="contentheader">How to play</div>
-	<p>
 		Prerequisites:
 		<ol>
 			<li><span class="list_item_emphasis"><a href="https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum#installation-instructions">Install an Ethereum command line interface.</a></span></li>
@@ -47,37 +46,32 @@
 			<li><span class="list_item_emphasis"><a href="https://docs.google.com/document/d/14EIe984_86Y-uuNm-a4EsVeD3eI4qAAlz_MZof1qkqM/edit#bookmark=id.j73m3062mrz8">Create an Ethereum account.</a></span></li>
 			<li><span class="list_item_emphasis"><a href="https://docs.google.com/document/d/14EIe984_86Y-uuNm-a4EsVeD3eI4qAAlz_MZof1qkqM/edit#bookmark=id.93e8lr5mmrlr">Get some Ether.</a></span></li>
 		</ol>
-	</p>
 	<div class="contentheader nontop">Set up your interface to Etheria</div>
-	<p>
 		Inside geth:
 		<pre>var abi = [{"constant":false,"inputs":[],"name":"setLocked","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":true,"inputs":[],"name":"getLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_b32","type":"bytes32"},{"name":"byteindex","type":"uint8"}],"name":"getUint8FromByte32","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"makeOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOfferers","outputs":[{"name":"","type":"address[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"deleteOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"acceptOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOffers","outputs":[{"name":"","type":"uint256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}];
-		var etheria = web3.eth.contract(abi).at('0xe414716f017b5c1457bf98e985bccb135dff81f2');</pre>
-	</p>
+var etheria = web3.eth.contract(abi).at('0x169332ae7d143e4b5c6baedb2fef77bfbddb4011');</pre>
 	<div class="contentheader nontop">Buy an unowned tile</div>
 	<p>
 		Take a look at the Etheria map and decide which tile you want to buy. If it's unowned (or hasn't been farmed in a month), then obtaining it is easy. Just pay 1 ETH for it.
-		<pre>etheria.makeOffer.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
+		<pre>etheria.buyTile.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
 			<li>Money is automatically refunded if the purchase fails.</li>
 			<li>You can't buy water tiles.</li>
 			<li>Excluding water, there is no practical difference in land types or elevation.</li> 
-			<li>Inactive tiles that haven't been farmed in a month can also be purchased this way.</li>
 		</ul>
 	</p>
 	<div class="contentheader nontop">Farm your tile for blocks</div>
 	<p>
 		Now that you have a tile, you'll want to get some blocks for it so you can build that dream home you always wanted. Or a giant penis. Either way:
-		<pre>etheria.farmTile.sendTransaction(col,row,{from:eth.coinbase,gas:1200000,value:web3.toWei(1,'ether')});</pre> 
+		<pre>etheria.farmTile.sendTransaction(col,row,blocktype,{from:eth.coinbase,gas:1200000,value:web3.toWei(1,'ether')});</pre> 
 		Notes:
 		<ul>
-			<li>Farming gives you 20 blocks of the 32 random types. One exception...</li>
-			<li>The first block everyone farms (at index 0) is a type 0, 8-block-high column.</li>
+			<li>Farming gives you 10 blocks of the specified type.</li>
 			<li><span class='list_item_emphasis'>Blocks are hidden to begin with.</span> You must edit/move them to get them to appear.</li>
 			<li>Farming a tile can only be performed once every 2500 Ethereum blocks (roughly once every 12 hours).</li>
 			<li>You can farm more often for 1 ETH per farm. If you're not sure if your cooldown has expired, you can send 1 ETH regardless and it'll get refunded if your free farm is ready.</li>
-			<li>Avg gas used: 979,000</li>
+			<li>Avg gas used: 75,000</li>
 			<li>WARNING: It appears that each time you farm, your "editBlock" requests will increase in gas use (because the block array gets bigger).
 			Farming more than 260 total blocks (13 farmTile actions) could put your "editBlock" requests above the current 3.14 million gas unit limit, essentially "bricking" your tile.</li> 
 		</ul>
@@ -88,14 +82,16 @@
 		
 				<p>
 		Blocks have simple x,y,z coordinates on your tile. New blocks begin life HIDDEN with x,y,z set to 0,0,-1.
-		To select which block you want to edit, you'll need to know its index in your list of blocks. Consult the explorer to view your list of blocks.
+		To select which block you want to edit, you'll need to know its index in your list of blocks. Consult the <a href='tile.html'>Tile Lookup</a> to view your list of blocks.
 		<div style="width:550px;margin-right:auto;margin-left:auto;padding:10px"><img src="images/boundaries.png" style="width:550px;height:303px;"></div> 
+		<div style="margin-right:auto;margin-left:auto;padding:10px;text-align:center"><img src="images/clear-hex-grid.png"><br><em>Printing this out and drawing on it is helpful.</em></div>
+		 
 		Once you've selected the block you want to edit (i.e. found its index), do this: 
-		<pre>etheria.editBlock.sendTransaction(col,row,index,[ignore,x,y,z,color],{from:eth.coinbase,gas:2000000,value:web3.toWei(1,'ether')});</pre>
+		<pre>etheria.editBlock.sendTransaction(col,row,index,[zero_or_-1,x,y,z,color],{from:eth.coinbase,gas:2000000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile</li>
-			<li>"ignore" = any number between -128 and 127. It doesn't matter and changes nothing.</li>
+			<li>(NEW) "zero_or_-1" = put -1 if you want to change the color of a block ONLY. Put 0 for all other edits.</li>
 			<li>x, y, z are the coordinates WITHIN the tile</li>
 			<li>color is any value from -128 to 86. See the chart below.</li>
 			<li>Every block has a "key hex" which is its first x,y,z hex (out of 8). The x,y,z coords of the key hex are the same as the x,y,z coords of the block.</li>
@@ -104,74 +100,13 @@
 			<li>Blocks cannot conflict with other blocks. NOTE: Due to computational constraints, the block you're moving counts as an "other block" until it has successfully moved. This means if where you want to move it conflicts with where it is now, you'll have to move it out of the way first, then, with another edit, put it back where you want it. (Sorry.)</li>
 			<li>Blocks must be placed on the ground OR on other blocks (in the same way as standard LEGOs).</li>
 			<li>Blocks cannot be rehidden after being shown. (Any z value < 0 will be rejected.)</li>
-			<li>Avg gas used: 1,500,000</li>
+			<li>Avg gas used: 600,000</li>
 		</ul>
 		<a href="colorref.html" id="color_link">Color Reference</a>
 	</p>
-	<div class="contentheader nontop">See existing offers for a tile</div>
-		<p>
-			Tile trading works like this: Someone owns a tile. People can make offers on the tile. If the owner likes an offer, he/she can accept it.
-			<pre>etheria.getOffers(col,row);</pre>
-			and
-			<pre>etheria.getOfferers(col,row);</pre>
-		Notes:
-		<ul>
-			<li>"col","row" = the coords of the tile</li>
-			<li>The indexes match up. The offerer at offerers[0] made the offer found at offers[0] and so on.</li>
-		</ul>
-	</p>
-	<div class="contentheader nontop">Make an offer on an owned tile</div>
-		<p>
-			<pre>etheria.makeOffer.sendTransaction(col,row,{from:eth.coinbase,gas:1000000, value:web3.toWei(1,"ether")});</pre>
-		Notes:
-		<ul>
-			<li>"col","row" = the coords of the tile you'd like to purchase</li>
-			<li>.01 ETH - 1,000,000 ETH is the valid range (lol)</li>
-			<li>You can only make one offer per tile. You can update (makeOffer again) or retract (deleteOffer) your offer, though.</li>
-			<li>There is a 10% fee on all sales. Seller gets 90% of the offer value.</li>
-			<li>All other offers are refunded at the time an offer is accepted.</li>
-			<li>Otherwise, all properties of the tile stay in tact, including blocks (incl placement + colors) name and status.</li>
-			<li>Approx. gas usage: 110,000 units</li>
-		</ul>
-	</p>
-	<div class="contentheader nontop">Reject an offer on your tile</div>
-		<p>
-			<pre>etheria.deleteOffer.sendTransaction(col,row,offerindex,offer_amt_in_wei,{from:eth.coinbase,gas:1000000});</pre>
-		Notes:
-		<ul>
-			<li>"col","row" = the coords of your tile on which the offer was placed</li>
-			<li>"offerindex" is 0-10, the index (in the offers array) of the offer you'd like to reject</li>
-			<li>"offer_amt_in_wei" is the amount of the offer you want to reject. Including this value ensures that you don't accidentally reject a different offer, in case your offer array changes unexpectedly.</li>
-			<li>The rejected offerer's money will be refunded in full.</li>
-			<li>Approx. gas usage: 35,000 units</li>
-		</ul>
-	</p>
-	<div class="contentheader nontop">Retract an offer you've made</div>
-		<p>
-			<pre>etheria.deleteOffer.sendTransaction(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
-		Notes:
-		<ul>
-			<li>"col","row" = the coords of the tile on which the offer was placed</li>
-			<li>"offerindex" is 0-10, the index (in the offers array) of the offer you'd like to withdraw</li>
-			<li>"some_amount_in_wei" is the amount of the offer you want to withdraw. This is a necessary safety mechanism since "deleteOffer" can be used by the owner OR the offerer, possibly at the same time. See above.</li>
-			<li>Your offer will be refunded to you, in full, immediately.</li>
-		</ul>
-	</p>
-	<div class="contentheader nontop">Accept an offer on your tile</div>
-		<p>
-			<pre>etheria.acceptOffer.sendTransaction(col,row,offerindex,some_amount_in_wei,{from:eth.coinbase,gas:1000000});</pre>
-		Notes:
-		<ul>
-			<li>"col","row" = the coords of your tile on which the offer was placed</li>
-			<li>"offerindex" is 0-10, the index (in the offers array) of the offer you'd like to withdraw</li>
-			<li>"some_amount_in_wei" is the amount of the offer you want to accept. This is a necessary safety mechanism to ensure you're accepting the correct offer, esp if the offers array changes unexpectedly.</li>
-			<li>You will receive 90% of the offer amount immediately. There is a 10% house fee.</li>
-		</ul>
-	</p>
 	<div class="contentheader nontop">Change the "name" of your tile</div>
 		<p>
-			I'm not even sure if "name" is supposed to be <em>your</em> name or the name of your tile. You decide, I guess. Either way, here's how you change it. 
-			<pre>etheria.setName.sendTransaction(col,row,"Neil Degrasse Tyson",{from:eth.coinbase,gas:1000000});</pre>
+			<pre>etheria.setName.sendTransaction(col,row,"Tyson Hill",{from:eth.coinbase,gas:1000000});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile</li>
@@ -190,55 +125,21 @@
 			<li>To prevent spam, updating your status costs 1 ETH.</li>
 		</ul>
 	</p>
+	<div class="contentheader nontop">Give your tile to someone else</div>
+		<p>
+			<pre>etheria.setOwner.sendTransaction(col,row,web3.eth.toBigNumber('0xabc123...'),{from:eth.coinbase,gas:1000000});</pre>
+		Notes:
+		<ul>
+			<li>"col","row" = the coords of your tile</li>
+			<li>Trustless exchanges can be created outside of Etheria that call the setOwner() method. (e.g. Ether for land, etc.)</li>
+			<li>If the community would rather have the offer system back, I can re-introduce it in a future version.</li>
+		</ul>
+	</p>
 	<div class="contentheader nontop">A note on troubleshooting</div>
 	<p>
 		Etheria contains a "whathappened" value that can be used to figure out where you've gone wrong if something doesn't work the way you expected.
 		<pre>etheria.getWhatHappened();</pre>
 		NOTE: This value is shared amongst all Etheria players, so if you're the the only person interacting with Etheria for a minute or two, it should give you good information. If not, you could get confusing info.
-	</p>
-	<div class="contentheader nontop"><a name='whathappenedcodes'>whathappened codes</a></div>
-	<p>
-		These are *really* useful for figuring out what the hell is going on with your transactions. You might want to print this list.
-		<ul>
-			<li>1 - makeOffer - ERROR value was 0</li>
-			<li>2 - makeOffer - ERROR col,row out of bounds</li>
-			<li>3 - makeOffer - ERROR wrong value for unowned tile OR attempt to purchase water tile</li>
-			<li>4 - makeOffer - SUCCESS purchase of unowned tile completed</li>
-			<li>5 - makeOffer - ERROR re: owned tiles, self-owned, value to low/high, or this tile already has 10 (max) offers</li>
-			<li>6 - makeOffer - SUCCESS existing offer on owned tile updated</li>
-			<li>7 - makeOffer - SUCCESS new offer on owned tile recorded</li>
-			<li>30 - farmTile - ERROR col,row out of bounds</li>
-			<li>31 - farmTile - ERROR msg.sender != tile owner</li>
-			<li>32 - farmTile - ERROR attempt to farm tile too soon after last farm</li>
-			<li>33 - farmTile - SUCCESS</li>
-			<li>20 - editBlock - ERROR col, row out of bounds</li>
-			<li>21 - editBlock - ERROR msg.sender != tile owner</li>
-			<li>22 - editBlock - ERROR the specified z was less than 0 (blocks cannot be re-hidden after being shown)</li>
-			<li>10 - editBlock - ERROR Invalid location. At least one hex was out of bounds.</li>
-			<li>11 - editBlock - ERROR Invalid location. Conflict with existing block. (Note: The block you're editing counts as an existing block.)</li>
-			<li>12 - editBlock - SUCCESS Block was stacked on another.</li>
-			<li>13 - editBlock - ERROR Block doesn't touch the ground.</li>
-			<li>14 - editBlock - SUCCESS Block was placed on the ground.</li>
-			<li>40 - setStatus - ERROR value was 0</li>
-			<li>41 - setStatus - ERROR value was not .1 ETH (required)</li>
-			<li>42 - setStatus - ERROR col,row out of bounds</li>
-			<li>43 - setStatus - ERROR msg.sender != owner</li>
-			<li>44 - setStatus - SUCCESS</li>
-			<li>50 - setName - ERROR col,row out of bounds</li>
-			<li>51 - setName - ERROR msg.sender != owner</li>
-			<li>52 - setName - SUCCESS</li>
-			<li>70 - deleteOffer - ERROR col, row out of bounds</li>
-			<li>71 - deleteOffer - ERROR msg.sender != owner && msg.sender != offerer</li>
-			<li>72 - deleteOffer - ERROR index out of bounds</li>
-			<li>73 - deleteOffer - SUCCESS</li>
-			<li>74 - deleteOffer - ERROR wrong amount specified</li>
-			<li>80 - acceptOffer - ERROR col, row out of bounds</li>
-			<li>81 - acceptOffer - ERROR msg.sender != owner</li>
-			<li>82 - acceptOffer - ERROR index out of bounds</li>
-			<li>83 - acceptOffer - SUCCESS</li>
-			<li>84 - acceptOffer - ERROR wrong amount specified</li>
-		</ul>
-		
 	</p>
 	</div>
     <div class="footer">

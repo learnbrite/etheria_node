@@ -191,7 +191,7 @@ function init() {
 	    					{
 	    						if(tiles[col][row].blocks[b][3] >= 0) // z below 0 doesn't get drawn
 	    						{	
-	    							//console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(tiles[col][row].blocks[b]));
+	    							console.log("drawing block col=" + col + " row=" + row + " " + JSON.stringify(tiles[col][row].blocks[b]));
 	    							//editBlock(16,16,t,c,r,z, getRandomIntInclusive(0,16777214));
 	    							editBlock(col,row,b,
 	    									[tiles[col][row].blocks[b][0], // which

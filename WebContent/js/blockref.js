@@ -108,21 +108,21 @@ function init() {
 	
 	editBlock(0,0,16,[16,-40,10,0, 82]); 
 	editBlock(0,0,17,[17,-28,10,0, 82]); 
-	editBlock(0,0,18,[18,-16,10,0, 82]); 
-	editBlock(0,0,19,[19,-4,10,0, 82]); 
-	editBlock(0,0,20,[20,8,10,0, 82]); 
-	editBlock(0,0,21,[21,20,10,0, 82]); // CYAN double tower horizontal
-	editBlock(0,0,22,[22,32,10,0, 82]);
-	editBlock(0,0,23,[23,44,10,0, 82]);
-	
-	editBlock(0,0,24,[24,-40,28,0, 82]); 
-	editBlock(0,0,25,[25,-28,28,0, 82]); 
-	editBlock(0,0,26,[26,-16,28,0, 82]); 
-	editBlock(0,0,27,[27,-4,28,0, 82]); 
-	editBlock(0,0,28,[28,8,28,0, 82]); 
-	editBlock(0,0,29,[29,20,28,0, 82]); // CYAN double tower horizontal
-	editBlock(0,0,30,[30,32,28,0, 82]);
-	editBlock(0,0,31,[31,44,28,0, 82]);
+//	editBlock(0,0,18,[18,-16,10,0, 82]); 
+//	editBlock(0,0,19,[19,-4,10,0, 82]); 
+//	editBlock(0,0,20,[20,8,10,0, 82]); 
+//	editBlock(0,0,21,[21,20,10,0, 82]); // CYAN double tower horizontal
+//	editBlock(0,0,22,[22,32,10,0, 82]);
+//	editBlock(0,0,23,[23,44,10,0, 82]);
+//	
+//	editBlock(0,0,24,[24,-40,28,0, 82]); 
+//	editBlock(0,0,25,[25,-28,28,0, 82]); 
+//	editBlock(0,0,26,[26,-16,28,0, 82]); 
+//	editBlock(0,0,27,[27,-4,28,0, 82]); 
+//	editBlock(0,0,28,[28,8,28,0, 82]); 
+//	editBlock(0,0,29,[29,20,28,0, 82]); // CYAN double tower horizontal
+//	editBlock(0,0,30,[30,32,28,0, 82]);
+//	editBlock(0,0,31,[31,44,28,0, 82]);
 	
 	// lights
 	light = new THREE.DirectionalLight(0xaaaaaa);
