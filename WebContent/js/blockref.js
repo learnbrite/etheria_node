@@ -73,7 +73,7 @@ function init() {
 	  tiles[0][0].lastfarm = 0;
 	  tiles[0][0].occupado = []; // will contain arrays of 3
 	camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 40000);
-	camera.position.z = 12;
+	camera.position.z = 5;
 
 	controls = new THREE.OrbitControls(camera);
 	controls.damping = 0.2;
@@ -90,8 +90,8 @@ function init() {
 	
 	editBlock(0,0,0,[0,-40,-28,0, 82]); 
 	editBlock(0,0,1,[1,-28,-28,0, 82]); 
-	editBlock(0,0,2,[2,-16,-28,0, 82]); 
-	editBlock(0,0,3,[3,-4,-28,0, 82]); 
+	editBlock(0,0,2,[2,-17,-28,0, 82]); 
+	editBlock(0,0,3,[3,-3,-28,0, 82]); 
 	editBlock(0,0,4,[4,7,-28,0, 82]); 
 	editBlock(0,0,5,[5,21,-28,0, 82]); // CYAN double tower horizontal
 	editBlock(0,0,6,[6,32,-28,0, 82]);

@@ -48,7 +48,7 @@ $(document).ready(function(){
 		    		infotable = infotable + "		type #" + tile.blocks[i][0] + "<br><br>\"" + blockdefs[tile.blocks[i][0]].description + "\"";
 		    		infotable = infotable + "	</td>"
 		    		infotable = infotable + "	<td  style='text-align:center;background-color:white;width:150px'>";
-		    		infotable = infotable + "		<img src='images/block" + tile.blocks[i][0] + ".jpg' style='width:150px;height:100px'>";
+		    		infotable = infotable + "		<img src='images/block" + tile.blocks[i][0] + ".png' style='width:150px;height:100px'>";
 		    		infotable = infotable + "	</td>"
 		    		infotable = infotable + "	<td style='text-align:center;background-color:white'>";
 		    		infotable = infotable + "		" + tile.blocks[i][1];
