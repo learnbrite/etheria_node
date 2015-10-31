@@ -1,7 +1,7 @@
 <meta charset="utf-8" /> 
 <!DOCTYPE html>
 <head>
-	<title>Ξtheria</title>
+	<title>Ξtheria - HowTo</title>
     <link rel="icon" type="image/png" href="images/h_16.png" />
     <script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
     <script>
@@ -46,13 +46,13 @@
 			<li><span class="list_item_emphasis"><a href="https://docs.google.com/document/d/14EIe984_86Y-uuNm-a4EsVeD3eI4qAAlz_MZof1qkqM/edit#bookmark=id.j73m3062mrz8">Create an Ethereum account.</a></span></li>
 			<li><span class="list_item_emphasis"><a href="https://docs.google.com/document/d/14EIe984_86Y-uuNm-a4EsVeD3eI4qAAlz_MZof1qkqM/edit#bookmark=id.93e8lr5mmrlr">Get some Ether.</a></span></li>
 		</ol>
-	<div class="contentheader nontop">Set up your interface to Etheria</div>
+	<div class="contentheader nontop">Set up your interface to Ξtheria</div>
 		Inside geth:
-		<pre>var abi = [{"constant":false,"inputs":[],"name":"setLocked","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":true,"inputs":[],"name":"getLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"_b32","type":"bytes32"},{"name":"byteindex","type":"uint8"}],"name":"getUint8FromByte32","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"makeOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOfferers","outputs":[{"name":"","type":"address[]"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"deleteOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"i","type":"uint8"},{"name":"amt","type":"uint256"}],"name":"acceptOffer","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOffers","outputs":[{"name":"","type":"uint256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}];
+		<pre>var abi = [{"constant":false,"inputs":[],"name":"setLocked","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"getLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"buyTile","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"newowner","type":"address"}],"name":"setOwner","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"blocktype","type":"int8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[],"name":"empty","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}]
 var etheria = web3.eth.contract(abi).at('0x169332ae7d143e4b5c6baedb2fef77bfbddb4011');</pre>
 	<div class="contentheader nontop">Buy an unowned tile</div>
 	<p>
-		Take a look at the Etheria map and decide which tile you want to buy. If it's unowned (or hasn't been farmed in a month), then obtaining it is easy. Just pay 1 ETH for it.
+		Take a look at the Ξtheria map and decide which tile you want to buy. If it's unowned, then obtaining it is easy. Just pay 1 ETH for it.
 		<pre>etheria.buyTile.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
@@ -131,19 +131,19 @@ var etheria = web3.eth.contract(abi).at('0x169332ae7d143e4b5c6baedb2fef77bfbddb4
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile</li>
-			<li>Trustless exchanges can be created outside of Etheria that call the setOwner() method. (e.g. Ether for land, etc.)</li>
+			<li>Trustless exchanges can be created outside of Ξtheria that call the setOwner() method. (e.g. Ether for land, etc.)</li>
 			<li>If the community would rather have the offer system back, I can re-introduce it in a future version.</li>
 		</ul>
 	</p>
 	<div class="contentheader nontop">A note on troubleshooting</div>
 	<p>
-		Etheria contains a "whathappened" value that can be used to figure out where you've gone wrong if something doesn't work the way you expected.
+		Ξtheria contains a "whathappened" value that can be used to figure out where you've gone wrong if something doesn't work the way you expected.
 		<pre>etheria.getWhatHappened();</pre>
-		NOTE: This value is shared amongst all Etheria players, so if you're the the only person interacting with Etheria for a minute or two, it should give you good information. If not, you could get confusing info.
+		NOTE: This value is shared amongst all Ξtheria players, so if you're the the only person interacting with Ξtheria for a minute or two, it should give you good information. If not, you could get confusing info.
 	</p>
 	</div>
     <div class="footer">
-   		Etheria was created by Cyrus Adkisson. You can email him at c@mailcyr at the USA TLD.
+   		Ξtheria was created by Cyrus Adkisson. You can email him at c@mailcyr at the USA TLD.
     	<table style="margin-right:auto;margin-left:auto">
     		<tr>
     			<td><a href="http://www.twitter.com/etheria_feed"><img src="images/twitter.png"></a></td>

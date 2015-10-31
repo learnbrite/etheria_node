@@ -15,7 +15,7 @@
 */
 var container;
 
-var GENERATE_NEW_MAP = false;
+var GENERATE_NEW_MAP = true;
 var camera, controls, scene, renderer;
 var mesh;
 
@@ -147,7 +147,7 @@ function init() {
 		
 		// TESTS // DO NOT DELETE
 //		console.log('drawing 7 columns 0,0');
-//		editBlock(16,16,0,[0,0,0,0, getRandomIntInclusive(0,16777214)]); // succeed
+		editBlock(15,9,0,[0,50,-62,0, 47]); // succeed
 //		console.log('drawing 7 columns 0,66');
 //		editBlock(16,16,1,[0,0,66,0, getRandomIntInclusive(0,16777214)]); // succeed
 //		console.log('drawing 7 columns 49,33');
