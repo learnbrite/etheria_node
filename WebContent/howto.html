@@ -48,12 +48,12 @@
 		</ol>
 	<div class="contentheader nontop">Set up your interface to Ξtheria</div>
 		Inside geth:
-		<pre>var abi = [{"constant":false,"inputs":[],"name":"setLocked","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"getLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"buyTile","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"newowner","type":"address"}],"name":"setOwner","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"blocktype","type":"int8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[],"name":"empty","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}]
-var etheria = web3.eth.contract(abi).at('0x169332ae7d143e4b5c6baedb2fef77bfbddb4011');</pre>
+		<pre>var abi = [{"constant":false,"inputs":[],"name":"setLocked","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"getLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"buyTile","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"newowner","type":"address"}],"name":"setOwner","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"blocktype","type":"int8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[],"name":"empty","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}];
+var etheria = web3.eth.contract(abi).at('0xb21f8684f23dbb1008508b4de91a0aaedebdb7e4');</pre>
 	<div class="contentheader nontop">Buy an unowned tile</div>
 	<p>
 		Take a look at the Ξtheria map and decide which tile you want to buy. If it's unowned, then obtaining it is easy. Just pay 1 ETH for it.
-		<pre>etheria.buyTile.sendTransaction(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
+		<pre>etheria.buyTile(col,row,{from:eth.coinbase,gas:1000000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
 			<li>Money is automatically refunded if the purchase fails.</li>
@@ -64,7 +64,7 @@ var etheria = web3.eth.contract(abi).at('0x169332ae7d143e4b5c6baedb2fef77bfbddb4
 	<div class="contentheader nontop">Farm your tile for blocks</div>
 	<p>
 		Now that you have a tile, you'll want to get some blocks for it so you can build that dream home you always wanted. Or a giant penis. Either way:
-		<pre>etheria.farmTile.sendTransaction(col,row,blocktype,{from:eth.coinbase,gas:1200000,value:web3.toWei(1,'ether')});</pre> 
+		<pre>etheria.farmTile(col,row,blocktype,{from:eth.coinbase,gas:1200000,value:web3.toWei(1,'ether')});</pre> 
 		Notes:
 		<ul>
 			<li>Farming gives you 10 blocks of the specified type.</li>
@@ -87,7 +87,7 @@ var etheria = web3.eth.contract(abi).at('0x169332ae7d143e4b5c6baedb2fef77bfbddb4
 		<div style="margin-right:auto;margin-left:auto;padding:10px;text-align:center"><img src="images/clear-hex-grid.png"><br><em>Printing this out and drawing on it is helpful.</em></div>
 		 
 		Once you've selected the block you want to edit (i.e. found its index), do this: 
-		<pre>etheria.editBlock.sendTransaction(col,row,index,[zero_or_-1,x,y,z,color],{from:eth.coinbase,gas:2000000,value:web3.toWei(1,'ether')});</pre>
+		<pre>etheria.editBlock(col,row,index,[zero_or_-1,x,y,z,color],{from:eth.coinbase,gas:2500000,value:web3.toWei(1,'ether')});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile</li>
@@ -100,7 +100,7 @@ var etheria = web3.eth.contract(abi).at('0x169332ae7d143e4b5c6baedb2fef77bfbddb4
 			<li>Blocks cannot conflict with other blocks. NOTE: Due to computational constraints, the block you're moving counts as an "other block" until it has successfully moved. This means if where you want to move it conflicts with where it is now, you'll have to move it out of the way first, then, with another edit, put it back where you want it. (Sorry.)</li>
 			<li>Blocks must be placed on the ground OR on other blocks (in the same way as standard LEGOs).</li>
 			<li>Blocks cannot be rehidden after being shown. (Any z value < 0 will be rejected.)</li>
-			<li>Avg gas used: 600,000</li>
+			<li>GAS USAGE: Every time you place a block, gas usage for the next increases. Unfortunately, you'll hit pi million (the current block limit) at ~30 blocks.</li>
 		</ul>
 		<a href="colorref.html" id="color_link">Color Reference</a>
 	</p>
@@ -116,7 +116,7 @@ var etheria = web3.eth.contract(abi).at('0x169332ae7d143e4b5c6baedb2fef77bfbddb4
 	</p>
 	<div class="contentheader nontop">Change the "status" of your tile</div>
 		<p>
-			<pre>etheria.setStatus.sendTransaction(col,row,"This thing I built is awesome! Suck it, everyone else.",{from:eth.coinbase,gas:1000000});</pre>
+			<pre>etheria.setStatus(col,row,"This thing I built is awesome! Suck it, everyone else.",{from:eth.coinbase,gas:1000000});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile</li>
@@ -127,7 +127,7 @@ var etheria = web3.eth.contract(abi).at('0x169332ae7d143e4b5c6baedb2fef77bfbddb4
 	</p>
 	<div class="contentheader nontop">Give your tile to someone else</div>
 		<p>
-			<pre>etheria.setOwner.sendTransaction(col,row,web3.eth.toBigNumber('0xabc123...'),{from:eth.coinbase,gas:1000000});</pre>
+			<pre>etheria.setOwner(col,row,web3.eth.toBigNumber('0xabc123...'),{from:eth.coinbase,gas:1000000});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile</li>

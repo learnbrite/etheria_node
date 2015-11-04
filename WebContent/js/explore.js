@@ -15,7 +15,7 @@
 */
 var container;
 
-var GENERATE_NEW_MAP = true;
+var GENERATE_NEW_MAP = false;
 var camera, controls, scene, renderer;
 var mesh;
 
@@ -115,33 +115,33 @@ function init() {
 //					tiles[x][y].elevation = (tiles[x][y].elevation - min) * tiles[x][y].normalization_factor;
 				drawMapHex(col,row);
 				
-				if(col === 16 && row === 16)
-				{	
-					var c = 0;
-					var r = 0;
-					var t = 0;
-					var z = 0;
-					var created = 0;
-					var editedblock = false;
-					
-					while(created < 300)
-					{
-						t = getRandomIntInclusive(0,31);
-						c = getRandomIntInclusive(0,7);
-						r = getRandomIntInclusive(0,7);
-						z = getRandomIntInclusive(0,100);
-						editedblock = false;
-						while(editedblock == false)
-						{
-							t = getRandomIntInclusive(0,31);
-							c = getRandomIntInclusive(0,7);
-							r = getRandomIntInclusive(0,7);
-							z = getRandomIntInclusive(0,100);
-							editedblock = editBlock(16,16,created,[t,c,r,z, getRandomIntInclusive(-128,127)]);
-						}	
-						created++;
-					}	
-				}
+//				if(col === 15 && row === 9)
+//				{	
+//					var c = 0;
+//					var r = 0;
+//					var t = 0;
+//					var z = 0;
+//					var created = 0;
+//					var editedblock = false;
+//					
+//					while(created < 300)
+//					{
+//						t = getRandomIntInclusive(0,17);
+//						c = getRandomIntInclusive(0,7);
+//						r = getRandomIntInclusive(0,7);
+//						z = getRandomIntInclusive(0,100);
+//						editedblock = false;
+//						while(editedblock == false)
+//						{
+//							t = getRandomIntInclusive(0,17);
+//							c = getRandomIntInclusive(0,7);
+//							r = getRandomIntInclusive(0,7);
+//							z = getRandomIntInclusive(0,100);
+//							editedblock = editBlock(16,16,created,[t,c,r,z, getRandomIntInclusive(-128,127)]);
+//						}	
+//						created++;
+//					}	
+//				}
 			}
 		}
 		

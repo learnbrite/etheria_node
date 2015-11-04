@@ -325,30 +325,15 @@ var blockdefs = [{
 //}
 //]
 
-var str1 = "";
-var str2 = "";
-var tempattachesto = [];
-for(var b = 0; b < blockdefs.length; b++)
-{
-	str1 = str1 + "blockdefstorage.initOccupies.sendTransaction(" + (blockdefs[b].which*1) + ", " + JSON.stringify(blockdefs[b].occupies) + ",{from:eth.coinbase, gas:500000});\n";
-	str1 = str1 + "blockdefstorage.initAttachesto.sendTransaction(" + (blockdefs[b].which*1) + ", " + JSON.stringify(blockdefs[b].attachesto) + ",{from:eth.coinbase, gas:500000});\n";
-//	str2 = str2 + "blockdefstorage.initAttachesto.sendTransaction(";
-//	str1 = str1 + (blockdefs[b].which*1) + ", ";
-//	str2 = str2 + (blockdefs[b].which*1) + ", ";
-//	str1 = str1 + JSON.stringify(blockdefs[b].occupies);
-//	str2 = str2  + "["
-//	for(var a = 0; a < 16; a++)
-//	{
-//		if(a < blockdefs[b].attachesto.length)
-//			str2 = str2 + JSON.stringify(blockdefs[b].attachesto[a]) + ",";
-//		else
-//			str2 = str2 + "[0,0,0],";
-//	}	
-//	str2 = str2.substring(0,str2.length-1) + "]"
-//	str1 = str1 + ",{from:eth.coinbase, gas:500000});\n";
-//	str2 = str2 + ",{from:eth.coinbase, gas:500000});\n";
-}	
-console.log(str1 + "\n" + str2);
+//var str1 = "";
+//var str2 = "";
+//var tempattachesto = [];
+//for(var b = 0; b < blockdefs.length; b++)
+//{
+//	str1 = str1 + "blockdefstorage.initOccupies.sendTransaction(" + (blockdefs[b].which*1) + ", " + JSON.stringify(blockdefs[b].occupies) + ",{from:eth.coinbase, gas:500000});\n";
+//	str1 = str1 + "blockdefstorage.initAttachesto.sendTransaction(" + (blockdefs[b].which*1) + ", " + JSON.stringify(blockdefs[b].attachesto) + ",{from:eth.coinbase, gas:500000});\n";
+//}	
+//console.log(str1 + "\n" + str2);
 
 var tundratexture = THREE.ImageUtils.loadTexture( "images/tundra.jpg" );
 var icetexture = THREE.ImageUtils.loadTexture( "images/ice.jpg" );
@@ -652,10 +637,12 @@ function drawBlockHex(col, row, which, x, y, z, color, blockindex, sequencenum, 
 
 function editBlock(col, row, blockindex, _block)
 {
+	console.log('entering editBlock ' + JSON.stringify(_block));
 	var wouldoccupy = new Array(24);
 	var didoccupy = new Array(24);
 	for(var b = 0; b < 24; b++) // gotta create a new object and move all the values over. Otherwise, we'd be writing into blockdefs.
     {	
+		
 		wouldoccupy[b] = blockdefs[_block[0]].occupies[b];
 		didoccupy[b] = blockdefs[_block[0]].occupies[b];
     }
@@ -675,8 +662,10 @@ function editBlock(col, row, blockindex, _block)
     		didoccupy[b] = didoccupy[b]+1; 					 // then offset x by +1
     	didoccupy[b+2] = didoccupy[b+2]+tile.blocks[blockindex][3];
     }
+	// let the contract handle this.
 //	if(!isValidLocation(col, row, _block, wouldoccupy)) // have not sent offset to these functions. Must take care of inside them.
 //	{
+//		console.log('invalid location');
 //		return false;
 //	}
 	var keyx = 0;
@@ -755,12 +744,28 @@ function blockHexCoordsValid(x, y)
 			if(y % 2 != 0 ) // odd
 			{
 				if (((absx*2) + (absy*3)) <= 198)
+				{
+					console.log('1st or 4th, y odd, <= 198');
 					return true;
+				}
+				else
+				{
+					console.log('1st or 4th, y odd, > 198, returning false');
+					//return false;
+				}	
 			}	
 			else	// even
 			{
 				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
+				{
+					console.log('1st or 4th, y even, <= 198');
 					return true;
+				}
+				else
+				{
+					console.log('1st or 4th, y even, > 198');
+					//return false;
+				}	
 			}
 		}
 		else
@@ -768,12 +773,28 @@ function blockHexCoordsValid(x, y)
 			if(y % 2 == 0 ) // even
 			{
 				if (((absx*2) + (absy*3)) <= 198)
+				{
+					console.log('2nd or 43rd, y even, <= 198');
 					return true;
+				}
+				else
+				{
+					console.log('2nd or 43rd, y even, > 198');
+					//return false;
+				}	
 			}	
 			else	// odd
 			{
 				if ((((absx+1)*2) + ((absy-1)*3)) <= 198)
+				{
+					console.log('2nd or 43rd, y odd, <= 198');
 					return true;
+				}
+				else
+				{
+					console.log('2nd or 43rd, y odd, > 198');
+					//return false;
+				}	
 			}
 		}
 	}
@@ -790,7 +811,7 @@ function isValidLocation(col, row, _block, wouldoccupy)
        	{
        		if(!blockHexCoordsValid(wouldoccupy[b], wouldoccupy[b+1])) // 3. DO ANY OF THE PROPOSED HEXES FALL OUTSIDE OF THE TILE? 
       		{
-       			whathappened = 10; 
+       			console.log("10:editBlock:ERR:OOB"); 
        			//console.log('OOB for ' + wouldoccupy[b] + "," + wouldoccupy[b+1]);
       			return false;
       		}
