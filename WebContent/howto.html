@@ -87,7 +87,7 @@ var etheria = web3.eth.contract(abi).at('0xb21f8684f23dbb1008508b4de91a0aaedebdb
 		<div style="margin-right:auto;margin-left:auto;padding:10px;text-align:center"><img src="images/clear-hex-grid.png"><br><em>Printing this out and drawing on it is helpful.</em></div>
 		 
 		Once you've selected the block you want to edit (i.e. found its index), do this: 
-		<pre>etheria.editBlock(col,row,index,[zero_or_-1,x,y,z,color],{from:eth.coinbase,gas:2500000,value:web3.toWei(1,'ether')});</pre>
+		<pre>etheria.editBlock(col,row,index,[zero_or_-1,x,y,z,color],{from:eth.coinbase,gas:2500000});</pre>
 		Notes:
 		<ul>
 			<li>"col","row" = the coords of your tile</li>
