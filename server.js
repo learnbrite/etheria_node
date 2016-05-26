@@ -133,7 +133,7 @@ var myTimer = setInterval(function () {
 }, 300);
 
 function retrieveTileInfo (col, row) {
-	var batch = web3.createBatch();
+	//var batch = web3.createBatch();
 	
 	//row = map_retrieval_index % 33;
 	//col = (map_retrieval_index - row) / mapsize;
@@ -142,40 +142,41 @@ function retrieveTileInfo (col, row) {
 		var gB = function() { 
 			var c = col;
 			var r = row;
-			batch.add(etheria.getOwner.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			etheria.getOwner.request(c, r, function(error, result) { 
+//				console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result));
 				if(typeof result === "undefined" || result === null)
 				{
-					console.log('WARNING: Retrieval of owner c,r ' + c + "," + r + 'failed');
+					console.log('WARNING: Retrieval of owner c,r ' + c + "," + r + ' failed');
 				}	
 				else
 				{
 					owners[c][r] = result;
 				}
-			}));
-			batch.add(etheria.getName.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			});
+			etheria.getName.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
-					console.log('WARNING: Retrieval of name c,r ' + c + "," + r + 'failed');
+					console.log('WARNING: Retrieval of name c,r ' + c + "," + r + ' failed');
 				}	
 				else
 				{
 					names[c][r] = result;
 				}
-			}));
-			batch.add(etheria.getStatus.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			});
+			etheria.getStatus.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
-					console.log('WARNING: Retrieval of status c,r ' + c + "," + r + 'failed');
+					console.log('WARNING: Retrieval of status c,r ' + c + "," + r + ' failed');
 				}	
 				else
 				{
 					statuses[c][r] = result;
 				}
-			}));
-			batch.add(etheria.getLastFarm.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			});
+			etheria.getLastFarm.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
-					console.log('WARNING: Retrieval of lastfarm c,r ' + c + "," + r + 'failed');
+					console.log('WARNING: Retrieval of lastfarm c,r ' + c + "," + r + ' failed');
 				}	
 				else
 				{
@@ -188,35 +189,8 @@ function retrieveTileInfo (col, row) {
 					}
 					lastfarms[c][r] = result;
 				}
-			}));
-//			batch.add(etheria.getOfferers.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
-//				if(typeof result === "undefined" || result === null)
-//				{
-//					console.log('WARNING: Retrieval of offerers c,r ' + c + "," + r + 'failed');
-//				}	
-//				else
-//				{
-//					offerers[c][r] = result;
-//				}
-//			}));
-//			batch.add(etheria.getOffers.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
-//				if(typeof result === "undefined" || result === null)
-//				{
-//					console.log('WARNING: Retrieval of offers c,r ' + c + "," + r + 'failed');
-//				}	
-//				else
-//				{
-//					for(var u = 0; u < result.length; u++)
-//					{
-//						for(var v = 0; v < 5; v++)
-//						{
-//							result[u][v] = result[u][v]*1; 
-//						}	
-//					}
-//					offers[c][r] = result;
-//				}
-//			}));
-			batch.add(etheria.getBlocks.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			});
+			etheria.getBlocks.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of blocks at c,r ' + c + "," + r + 'failed');
@@ -232,10 +206,10 @@ function retrieveTileInfo (col, row) {
 					}
 					blocks[c][r] = result;
 				}
-			}));
+			});
 		};
 		gB();
-	batch.execute();
+//	batch.execute();
 }
 //function retrieveTileInfo () 
 //{
