@@ -142,8 +142,8 @@ function retrieveTileInfo (col, row) {
 		var gB = function() { 
 			var c = col;
 			var r = row;
-			etheria.getOwner.request(c, r, function(error, result) { 
-//				console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result));
+			etheria.getOwner.call(c, r, function(error, result) { 
+//				console.log('returned from getting blocks for ' + c + "," + r + " " + JSON.stringify(result));
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of owner c,r ' + c + "," + r + ' failed');
@@ -153,7 +153,7 @@ function retrieveTileInfo (col, row) {
 					owners[c][r] = result;
 				}
 			});
-			etheria.getName.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			etheria.getName.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of name c,r ' + c + "," + r + ' failed');
@@ -163,7 +163,7 @@ function retrieveTileInfo (col, row) {
 					names[c][r] = result;
 				}
 			});
-			etheria.getStatus.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			etheria.getStatus.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of status c,r ' + c + "," + r + ' failed');
@@ -173,7 +173,7 @@ function retrieveTileInfo (col, row) {
 					statuses[c][r] = result;
 				}
 			});
-			etheria.getLastFarm.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			etheria.getLastFarm.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of lastfarm c,r ' + c + "," + r + ' failed');
@@ -190,7 +190,7 @@ function retrieveTileInfo (col, row) {
 					lastfarms[c][r] = result;
 				}
 			});
-			etheria.getBlocks.request(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			etheria.getBlocks.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of blocks at c,r ' + c + "," + r + 'failed');
