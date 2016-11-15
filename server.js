@@ -1,7 +1,14 @@
 var express = require('express');
 
 var web3 = require('web3');
-web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'));
+if (typeof web3 !== 'undefined') 
+{
+	web3 = new Web3(web3.currentProvider);
+} else {	
+	// set the provider you want from Web3.providers
+	web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+}
+//web3.setProvider(new web3.providers.HttpProvider('http://127.0.0.1:8545'));
 
 var elevation_abi = [{"constant":true,"inputs":[],"name":"getElevations","outputs":[{"name":"","type":"uint8[1089]"}],"type":"function"},{"constant":false,"inputs":[],"name":"setLocked","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getElevation","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"_elevations","type":"uint8[33]"}],"name":"initElevations","outputs":[],"type":"function"},{"inputs":[],"type":"constructor"}]
 var elevationcontract = web3.eth.contract(elevation_abi).at("0x68549d7dbb7a956f955ec1263f55494f05972a6b");
