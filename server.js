@@ -1,16 +1,16 @@
 var express = require('express');
 var Web3 = require('web3');
-var web3 = new Web3();
+var web3 = new Web3(new Web3.providers.WebsocketProvider('ws://127.0.0.1:8546'));
 
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
+//web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 
 var elevation_abi = [{"constant":true,"inputs":[],"name":"getElevations","outputs":[{"name":"","type":"uint8[1089]"}],"type":"function"},{"constant":false,"inputs":[],"name":"setLocked","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getElevation","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"_elevations","type":"uint8[33]"}],"name":"initElevations","outputs":[],"type":"function"},{"inputs":[],"type":"constructor"}]
-var elevationcontract = web3.eth.contract(elevation_abi).at("0x68549d7dbb7a956f955ec1263f55494f05972a6b");
+var elevationcontract = new web3.eth.Contract(elevation_abi,"0x68549d7dbb7a956f955ec1263f55494f05972a6b");
 
 var abi = [{"constant":false,"inputs":[],"name":"setLocked","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"getWhatHappened","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"getLocked","outputs":[{"name":"","type":"bool"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"buyTile","outputs":[],"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_s","type":"string"}],"name":"setStatus","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"newowner","type":"address"}],"name":"setOwner","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getLastFarm","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"index","type":"uint256"},{"name":"_block","type":"int8[5]"}],"name":"editBlock","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"blocktype","type":"int8"}],"name":"farmTile","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"},{"name":"_n","type":"string"}],"name":"setName","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getName","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getStatus","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getOwner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[],"name":"empty","outputs":[],"type":"function"},{"constant":true,"inputs":[{"name":"col","type":"uint8"},{"name":"row","type":"uint8"}],"name":"getBlocks","outputs":[{"name":"","type":"int8[5][]"}],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"col","type":"uint8"},{"indexed":false,"name":"row","type":"uint8"}],"name":"TileChanged","type":"event"}];
-var etheria = web3.eth.contract(abi).at('0xb21f8684f23dbb1008508b4de91a0aaedebdb7e4');
+var etheria = new web3.eth.Contract(abi,'0xb21f8684f23dbb1008508b4de91a0aaedebdb7e4');
 
-var events = etheria.allEvents(function(error, log){
+var events = etheria.events.allEvents(function(error, log){
 	if (error)
 		console.log(error);
 	else if (!error)
@@ -52,7 +52,7 @@ for (i = 0; i < mapsize; i++) {
 	elevations[i] = new Array(mapsize);
 }
 console.log('getting elevations');
-elevationcontract.getElevations.call(function(error, result) {
+elevationcontract.methods.getElevations().call(function(error, result) {
 	 if(error)
 		 console.log("error: " + error);
 	 else
@@ -123,6 +123,18 @@ for (i = 0; i < mapsize; i++) {
 var c = 0;
 var r = 0;
 
+/*while(c < 33)
+{
+	r = 0;
+	while(r < 33)
+	{
+		retrieveTileInfo(c,r);
+		r++;
+	}
+	c++;
+}
+console.log('after retrieval loop');*/
+
 var map_retrieval_index = 0;
 console.log('before setinterval');
 var myTimer = setInterval(function () { 
@@ -137,6 +149,7 @@ var myTimer = setInterval(function () {
 	}
 }, 300);
 
+
 function retrieveTileInfo (col, row) {
 	//var batch = web3.createBatch();
 	
@@ -147,7 +160,7 @@ function retrieveTileInfo (col, row) {
 		var gB = function() { 
 			var c = col;
 			var r = row;
-			etheria.getOwner.call(c, r, function(error, result) { 
+			etheria.methods.getOwner(c,r).call(function(error, result) { 
 //				console.log('returned from getting blocks for ' + c + "," + r + " " + JSON.stringify(result));
 				if(typeof result === "undefined" || result === null)
 				{
@@ -158,7 +171,7 @@ function retrieveTileInfo (col, row) {
 					owners[c][r] = result;
 				}
 			});
-			etheria.getName.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			etheria.methods.getName(c,r).call(function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of name c,r ' + c + "," + r + ' failed');
@@ -168,7 +181,7 @@ function retrieveTileInfo (col, row) {
 					names[c][r] = result;
 				}
 			});
-			etheria.getStatus.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			etheria.methods.getStatus(c,r).call(function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of status c,r ' + c + "," + r + ' failed');
@@ -178,7 +191,7 @@ function retrieveTileInfo (col, row) {
 					statuses[c][r] = result;
 				}
 			});
-			etheria.getLastFarm.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			etheria.methods.getLastFarm(c,r).call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of lastfarm c,r ' + c + "," + r + ' failed');
@@ -195,7 +208,7 @@ function retrieveTileInfo (col, row) {
 					lastfarms[c][r] = result;
 				}
 			});
-			etheria.getBlocks.call(c, r, function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
+			etheria.methods.getBlocks(c,r).call(function(error, result) { //console.log('returned from getting blocks for ' + c + "," + r + JSON.stringify(result)); blocks[c][r] = result; });
 				if(typeof result === "undefined" || result === null)
 				{
 					console.log('WARNING: Retrieval of blocks at c,r ' + c + "," + r + 'failed');
@@ -216,6 +229,7 @@ function retrieveTileInfo (col, row) {
 		gB();
 //	batch.execute();
 }
+console.log('after getTileInfo declaration');
 
 /* we want to create a 2D array where [1][3] gets the 4th object in the array at the 2nd outer array position
 	[
@@ -265,6 +279,7 @@ function combineTileAndElevationInfoIntoSingleMapObject()
 	}	
 	return map_ja;
 }
+console.log('after combine function declaration');
 
 app.get('/map', function (req, res) {
 	console.log("entering /map");
@@ -312,3 +327,4 @@ var server = app.listen(80, function () {
   map_ja = [];
   console.log('Example app listening at http://%s:%s', host, port);
 });
+console.log('end');
